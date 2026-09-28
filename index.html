@@ -1,0 +1,1503 @@
+<title>Construye y Sostiene · Módulo 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap">
+
+<style>
+/* ── TOKENS ── morado #4B168E · dorado #D4AC00 · layout: pantallas full, nav inferior fija */
+:root {
+  --mo:   #4B168E;
+  --mo2:  #6B2DAE;
+  --mo3:  #EDE8F7;
+  --or:   #D4AC00;
+  --or2:  #B8960A;
+  --or3:  #FDF7DC;
+  --bg:   #F8F6FC;
+  --bg2:  #FFFFFF;
+  --fg:   #1A0A2E;
+  --fg2:  #5A4A7A;
+  --fg3:  #9A8ABE;
+  --ok:   #2D9148;
+  --line: rgba(75,22,142,.12);
+  --r:    14px;
+  --r2:   10px;
+  --sh:   0 2px 16px rgba(75,22,142,.10);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mo:  #9B66E8;--mo2:#7B46C8;--mo3:#1E1030;
+    --or:  #D4AC00;--or2:#F0C800;--or3:#2A2100;
+    --bg:  #0F0820;--bg2:#1A102E;
+    --fg:  #EDE8F7;--fg2:#B8A8D8;--fg3:#6A5A8A;
+    --ok:  #4DB868;--line:rgba(155,102,232,.15);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --mo:  #9B66E8;--mo2:#7B46C8;--mo3:#1E1030;
+  --or:  #D4AC00;--or2:#F0C800;--or3:#2A2100;
+  --bg:  #0F0820;--bg2:#1A102E;
+  --fg:  #EDE8F7;--fg2:#B8A8D8;--fg3:#6A5A8A;
+  --ok:  #4DB868;--line:rgba(155,102,232,.15);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg); color: var(--fg);
+  font-size: 15px; line-height: 1.6;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+.screen.active { display: flex; }
+
+/* ── NAV BAR ── */
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg2); border-top: 1px solid var(--line);
+  display: flex; padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 100; box-shadow: 0 -2px 12px rgba(75,22,142,.07);
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; padding: 10px 4px; border: none; background: none;
+  color: var(--fg3); cursor: pointer; font-family: inherit;
+  font-size: 10px; font-weight: 500; letter-spacing: .3px;
+  transition: color .2s;
+}
+.nav-btn.active { color: var(--mo); }
+.nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+
+/* ── HEADER ── */
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; background: var(--bg2);
+  border-bottom: 1px solid var(--line); flex-shrink: 0;
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+}
+.hdr-brand { display: flex; align-items: center; gap: 10px; }
+.hdr-logo {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--mo), var(--or));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; color: #fff;
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
+}
+.hdr-text { display: flex; flex-direction: column; }
+.hdr-title { font-size: 13px; font-weight: 600; color: var(--fg); letter-spacing: -.2px; }
+.hdr-sub { font-size: 11px; color: var(--fg3); }
+.hdr-actions { display: flex; gap: 8px; }
+.btn-icon {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--mo3); color: var(--mo); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.btn-icon:hover { background: var(--mo); color: #fff; }
+.btn-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+
+/* ── SCROLL AREA ── */
+.scroll { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: calc(80px + env(safe-area-inset-bottom,0px)); }
+.scroll::-webkit-scrollbar { width: 4px; }
+.scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+/* ── AUTH ── */
+.auth-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; padding: 32px 24px;
+  text-align: center;
+}
+.auth-logo {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--mo), var(--or));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; color: #fff;
+  font-size: 28px; font-weight: 600; margin-bottom: 24px;
+}
+.auth-title {
+  font-family: 'Playfair Display', serif; font-size: 26px;
+  color: var(--mo); margin-bottom: 6px; line-height: 1.2;
+  text-wrap: balance;
+}
+.auth-sub { font-size: 14px; color: var(--fg2); margin-bottom: 32px; line-height: 1.5; }
+.auth-card {
+  background: var(--bg2); border-radius: var(--r); padding: 24px;
+  box-shadow: var(--sh); width: 100%; max-width: 380px;
+}
+.field-lbl { font-size: 12px; font-weight: 600; color: var(--fg2); margin-bottom: 6px; display: block; letter-spacing: .4px; text-transform: uppercase; }
+.field-inp {
+  width: 100%; padding: 12px 14px; border-radius: var(--r2);
+  border: 1.5px solid var(--line); background: var(--bg);
+  color: var(--fg); font-family: inherit; font-size: 15px;
+  outline: none; transition: border-color .2s;
+}
+.field-inp:focus { border-color: var(--mo); }
+.btn-primary {
+  width: 100%; padding: 14px; border-radius: var(--r2);
+  background: var(--mo); color: #fff; border: none;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  cursor: pointer; margin-top: 16px; transition: background .2s, transform .1s;
+  letter-spacing: .2px;
+}
+.btn-primary:hover { background: var(--mo2); }
+.btn-primary:active { transform: scale(.98); }
+.btn-secondary {
+  width: 100%; padding: 12px; border-radius: var(--r2);
+  background: transparent; color: var(--mo); border: 1.5px solid var(--mo);
+  font-family: inherit; font-size: 14px; font-weight: 500;
+  cursor: pointer; margin-top: 10px; transition: background .2s;
+}
+.btn-secondary:hover { background: var(--mo3); }
+.auth-msg { font-size: 13px; color: var(--fg2); margin-top: 14px; }
+
+/* ── PORTADA ── */
+.portada-hero {
+  background: linear-gradient(160deg, var(--mo) 0%, #6B2DAE 60%, #8B45CE 100%);
+  padding: 48px 24px 40px; text-align: center; flex-shrink: 0;
+  padding-top: calc(48px + env(safe-area-inset-top, 0px));
+}
+.portada-badge {
+  display: inline-block; background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.9);
+  font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+.portada-title {
+  font-family: 'Playfair Display', serif; font-size: 28px;
+  color: #fff; line-height: 1.2; margin-bottom: 8px; text-wrap: balance;
+}
+.portada-title em { color: var(--or); font-style: normal; }
+.portada-name { font-size: 14px; color: rgba(255,255,255,.75); margin-bottom: 32px; }
+.portada-prog {
+  background: rgba(255,255,255,.15); border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+  text-align: left;
+}
+.portada-prog-icon { font-size: 28px; }
+.portada-prog-info { flex: 1; }
+.portada-prog-lbl { font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500; letter-spacing: .4px; text-transform: uppercase; }
+.portada-prog-val { font-size: 16px; color: #fff; font-weight: 600; }
+.prog-bar-wrap { height: 5px; background: rgba(255,255,255,.2); border-radius: 5px; margin-top: 6px; overflow: hidden; }
+.prog-bar-fill { height: 100%; background: var(--or); border-radius: 5px; transition: width .5s; }
+
+.modulos-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.modulo-card {
+  background: var(--bg2); border-radius: var(--r); padding: 16px 18px;
+  box-shadow: var(--sh); display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: transform .15s, box-shadow .15s;
+  border: 1.5px solid transparent; text-decoration: none; color: inherit;
+}
+.modulo-card:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(75,22,142,.15); }
+.modulo-card.active-mod { border-color: var(--mo); }
+.modulo-card.locked { opacity: .5; cursor: not-allowed; }
+.modulo-num {
+  width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600;
+}
+.modulo-num.done { background: var(--ok); color: #fff; }
+.modulo-num.current { background: var(--mo); color: #fff; }
+.modulo-num.locked { background: var(--mo3); color: var(--fg3); }
+.modulo-info { flex: 1; min-width: 0; }
+.modulo-nombre { font-size: 14px; font-weight: 600; color: var(--fg); }
+.modulo-desc { font-size: 12px; color: var(--fg3); margin-top: 2px; }
+.modulo-status { font-size: 11px; font-weight: 600; letter-spacing: .4px; }
+.modulo-status.done { color: var(--ok); }
+.modulo-status.current { color: var(--mo); }
+.modulo-status.locked { color: var(--fg3); }
+
+/* ── SECCIONES DEL MÓDULO ── */
+.mod-hero {
+  background: linear-gradient(135deg, var(--mo) 0%, #7B3DBE 100%);
+  padding: 32px 20px 28px; flex-shrink: 0;
+  padding-top: calc(32px + env(safe-area-inset-top,0px));
+}
+.mod-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--or); margin-bottom: 8px;
+}
+.mod-hero-title {
+  font-family: 'Playfair Display', serif; font-size: 24px;
+  color: #fff; line-height: 1.25; text-wrap: balance; margin-bottom: 10px;
+}
+.mod-hero-sub { font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.5; }
+.mod-steps {
+  display: flex; gap: 6px; margin-top: 20px; overflow-x: auto; padding-bottom: 4px;
+}
+.mod-step {
+  flex-shrink: 0; padding: 6px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; cursor: pointer; border: none;
+  transition: background .2s, color .2s;
+}
+.mod-step.done { background: rgba(255,255,255,.2); color: rgba(255,255,255,.8); }
+.mod-step.active { background: var(--or); color: #1A0A2E; }
+.mod-step.pending { background: rgba(255,255,255,.08); color: rgba(255,255,255,.5); }
+
+/* ── EJERCICIO CARDS ── */
+.ej-card {
+  background: var(--bg2); border-radius: var(--r); padding: 20px;
+  box-shadow: var(--sh); margin-bottom: 14px;
+}
+.ej-card-title {
+  font-family: 'Playfair Display', serif; font-size: 17px;
+  color: var(--mo); margin-bottom: 6px; font-weight: 600;
+}
+.ej-card-sub { font-size: 13px; color: var(--fg2); margin-bottom: 16px; line-height: 1.5; }
+.ej-textarea {
+  width: 100%; min-height: 100px; padding: 12px 14px;
+  border-radius: var(--r2); border: 1.5px solid var(--line);
+  background: var(--bg); color: var(--fg); font-family: inherit;
+  font-size: 14px; line-height: 1.6; resize: vertical; outline: none;
+  transition: border-color .2s;
+}
+.ej-textarea:focus { border-color: var(--mo); }
+.ej-hint { font-size: 12px; color: var(--fg3); margin-top: 6px; font-style: italic; }
+
+/* ── CHIPS / TAGS ── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip {
+  padding: 7px 14px; border-radius: 20px; font-size: 13px;
+  border: 1.5px solid var(--line); background: var(--bg);
+  color: var(--fg2); cursor: pointer; transition: all .2s; font-weight: 500;
+}
+.chip.sel { background: var(--mo); color: #fff; border-color: var(--mo); }
+.chip-add {
+  padding: 6px 12px; border-radius: 20px; font-size: 13px;
+  border: 1.5px dashed var(--mo); background: transparent;
+  color: var(--mo); cursor: pointer; font-family: inherit; font-weight: 500;
+}
+
+/* ── ABECEDARIO ── */
+.abc-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(68px,1fr));
+  gap: 8px; margin-top: 8px;
+}
+.abc-cell {
+  border-radius: var(--r2); border: 1.5px solid var(--line);
+  background: var(--bg); padding: 8px 6px; text-align: center;
+}
+.abc-letra {
+  font-family: 'Playfair Display', serif; font-size: 18px;
+  color: var(--mo); font-weight: 600; display: block; line-height: 1;
+}
+.abc-input {
+  width: 100%; border: none; background: transparent; text-align: center;
+  font-family: inherit; font-size: 11px; color: var(--fg); outline: none;
+  margin-top: 4px; padding: 0;
+}
+
+/* ── IA SECTION ── */
+.ia-card {
+  background: linear-gradient(135deg, var(--mo3), var(--or3));
+  border: 1.5px solid var(--line); border-radius: var(--r);
+  padding: 20px; margin-bottom: 14px;
+}
+.ia-card-title { font-size: 14px; font-weight: 600; color: var(--mo); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.ia-card-title svg { width: 18px; height: 18px; }
+.ia-resp {
+  background: var(--bg2); border-radius: var(--r2); padding: 14px;
+  font-size: 13px; color: var(--fg); line-height: 1.7; min-height: 60px;
+  white-space: pre-wrap;
+}
+.ia-resp.empty { color: var(--fg3); font-style: italic; }
+
+/* ── BOTONES ── */
+.btn-mo {
+  background: var(--mo); color: #fff; border: none; border-radius: var(--r2);
+  padding: 13px 20px; font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background .2s, transform .1s; width: 100%;
+  margin-top: 12px; letter-spacing: .2px;
+}
+.btn-mo:hover { background: var(--mo2); }
+.btn-mo:active { transform: scale(.98); }
+.btn-or {
+  background: var(--or); color: #1A0A2E; border: none; border-radius: var(--r2);
+  padding: 13px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background .2s, transform .1s; width: 100%;
+  margin-top: 12px;
+}
+.btn-or:hover { background: var(--or2); }
+.btn-or:active { transform: scale(.98); }
+.btn-outline {
+  background: transparent; color: var(--mo); border: 1.5px solid var(--mo);
+  border-radius: var(--r2); padding: 11px 20px; font-family: inherit;
+  font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 8px;
+}
+
+/* ── MF IMPORT ── */
+.import-banner {
+  background: linear-gradient(90deg, var(--mo3), var(--or3));
+  border: 1.5px solid var(--or); border-radius: var(--r);
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.import-icon { font-size: 22px; flex-shrink: 0; }
+.import-text { flex: 1; }
+.import-title { font-size: 13px; font-weight: 600; color: var(--mo); }
+.import-sub { font-size: 12px; color: var(--fg2); }
+.import-new {
+  background: var(--or); color: #1A0A2E; font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 10px; letter-spacing: .5px;
+  text-transform: uppercase; flex-shrink: 0;
+}
+
+/* ── IMPRIMIBLE ── */
+.print-card {
+  background: var(--bg2); border-radius: var(--r); padding: 24px;
+  box-shadow: var(--sh); border: 1px solid var(--line); margin-bottom: 14px;
+}
+.print-section { margin-bottom: 18px; }
+.print-lbl {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--or2); margin-bottom: 6px;
+}
+.print-val { font-size: 14px; color: var(--fg); line-height: 1.6; }
+.print-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.print-chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 12px;
+  background: var(--mo3); color: var(--mo); font-weight: 500;
+}
+.print-quote {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 15px; color: var(--mo); line-height: 1.6; margin-top: 8px;
+  padding-left: 14px; border-left: 3px solid var(--or);
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+  background: var(--mo); color: #fff; padding: 10px 20px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; z-index: 999; transition: transform .3s;
+  white-space: nowrap; box-shadow: var(--sh);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── SPINNER ── */
+.spinner { display: inline-block; width: 18px; height: 18px; vertical-align: middle; }
+.spinner::after {
+  content: ''; display: block; width: 16px; height: 16px;
+  border-radius: 50%; border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff; animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── EMPRESARIA SECTION ── */
+.emp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.emp-item {
+  background: var(--mo3); border-radius: var(--r2); padding: 12px;
+  cursor: pointer; transition: background .2s; border: 1.5px solid transparent;
+}
+.emp-item.sel { background: var(--mo); border-color: var(--mo); }
+.emp-item-icon { font-size: 20px; margin-bottom: 4px; display: block; }
+.emp-item-lbl { font-size: 12px; font-weight: 600; color: var(--fg); line-height: 1.3; }
+.emp-item.sel .emp-item-lbl { color: #fff; }
+.emp-item-sub { font-size: 11px; color: var(--fg3); margin-top: 2px; }
+.emp-item.sel .emp-item-sub { color: rgba(255,255,255,.7); }
+
+/* ── HÁBITO ── */
+.habito-card {
+  background: linear-gradient(135deg, var(--or3), #FFF9E5);
+  border: 1.5px solid var(--or); border-radius: var(--r);
+  padding: 18px; margin-bottom: 14px;
+}
+.habito-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--or); color: #1A0A2E; font-size: 10px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase; padding: 4px 10px;
+  border-radius: 10px; margin-bottom: 10px;
+}
+.habito-title { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--fg); margin-bottom: 6px; }
+.habito-desc { font-size: 13px; color: var(--fg2); line-height: 1.6; }
+
+/* ── SECCIÓN VISUAL ── */
+.seccion-sep { display: flex; align-items: center; gap: 12px; margin: 20px 0 16px; }
+.seccion-sep-line { flex: 1; height: 1px; background: var(--line); }
+.seccion-sep-lbl {
+  font-size: 11px; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--fg3);
+}
+
+/* ── PROGRESO DOTS ── */
+.dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: background .3s; }
+.dot.done { background: var(--ok); }
+.dot.active { background: var(--mo); width: 20px; border-radius: 4px; }
+
+/* ── SAVED BADGE ── */
+.saved-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--ok); font-weight: 500;
+  opacity: 0; transition: opacity .3s;
+}
+.saved-badge.show { opacity: 1; }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════ SCREENS -->
+
+<!-- AUTH -->
+<div class="screen active" id="s-auth">
+  <div class="auth-wrap">
+    <div class="auth-logo">Z</div>
+    <div class="auth-title">Construye y Sostiene<br>tu Negocio</div>
+    <div class="auth-sub">Tu proceso de 90 días comienza aquí.<br>Entra con tu correo para acceder a tu espacio.</div>
+    <div class="auth-card">
+      <label class="field-lbl" for="inp-email">Correo electrónico</label>
+      <input class="field-inp" type="email" id="inp-email" placeholder="tu@correo.com" autocomplete="email">
+      <button class="btn-primary" id="btn-magic">Recibir enlace de acceso</button>
+      <div class="auth-msg" id="auth-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAGIC LINK -->
+<div class="screen" id="s-magic">
+  <div class="auth-wrap">
+    <div class="auth-logo">✉</div>
+    <div class="auth-title">Revisa tu correo</div>
+    <div class="auth-sub">Te enviamos un enlace de acceso. Haz clic en él para entrar a tu espacio personalizado.</div>
+    <button class="btn-secondary" onclick="goTo('s-auth')" style="max-width:300px">Volver</button>
+  </div>
+</div>
+
+<!-- PORTADA / INICIO -->
+<div class="screen" id="s-portada">
+  <div style="flex:1;overflow-y:auto;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))">
+    <div class="portada-hero">
+      <div class="portada-badge">Construye y Sostiene · 90 días</div>
+      <div class="portada-title">Hola, <em id="p-nombre">–</em> 👋</div>
+      <div class="portada-name">Con Constanza Enrione · ZaEn</div>
+      <div class="portada-prog">
+        <div class="portada-prog-icon">🌱</div>
+        <div class="portada-prog-info">
+          <div class="portada-prog-lbl">Tu progreso</div>
+          <div class="portada-prog-val" id="p-prog-val">Módulo 1 de 4</div>
+          <div class="prog-bar-wrap"><div class="prog-bar-fill" id="p-prog-bar" style="width:25%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll" style="padding-top:0;overflow:visible">
+      <div style="margin-top:20px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--fg3);margin-bottom:12px">Tu camino</div>
+        <div class="modulos-list">
+          <div class="modulo-card active-mod" onclick="goTo('s-m1-intro')">
+            <div class="modulo-num current">1</div>
+            <div class="modulo-info">
+              <div class="modulo-nombre">Recuerda quién eres</div>
+              <div class="modulo-desc">Identidad · Valores · Empresaria</div>
+            </div>
+            <div class="modulo-status current">En curso →</div>
+          </div>
+          <div class="modulo-card locked">
+            <div class="modulo-num locked">2</div>
+            <div class="modulo-info">
+              <div class="modulo-nombre">La vida que eliges</div>
+              <div class="modulo-desc">Frutos · Visión · El negocio que elijo</div>
+            </div>
+            <div class="modulo-status locked">🔒 Próximo</div>
+          </div>
+          <div class="modulo-card locked">
+            <div class="modulo-num locked">3</div>
+            <div class="modulo-info">
+              <div class="modulo-nombre">Bases del negocio</div>
+              <div class="modulo-desc">Nicho · Cliente ideal · Oferta</div>
+            </div>
+            <div class="modulo-status locked">🔒 Próximo</div>
+          </div>
+          <div class="modulo-card locked">
+            <div class="modulo-num locked">4</div>
+            <div class="modulo-info">
+              <div class="modulo-nombre">Objetivos y plan</div>
+              <div class="modulo-desc">Metas · Carta Gantt · Sistemas</div>
+            </div>
+            <div class="modulo-status locked">🔒 Próximo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="nav" id="nav-portada">
+    <button class="nav-btn active" onclick="goTo('s-portada')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Módulo 1
+    </button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Mi ficha
+    </button>
+    <button class="nav-btn" onclick="signOut()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Salir
+    </button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · INTRO -->
+<div class="screen" id="s-m1-intro">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Identidad</div>
+    <div class="mod-hero-title">Recuerda quién eres</div>
+    <div class="mod-hero-sub">Lo que haces o dejas de hacer no cambia quién eres. Hoy vuelves a ti.</div>
+    <div class="mod-steps">
+      <button class="mod-step active" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-quien')">② Quién soy</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-valores')">③ Valores</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-empresaria')">④ Empresaria</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-abc')">⑤ Abecedario</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-ia')">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div id="mf-import-banner"></div>
+    <div class="ej-card">
+      <div class="ej-card-title">¿Por qué empezamos aquí?</div>
+      <div class="ej-card-sub">Antes de construir cualquier negocio, necesitamos saber desde dónde lo construyes. Tus decisiones de negocio serán tan sólidas como la claridad que tengas sobre quién eres.</div>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--mo);line-height:1.7;padding:14px;background:var(--mo3);border-radius:var(--r2);margin-top:4px;border-left:3px solid var(--or)">
+        "Identificar lo que necesitas no es suficiente.<br>Te ayudo a construirlo."
+      </div>
+      <div style="font-size:12px;color:var(--fg3);margin-top:8px;text-align:right">— Constanza Enrione</div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">En este módulo vas a:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--mo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</div>
+          <div style="font-size:14px;color:var(--fg2)">Recordar quién ya eres — no quién deberías ser</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--mo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</div>
+          <div style="font-size:14px;color:var(--fg2)">Identificar los valores que guiarán tu negocio</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--mo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</div>
+          <div style="font-size:14px;color:var(--fg2)">Reconocer las características que te hacen una empresaria única</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--or);color:#1A0A2E;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">+</div>
+          <div style="font-size:14px;color:var(--fg2)">Comenzar el hábito del <strong>Abecedario de los Elogios</strong></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-mo" onclick="goTo('s-m1-quien')">Comenzar → Quién soy</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </button>
+    <button class="nav-btn active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Módulo 1
+    </button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Mi ficha
+    </button>
+    <button class="nav-btn" onclick="signOut()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Salir
+    </button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · QUIÉN SOY -->
+<div class="screen" id="s-m1-quien">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Ejercicio 1</div>
+    <div class="mod-hero-title">Quién ya soy</div>
+    <div class="mod-hero-sub">No quién quieres ser. No quién deberías ser. Quién ya eres.</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step active">② Quién soy</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-valores')">③ Valores</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-empresaria')">④ Empresaria</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-abc')">⑤ Abecedario</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-ia')">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">Tu nombre</div>
+      <div class="ej-card-sub">¿Cómo quieres que te llame tu mentora IA?</div>
+      <input class="field-inp" type="text" id="inp-nombre" placeholder="Tu nombre" oninput="autoguardar()">
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Soy una mujer que…</div>
+      <div class="ej-card-sub">Selecciona o escribe las características que te definen HOY. Hagas o no hagas, logres o no logres — esto siempre es verdad sobre ti.</div>
+      <div class="chips" id="chips-quien">
+        <div class="chip" onclick="toggleChip(this,'quien')">Curiosa</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Valiente</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Creativa</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Empática</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Persistente</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Intuitiva</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Generosa</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Estratégica</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Honesta</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Comprometida</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Apasionada</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Resiliente</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Líder</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Aprendiz</div>
+        <div class="chip" onclick="toggleChip(this,'quien')">Servicial</div>
+      </div>
+      <div style="margin-top:10px">
+        <input class="field-inp" type="text" id="inp-quien-custom" placeholder="Agrega otra característica y presiona Enter"
+          onkeydown="if(event.key==='Enter'){addCustomChip('inp-quien-custom','chips-quien','quien');autoguardar()}">
+      </div>
+      <div class="ej-hint">Puedes seleccionar todas las que quieras. La guardamos automáticamente.</div>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Lo que más me enorgullece de quién soy</div>
+      <div class="ej-card-sub">No logros, no títulos. Algo de tu carácter o forma de ser.</div>
+      <textarea class="ej-textarea" id="ta-orgullo" placeholder="Ej: Me enorgullece la capacidad que tengo de seguir adelante aunque las cosas se pongan difíciles…" oninput="autoguardar()"></textarea>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Lo que más les digo a los demás sin palabras</div>
+      <div class="ej-card-sub">¿Qué te dicen las personas que te conocen bien? ¿Cómo les impacta tu presencia?</div>
+      <textarea class="ej-textarea" id="ta-impacto" placeholder="Ej: Que soy alguien confiable, que cuando estoy, estoy de verdad…" oninput="autoguardar()"></textarea>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span class="saved-badge" id="badge-quien">✓ Guardado</span>
+    </div>
+    <button class="btn-mo" onclick="guardarYSeguir('s-m1-valores')">Siguiente → Valores</button>
+    <button class="btn-outline" onclick="goTo('s-m1-intro')">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · VALORES -->
+<div class="screen" id="s-m1-valores">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Ejercicio 2</div>
+    <div class="mod-hero-title">Mis valores</div>
+    <div class="mod-hero-sub">Los valores son tu brújula interna. Tu negocio debe poder vivir con ellos, no a pesar de ellos.</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m1-quien')">② Quién soy</button>
+      <button class="mod-step active">③ Valores</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-empresaria')">④ Empresaria</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-abc')">⑤ Abecedario</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-ia')">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">¿Qué valoras profundamente?</div>
+      <div class="ej-card-sub">Selecciona los 5 valores que más te representan. Esos que cuando los traicionas, algo dentro de ti se mueve.</div>
+      <div class="chips" id="chips-valores">
+        <div class="chip" onclick="toggleChip(this,'valores')">Libertad</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Familia</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Autenticidad</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Impacto</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Equilibrio</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Crecimiento</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Conexión</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Servicio</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Excelencia</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Independencia</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Bienestar</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Honestidad</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Creatividad</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Propósito</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Tiempo</div>
+        <div class="chip" onclick="toggleChip(this,'valores')">Abundancia</div>
+      </div>
+      <div style="margin-top:10px">
+        <input class="field-inp" type="text" id="inp-valores-custom" placeholder="Agregar otro valor + Enter"
+          onkeydown="if(event.key==='Enter'){addCustomChip('inp-valores-custom','chips-valores','valores');autoguardar()}">
+      </div>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Mi valor prioritario</div>
+      <div class="ej-card-sub">Si tuvieras que elegir uno solo — el que no puedes negociar en tu negocio ni en tu vida — ¿cuál es?</div>
+      <input class="field-inp" type="text" id="inp-valor-ppal" placeholder="Ej: Libertad" oninput="autoguardar()">
+      <textarea class="ej-textarea" id="ta-valor-ppal-porque" placeholder="¿Por qué este y no otro?" style="margin-top:10px;min-height:80px" oninput="autoguardar()"></textarea>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Lo que mis valores me permiten y lo que no</div>
+      <div class="ej-card-sub">Pensando en el negocio que quieres construir, ¿qué cosas SÍ y qué cosas NO están alineadas con estos valores?</div>
+      <div style="margin-bottom:10px">
+        <label class="field-lbl">✅ Lo que SÍ puedo hacer</label>
+        <textarea class="ej-textarea" id="ta-valores-si" placeholder="Ej: Trabajar de manera remota, elegir mis clientes, tener flexibilidad de horario…" style="min-height:70px" oninput="autoguardar()"></textarea>
+      </div>
+      <div>
+        <label class="field-lbl">❌ Lo que NO estoy dispuesta a hacer</label>
+        <textarea class="ej-textarea" id="ta-valores-no" placeholder="Ej: Trabajar fines de semana, tomar clientes que no respetan mis tiempos…" style="min-height:70px" oninput="autoguardar()"></textarea>
+      </div>
+    </div>
+
+    <button class="btn-mo" onclick="guardarYSeguir('s-m1-empresaria')">Siguiente → La empresaria que soy</button>
+    <button class="btn-outline" onclick="goTo('s-m1-quien')">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · EMPRESARIA -->
+<div class="screen" id="s-m1-empresaria">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Ejercicio 3 · Nuevo</div>
+    <div class="mod-hero-title">La empresaria que ya soy</div>
+    <div class="mod-hero-sub">¿Qué características tuyas serán las que construyan el negocio que quieres?</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m1-quien')">② Quién soy</button>
+      <button class="mod-step done" onclick="goTo('s-m1-valores')">③ Valores</button>
+      <button class="mod-step active">④ Empresaria</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-abc')">⑤ Abecedario</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-ia')">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">Las fortalezas que llevan tu negocio</div>
+      <div class="ej-card-sub">Selecciona las características que ya tienes y que te van a permitir construir el negocio que quieres.</div>
+      <div class="emp-grid" id="emp-grid">
+        <div class="emp-item" onclick="toggleEmp(this,'capacidad-aprender')">
+          <span class="emp-item-icon">🧠</span>
+          <div class="emp-item-lbl">Capacidad de aprender</div>
+          <div class="emp-item-sub">Te adaptas y evolucionas</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'orientacion-resultados')">
+          <span class="emp-item-icon">🎯</span>
+          <div class="emp-item-lbl">Orientación a resultados</div>
+          <div class="emp-item-sub">Enfocas y ejecutas</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'conexion-personas')">
+          <span class="emp-item-icon">🤝</span>
+          <div class="emp-item-lbl">Conexión con personas</div>
+          <div class="emp-item-sub">Generas confianza</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'tolerancia-incertidumbre')">
+          <span class="emp-item-icon">🌊</span>
+          <div class="emp-item-lbl">Tolerancia a la incertidumbre</div>
+          <div class="emp-item-sub">Avanzas sin certezas</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'vision-largo-plazo')">
+          <span class="emp-item-icon">🔭</span>
+          <div class="emp-item-lbl">Visión de largo plazo</div>
+          <div class="emp-item-sub">Piensas en el camino completo</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'resolucion-problemas')">
+          <span class="emp-item-icon">⚡</span>
+          <div class="emp-item-lbl">Resolución de problemas</div>
+          <div class="emp-item-sub">Encuentras caminos</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'disciplina-constancia')">
+          <span class="emp-item-icon">🔥</span>
+          <div class="emp-item-lbl">Disciplina y constancia</div>
+          <div class="emp-item-sub">Apareces aunque no tengas ganas</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'liderazgo-natural')">
+          <span class="emp-item-icon">👑</span>
+          <div class="emp-item-lbl">Liderazgo natural</div>
+          <div class="emp-item-sub">Las personas te siguen</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'intuicion-negocio')">
+          <span class="emp-item-icon">✨</span>
+          <div class="emp-item-lbl">Intuición de negocio</div>
+          <div class="emp-item-sub">Sientes las oportunidades</div>
+        </div>
+        <div class="emp-item" onclick="toggleEmp(this,'capacidad-venta')">
+          <span class="emp-item-icon">💬</span>
+          <div class="emp-item-lbl">Capacidad de venta</div>
+          <div class="emp-item-sub">Comunicas valor con naturalidad</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <input class="field-inp" type="text" id="inp-emp-custom" placeholder="Agrega otra fortaleza + Enter"
+          onkeydown="if(event.key==='Enter'){addEmpCustom();autoguardar()}">
+      </div>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">La empresaria que quiero desarrollar</div>
+      <div class="ej-card-sub">¿Qué características necesitas fortalecer para construir el negocio que sueñas? No es debilidad — es honestidad.</div>
+      <textarea class="ej-textarea" id="ta-empresaria-dev" placeholder="Ej: Quiero desarrollar mayor capacidad de venta y de comunicar mi valor sin sentir que 'me estoy vendiendo'…" oninput="autoguardar()"></textarea>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Lo que soy como empresaria en una frase</div>
+      <div class="ej-card-sub">Completa esta oración. Hazla tuya, sin filtros.</div>
+      <div style="font-size:15px;color:var(--mo);font-weight:600;margin-bottom:10px">Como empresaria, soy alguien que…</div>
+      <textarea class="ej-textarea" id="ta-empresaria-frase" placeholder="Ej: ayuda a otras mujeres a encontrar su camino propio, con herramientas prácticas y acompañamiento real." oninput="autoguardar()"></textarea>
+    </div>
+
+    <button class="btn-mo" onclick="guardarYSeguir('s-m1-abc')">Siguiente → Abecedario de los Elogios</button>
+    <button class="btn-outline" onclick="goTo('s-m1-valores')">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · ABECEDARIO -->
+<div class="screen" id="s-m1-abc">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Hábito Diario</div>
+    <div class="mod-hero-title">El Abecedario de los Elogios</div>
+    <div class="mod-hero-sub">Un elogio por letra, en primera persona. Cada día, recuérdalo.</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m1-quien')">② Quién soy</button>
+      <button class="mod-step done" onclick="goTo('s-m1-valores')">③ Valores</button>
+      <button class="mod-step done" onclick="goTo('s-m1-empresaria')">④ Empresaria</button>
+      <button class="mod-step active">⑤ Abecedario</button>
+      <button class="mod-step pending" onclick="goTo('s-m1-ia')">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="habito-card">
+      <div class="habito-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Práctica diaria sugerida
+      </div>
+      <div class="habito-title">¿Para qué sirve este hábito?</div>
+      <div class="habito-desc">El diálogo interno de una empresaria es su activo más importante. Este ejercicio entrena tu cerebro para reconocer, nombrarte y celebrarte — lo cual, con el tiempo, cambia cómo te percibes y cómo actúas en tu negocio.<br><br><strong>Cada día:</strong> lee tu letra del día y lleva esa cualidad contigo.</div>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">Tu Abecedario personal</div>
+      <div class="ej-card-sub">Para cada letra, escribe una cualidad tuya que empiece con esa letra. En primera persona ("Soy…" o solo el adjetivo).</div>
+      <div class="abc-grid" id="abc-grid"></div>
+      <button class="btn-mo" style="margin-top:16px" onclick="guardarAbc()">Guardar mi abecedario</button>
+    </div>
+
+    <div class="ej-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:24px">📅</span>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--mo)">La letra de hoy</div>
+          <div style="font-size:12px;color:var(--fg3)">Tu elogio del día</div>
+        </div>
+      </div>
+      <div id="abc-hoy" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--mo);font-weight:600;text-align:center;padding:16px;background:var(--mo3);border-radius:var(--r2)">–</div>
+    </div>
+
+    <button class="btn-mo" onclick="guardarYSeguir('s-m1-ia')">Siguiente → IA · Tu declaración de identidad</button>
+    <button class="btn-outline" onclick="goTo('s-m1-empresaria')">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MÓDULO 1 · IA -->
+<div class="screen" id="s-m1-ia">
+  <div class="mod-hero">
+    <div class="mod-eyebrow">Módulo 1 · Cierre con IA</div>
+    <div class="mod-hero-title">Tu declaración de identidad</div>
+    <div class="mod-hero-sub">La IA va a crear tu declaración personal basada en todo lo que exploraste.</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m1-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m1-quien')">② Quién soy</button>
+      <button class="mod-step done" onclick="goTo('s-m1-valores')">③ Valores</button>
+      <button class="mod-step done" onclick="goTo('s-m1-empresaria')">④ Empresaria</button>
+      <button class="mod-step done" onclick="goTo('s-m1-abc')">⑤ Abecedario</button>
+      <button class="mod-step active">⑥ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ia-card">
+      <div class="ia-card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Mentora IA · Constanza
+      </div>
+      <div class="ia-resp" id="ia-identidad-resp">Cuando termines los ejercicios anteriores, presiona el botón para que genere tu declaración de identidad personalizada.</div>
+      <button class="btn-mo" id="btn-generar-ia" onclick="generarDeclaracion()" style="margin-top:12px">✨ Generar mi declaración de identidad</button>
+    </div>
+
+    <div class="ej-card" id="declaracion-edit-card" style="display:none">
+      <div class="ej-card-title">Tu declaración (edítala a tu gusto)</div>
+      <textarea class="ej-textarea" id="ta-declaracion" style="min-height:150px" oninput="autoguardar()"></textarea>
+      <div class="ej-hint">Esta declaración quedará en tu ficha y te acompañará durante todo el proceso.</div>
+    </div>
+
+    <div class="ej-card">
+      <div class="ej-card-title">¿Qué se mueve en ti?</div>
+      <div class="ej-card-sub">Después de explorar todo esto, ¿qué reflexión tienes? ¿Qué te sorprendió? ¿Qué quieres recordar?</div>
+      <textarea class="ej-textarea" id="ta-reflexion-m1" placeholder="Escribe libremente lo que surge…" oninput="autoguardar()"></textarea>
+    </div>
+
+    <div style="background:var(--mo);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:14px">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:8px">🎉 ¡Completaste el Módulo 1!</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.8);margin-bottom:16px">Ahora sabes más claramente quién eres y desde dónde construyes tu negocio.</div>
+      <button class="btn-or" onclick="completarModulo1()">Marcar como completado →</button>
+    </div>
+
+    <button class="btn-outline" onclick="goTo('s-m1-abc')">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MI FICHA / IMPRIMIBLE -->
+<div class="screen" id="s-imprimible">
+  <div class="hdr">
+    <div class="hdr-brand">
+      <div class="hdr-logo">Z</div>
+      <div class="hdr-text">
+        <div class="hdr-title">Mi ficha · Módulo 1</div>
+        <div class="hdr-sub">Recuerda quién eres</div>
+      </div>
+    </div>
+    <button class="btn-icon" onclick="copiarFicha()" title="Copiar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+  </div>
+  <div class="scroll">
+    <div class="print-card" id="ficha-contenido">
+      <div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--mo);font-weight:600" id="ficha-nombre">–</div>
+        <div style="font-size:12px;color:var(--fg3);margin-top:4px">Construye y Sostiene tu Negocio · ZaEn</div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Soy una mujer que es…</div>
+        <div class="print-chips" id="ficha-quien"></div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Lo que más me enorgullece</div>
+        <div class="print-val" id="ficha-orgullo">–</div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Mis valores prioritarios</div>
+        <div class="print-chips" id="ficha-valores"></div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Valor que no puedo negociar</div>
+        <div class="print-val" id="ficha-valor-ppal">–</div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">La empresaria que soy</div>
+        <div class="print-chips" id="ficha-empresaria"></div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Como empresaria, soy alguien que…</div>
+        <div class="print-val" id="ficha-emp-frase">–</div>
+      </div>
+      <div class="print-section">
+        <div class="print-lbl">Mi declaración de identidad</div>
+        <div class="print-quote" id="ficha-declaracion">–</div>
+      </div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════ JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// ── CONFIG ──
+var SURL = 'https://zcovuvkqsmnedfnevmpm.supabase.co';
+var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpjb3Z1dmtxc21uZWRmbmV2bXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NDUyOTIsImV4cCI6MjA5ODQyMTI5Mn0.1VXulShYlMcTsqUgSicfzOzsVS8tS4rLD_gpgn31cPo';
+var OPENAI_KEY = 'TU_OPENAI_KEY'; // reemplaza con tu key
+
+var sb = null;
+var D = {
+  nombre: '',
+  m1: {
+    quien: [], orgullo: '', impacto: '',
+    valores: [], valor_ppal: '', valor_ppal_porque: '',
+    valores_si: '', valores_no: '',
+    empresaria: [], empresaria_dev: '', empresaria_frase: '',
+    abecedario: {},
+    declaracion: '', declaracion_ia: '',
+    reflexion: '',
+    completado: false
+  }
+};
+var saveTimer = null;
+var userEmail = '';
+
+// ── SUPABASE INIT ──
+function initSB() {
+  try { sb = window.supabase.createClient(SURL, SKEY); return true; }
+  catch(e) { return false; }
+}
+
+// ── NAVEGACIÓN ──
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  var el = document.getElementById(id);
+  if (el) { el.classList.add('active'); el.scrollTop = 0; }
+  if (id === 's-portada') renderPortada();
+  if (id === 's-m1-quien') initQuien();
+  if (id === 's-m1-valores') initValores();
+  if (id === 's-m1-empresaria') initEmpresaria();
+  if (id === 's-m1-abc') initAbc();
+  if (id === 's-m1-ia') initIa();
+  if (id === 's-imprimible') renderFicha();
+}
+
+// ── TOAST ──
+function toast(msg, dur) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, dur || 2500);
+}
+
+// ── AUTH ──
+document.addEventListener('DOMContentLoaded', function() {
+  initSB();
+  buildAbc();
+
+  if (!sb) { goTo('s-portada'); return; }
+
+  sb.auth.onAuthStateChange(function(event, session) {
+    if (session && session.user) {
+      userEmail = session.user.email;
+      cargarDatos().then(function(){ goTo('s-portada'); });
+    } else {
+      var hash = window.location.hash;
+      if (hash.includes('access_token')) {
+        sb.auth.getSession().then(function(r){
+          if (r.data && r.data.session) {
+            userEmail = r.data.session.user.email;
+            cargarDatos().then(function(){ goTo('s-portada'); window.history.replaceState({},'',' '); });
+          }
+        });
+      }
+    }
+  });
+
+  document.getElementById('btn-magic').addEventListener('click', function() {
+    var email = document.getElementById('inp-email').value.trim();
+    if (!email) { document.getElementById('auth-msg').textContent = 'Ingresa tu correo.'; return; }
+    sb.auth.signInWithOtp({ email: email, options: { emailRedirectTo: window.location.href } })
+      .then(function(r) {
+        if (r.error) { document.getElementById('auth-msg').textContent = r.error.message; }
+        else { goTo('s-magic'); }
+      });
+  });
+});
+
+function signOut() {
+  if (sb) sb.auth.signOut();
+  goTo('s-auth');
+}
+
+// ── DATOS SUPABASE ──
+async function guardarDatos() {
+  if (!sb || !userEmail) return;
+  try {
+    await sb.from('mentoria_cys').upsert(
+      { email: userEmail, data: D, updated_at: new Date().toISOString() },
+      { onConflict: 'email' }
+    );
+  } catch(e) {}
+  try { localStorage.setItem('cys_m1', JSON.stringify(D)); } catch(e) {}
+}
+
+async function cargarDatos() {
+  // Primero localStorage como fallback
+  try {
+    var loc = localStorage.getItem('cys_m1');
+    if (loc) D = Object.assign(D, JSON.parse(loc));
+  } catch(e) {}
+
+  if (!sb || !userEmail) return;
+
+  try {
+    var res = await sb.from('mentoria_cys').select('data').eq('email', userEmail).single();
+    if (res.data && res.data.data) {
+      D = Object.assign(D, res.data.data);
+    } else {
+      // Intentar importar desde Mujer Fénix
+      await importarDesdeMF();
+    }
+  } catch(e) {}
+
+  // Actualizar nombre en portada
+  if (D.nombre) {
+    var el = document.getElementById('p-nombre');
+    if (el) el.textContent = D.nombre;
+  }
+}
+
+async function importarDesdeMF() {
+  if (!sb || !userEmail) return;
+  try {
+    var mf = await sb.from('fichas').select('data').eq('email', userEmail).single();
+    if (!mf.data || !mf.data.data) return;
+    var mfd = mf.data.data;
+    var importados = [];
+
+    // Importar nombre
+    if (mfd.nombre && !D.nombre) { D.nombre = mfd.nombre; importados.push('nombre'); }
+
+    // Importar quién soy (caracts de MF)
+    if (mfd.caracts && mfd.caracts.length && D.m1.quien.length === 0) {
+      D.m1.quien = mfd.caracts.slice(); importados.push('quién soy');
+    }
+
+    // Importar valores (de s2 si hay fruto prioritario)
+    if (mfd.s2 && mfd.s2.prioritario && !D.m1.valor_ppal) {
+      var nombres = { finanzas:'Abundancia', relaciones:'Conexión', talentos:'Autenticidad',
+        tranquilidad:'Equilibrio', disfrute:'Disfrute', salud:'Bienestar' };
+      D.m1.valor_ppal = nombres[mfd.s2.prioritario] || '';
+      if (D.m1.valor_ppal) importados.push('valor prioritario');
+    }
+
+    // Importar abecedario
+    if (mfd.s2 && mfd.s2.abecedario && Object.keys(D.m1.abecedario).length === 0) {
+      D.m1.abecedario = mfd.s2.abecedario;
+      importados.push('abecedario de elogios');
+    }
+
+    if (importados.length > 0) {
+      var banner = document.getElementById('mf-import-banner');
+      if (banner) {
+        banner.innerHTML = '<div class="import-banner">' +
+          '<div class="import-icon">🦋</div>' +
+          '<div class="import-text">' +
+            '<div class="import-title">Importado desde Mujer Fénix</div>' +
+            '<div class="import-sub">Usamos tu info de: ' + importados.join(', ') + '</div>' +
+          '</div>' +
+          '<div class="import-new">NUEVO ↓</div>' +
+        '</div>';
+      }
+      await guardarDatos();
+    }
+  } catch(e) {}
+}
+
+// ── AUTOGUARDADO ──
+function autoguardar() {
+  recolectarDatos();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    guardarDatos();
+    var badge = document.querySelector('.saved-badge');
+    if (badge) { badge.classList.add('show'); setTimeout(function(){ badge.classList.remove('show'); }, 2000); }
+  }, 800);
+}
+
+function recolectarDatos() {
+  var n = document.getElementById('inp-nombre'); if (n) D.nombre = n.value;
+  var o = document.getElementById('ta-orgullo'); if (o) D.m1.orgullo = o.value;
+  var i = document.getElementById('ta-impacto'); if (i) D.m1.impacto = i.value;
+  var vp = document.getElementById('inp-valor-ppal'); if (vp) D.m1.valor_ppal = vp.value;
+  var vpc = document.getElementById('ta-valor-ppal-porque'); if (vpc) D.m1.valor_ppal_porque = vpc.value;
+  var vs = document.getElementById('ta-valores-si'); if (vs) D.m1.valores_si = vs.value;
+  var vn = document.getElementById('ta-valores-no'); if (vn) D.m1.valores_no = vn.value;
+  var ed = document.getElementById('ta-empresaria-dev'); if (ed) D.m1.empresaria_dev = ed.value;
+  var ef = document.getElementById('ta-empresaria-frase'); if (ef) D.m1.empresaria_frase = ef.value;
+  var dec = document.getElementById('ta-declaracion'); if (dec) D.m1.declaracion = dec.value;
+  var ref = document.getElementById('ta-reflexion-m1'); if (ref) D.m1.reflexion = ref.value;
+  var pn = document.getElementById('p-nombre'); if (pn && D.nombre) pn.textContent = D.nombre;
+}
+
+// ── CHIPS ──
+function toggleChip(el, tipo) {
+  el.classList.toggle('sel');
+  var key = tipo === 'quien' ? 'quien' : 'valores';
+  D.m1[key] = Array.from(document.querySelectorAll('#chips-' + tipo + ' .chip.sel')).map(function(c){ return c.textContent; });
+  autoguardar();
+}
+
+function addCustomChip(inpId, containerId, tipo) {
+  var inp = document.getElementById(inpId);
+  var val = inp.value.trim();
+  if (!val) return;
+  var c = document.createElement('div');
+  c.className = 'chip sel';
+  c.textContent = val;
+  c.onclick = function(){ toggleChip(c, tipo); };
+  document.getElementById(containerId).appendChild(c);
+  inp.value = '';
+  D.m1[tipo === 'quien' ? 'quien' : 'valores'].push(val);
+  autoguardar();
+}
+
+// ── EMPRESARIA ──
+function toggleEmp(el, key) {
+  el.classList.toggle('sel');
+  var arr = [];
+  document.querySelectorAll('#emp-grid .emp-item.sel').forEach(function(i){ arr.push(i.dataset.key || i.querySelector('.emp-item-lbl').textContent); });
+  D.m1.empresaria = arr;
+  el.dataset.key = key;
+  autoguardar();
+}
+
+function addEmpCustom() {
+  var inp = document.getElementById('inp-emp-custom');
+  var val = inp.value.trim();
+  if (!val) return;
+  var grid = document.getElementById('emp-grid');
+  var item = document.createElement('div');
+  item.className = 'emp-item sel';
+  item.dataset.key = val;
+  item.innerHTML = '<span class="emp-item-icon">⭐</span><div class="emp-item-lbl">' + val + '</div>';
+  item.onclick = function(){ toggleEmp(item, val); };
+  grid.appendChild(item);
+  D.m1.empresaria.push(val);
+  inp.value = '';
+  autoguardar();
+}
+
+// ── ABC ──
+var LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function buildAbc() {
+  var grid = document.getElementById('abc-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  LETRAS.forEach(function(l) {
+    var cell = document.createElement('div');
+    cell.className = 'abc-cell';
+    cell.innerHTML = '<span class="abc-letra">' + l + '</span><input class="abc-input" id="abc-' + l + '" placeholder="…" maxlength="20">';
+    grid.appendChild(cell);
+    var inp = cell.querySelector('input');
+    inp.addEventListener('input', function(){ D.m1.abecedario[l] = inp.value; autoguardar(); });
+  });
+}
+
+function guardarAbc() {
+  LETRAS.forEach(function(l){
+    var inp = document.getElementById('abc-' + l);
+    if (inp) D.m1.abecedario[l] = inp.value;
+  });
+  guardarDatos().then(function(){ toast('✓ Abecedario guardado'); });
+}
+
+function updateAbcHoy() {
+  var idx = new Date().getDate() % 26;
+  var l = LETRAS[idx];
+  var val = D.m1.abecedario[l];
+  var el = document.getElementById('abc-hoy');
+  if (el) el.textContent = val ? l + ' · ' + val : l + ' · (aún sin completar)';
+}
+
+// ── INIT SCREENS ──
+function initQuien() {
+  var n = document.getElementById('inp-nombre'); if (n && D.nombre) n.value = D.nombre;
+  var o = document.getElementById('ta-orgullo'); if (o && D.m1.orgullo) o.value = D.m1.orgullo;
+  var i = document.getElementById('ta-impacto'); if (i && D.m1.impacto) i.value = D.m1.impacto;
+  D.m1.quien.forEach(function(q){
+    document.querySelectorAll('#chips-quien .chip').forEach(function(c){
+      if (c.textContent === q) c.classList.add('sel');
+    });
+  });
+}
+
+function initValores() {
+  var vp = document.getElementById('inp-valor-ppal'); if (vp && D.m1.valor_ppal) vp.value = D.m1.valor_ppal;
+  var vpc = document.getElementById('ta-valor-ppal-porque'); if (vpc) vpc.value = D.m1.valor_ppal_porque || '';
+  var vs = document.getElementById('ta-valores-si'); if (vs) vs.value = D.m1.valores_si || '';
+  var vn = document.getElementById('ta-valores-no'); if (vn) vn.value = D.m1.valores_no || '';
+  D.m1.valores.forEach(function(v){
+    document.querySelectorAll('#chips-valores .chip').forEach(function(c){
+      if (c.textContent === v) c.classList.add('sel');
+    });
+  });
+}
+
+function initEmpresaria() {
+  var ed = document.getElementById('ta-empresaria-dev'); if (ed) ed.value = D.m1.empresaria_dev || '';
+  var ef = document.getElementById('ta-empresaria-frase'); if (ef) ef.value = D.m1.empresaria_frase || '';
+  D.m1.empresaria.forEach(function(e){
+    document.querySelectorAll('#emp-grid .emp-item').forEach(function(item){
+      var lbl = item.querySelector('.emp-item-lbl');
+      if (lbl && lbl.textContent === e) item.classList.add('sel');
+    });
+  });
+}
+
+function initAbc() {
+  buildAbc();
+  LETRAS.forEach(function(l){
+    var inp = document.getElementById('abc-' + l);
+    if (inp && D.m1.abecedario[l]) inp.value = D.m1.abecedario[l];
+  });
+  updateAbcHoy();
+}
+
+function initIa() {
+  var dec = document.getElementById('ta-declaracion');
+  var card = document.getElementById('declaracion-edit-card');
+  var ref = document.getElementById('ta-reflexion-m1');
+  if (dec && D.m1.declaracion) { dec.value = D.m1.declaracion; }
+  if (ref && D.m1.reflexion) ref.value = D.m1.reflexion;
+  if (D.m1.declaracion_ia) {
+    document.getElementById('ia-identidad-resp').textContent = D.m1.declaracion_ia;
+    if (card) card.style.display = 'block';
+    if (dec && !D.m1.declaracion) dec.value = D.m1.declaracion_ia;
+    document.getElementById('btn-generar-ia').textContent = '↺ Regenerar';
+  }
+}
+
+// ── PORTADA ──
+function renderPortada() {
+  var pn = document.getElementById('p-nombre');
+  if (pn) pn.textContent = D.nombre || '–';
+  var pbar = document.getElementById('p-prog-bar');
+  var pval = document.getElementById('p-prog-val');
+  if (D.m1.completado) {
+    if (pbar) pbar.style.width = '25%';
+    if (pval) pval.textContent = 'Módulo 1 completado ✓';
+  }
+}
+
+// ── FICHA ──
+function renderFicha() {
+  recolectarDatos();
+  var fn = document.getElementById('ficha-nombre'); if (fn) fn.textContent = D.nombre || '–';
+  var fo = document.getElementById('ficha-orgullo'); if (fo) fo.textContent = D.m1.orgullo || '–';
+  var fvp = document.getElementById('ficha-valor-ppal'); if (fvp) fvp.textContent = D.m1.valor_ppal || '–';
+  var fef = document.getElementById('ficha-emp-frase'); if (fef) fef.textContent = D.m1.empresaria_frase ? 'soy alguien que ' + D.m1.empresaria_frase : '–';
+  var fd = document.getElementById('ficha-declaracion'); if (fd) fd.textContent = D.m1.declaracion || D.m1.declaracion_ia || '–';
+
+  var fq = document.getElementById('ficha-quien');
+  if (fq) { fq.innerHTML = D.m1.quien.map(function(q){ return '<div class="print-chip">' + q + '</div>'; }).join('') || '<span style="color:var(--fg3)">Sin completar</span>'; }
+
+  var fv = document.getElementById('ficha-valores');
+  if (fv) { fv.innerHTML = D.m1.valores.map(function(v){ return '<div class="print-chip">' + v + '</div>'; }).join('') || '<span style="color:var(--fg3)">Sin completar</span>'; }
+
+  var fe = document.getElementById('ficha-empresaria');
+  if (fe) { fe.innerHTML = D.m1.empresaria.map(function(e){ return '<div class="print-chip">' + e + '</div>'; }).join('') || '<span style="color:var(--fg3)">Sin completar</span>'; }
+}
+
+// ── IA · DECLARACIÓN ──
+async function generarDeclaracion() {
+  var btn = document.getElementById('btn-generar-ia');
+  var resp = document.getElementById('ia-identidad-resp');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generando…';
+  resp.textContent = '';
+  resp.classList.remove('empty');
+
+  recolectarDatos();
+  var ctx = '';
+  ctx += 'Nombre: ' + (D.nombre || 'ella') + '. ';
+  ctx += 'Características: ' + (D.m1.quien.join(', ') || 'no completado') + '. ';
+  ctx += 'Lo que le enorgullece: ' + (D.m1.orgullo || '') + '. ';
+  ctx += 'Impacto en otros: ' + (D.m1.impacto || '') + '. ';
+  ctx += 'Valores: ' + (D.m1.valores.join(', ') || '') + '. ';
+  ctx += 'Valor prioritario: ' + (D.m1.valor_ppal || '') + '. ';
+  ctx += 'Fortalezas como empresaria: ' + (D.m1.empresaria.join(', ') || '') + '. ';
+  ctx += 'Como empresaria es alguien que: ' + (D.m1.empresaria_frase || '') + '.';
+
+  var sys = 'Eres una mentora de negocios experta que acompaña a mujeres empresarias. Tu tarea es crear una declaración de identidad poderosa y personal en primera persona, que integre quién es esta persona, sus valores y su esencia como empresaria. Reglas: 1) En primera persona, tiempo presente. 2) 3-4 párrafos cortos y emotivos. 3) Integra sus características, valores y fortalezas empresariales de manera fluida. 4) Que suene auténtica, poderosa y real — no corporativa. 5) Empieza directamente con la declaración, sin introducción. 6) Solo español con tildes.';
+
+  if (OPENAI_KEY === 'TU_OPENAI_KEY') {
+    // Fallback sin API
+    var nombre = D.nombre || 'ella';
+    var caracts = D.m1.quien.slice(0,3).join(', ') || 'valiente, comprometida, auténtica';
+    var vals = D.m1.valores.slice(0,3).join(', ') || 'libertad, impacto y autenticidad';
+    var emp = D.m1.empresaria.slice(0,2).join(' y ') || 'mi capacidad de conectar con las personas';
+    var texto = 'Soy ' + nombre + ', y sé con claridad quién soy: una mujer ' + caracts + '. No lo aspiro — ya lo soy, aunque a veces lo olvide.\n\nMis valores de ' + vals + ' no son ideales abstractos: son el filtro con el que tomo cada decisión en mi negocio y en mi vida. Cuando actúo desde ellos, todo fluye con más naturalidad.\n\nComo empresaria, mi mayor fortaleza es ' + emp + '. Eso es lo que me hace única y lo que le da valor real a lo que ofrezco en el mundo.\n\nHoy elijo construir desde aquí — desde quien ya soy.';
+    resp.textContent = texto;
+    D.m1.declaracion_ia = texto;
+    var card = document.getElementById('declaracion-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-declaracion');
+    if (dec && !D.m1.declaracion) dec.value = texto;
+    guardarDatos();
+    btn.disabled = false; btn.textContent = '↺ Regenerar';
+    return;
+  }
+
+  try {
+    var r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + OPENAI_KEY },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de identidad para esta empresaria: ' + ctx }],
+        max_tokens: 500, temperature: 0.85
+      })
+    });
+    var json = await r.json();
+    var txt = json.choices[0].message.content.trim();
+    resp.textContent = txt;
+    D.m1.declaracion_ia = txt;
+    var card = document.getElementById('declaracion-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-declaracion');
+    if (dec && !D.m1.declaracion) dec.value = txt;
+    guardarDatos();
+  } catch(e) {
+    resp.textContent = 'Hubo un problema al conectar con la IA. Verifica tu conexión e intenta nuevamente.';
+    resp.classList.add('empty');
+  }
+  btn.disabled = false; btn.textContent = '↺ Regenerar';
+}
+
+// ── GUARDAR Y SEGUIR ──
+function guardarYSeguir(pantalla) {
+  recolectarDatos();
+  guardarDatos().then(function(){ toast('✓ Guardado'); });
+  goTo(pantalla);
+}
+
+// ── COMPLETAR MÓDULO 1 ──
+function completarModulo1() {
+  recolectarDatos();
+  D.m1.completado = true;
+  guardarDatos().then(function(){
+    toast('🎉 ¡Módulo 1 completado!', 3000);
+    setTimeout(function(){ goTo('s-portada'); }, 1000);
+  });
+}
+
+// ── COPIAR FICHA ──
+function copiarFicha() {
+  renderFicha();
+  var txt = '✦ MI FICHA · MÓDULO 1 · Construye y Sostiene\n\n';
+  txt += '👤 ' + (D.nombre || '–') + '\n\n';
+  txt += 'Soy una mujer: ' + D.m1.quien.join(', ') + '\n\n';
+  txt += 'Lo que me enorgullece: ' + D.m1.orgullo + '\n\n';
+  txt += 'Mis valores: ' + D.m1.valores.join(', ') + '\n';
+  txt += 'Valor prioritario: ' + D.m1.valor_ppal + '\n\n';
+  txt += 'Fortalezas como empresaria: ' + D.m1.empresaria.join(', ') + '\n\n';
+  txt += 'Mi declaración:\n' + (D.m1.declaracion || D.m1.declaracion_ia || '–');
+
+  navigator.clipboard.writeText(txt).then(function(){ toast('✓ Copiado al portapapeles'); })
+  .catch(function(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('✓ Copiado'); } catch(e) { toast('No se pudo copiar'); }
+    document.body.removeChild(ta);
+  });
+}
+</script>
