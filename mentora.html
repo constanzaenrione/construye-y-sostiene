@@ -1,0 +1,930 @@
+<title>Panel Mentora · CYS</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap">
+
+<style>
+:root {
+  --mo:#4B168E;--mo2:#6B2DAE;--mo3:#EDE8F7;
+  --or:#D4AC00;--or2:#B8960A;--or3:#FDF7DC;
+  --bg:#F8F6FC;--bg2:#FFFFFF;
+  --fg:#1A0A2E;--fg2:#5A4A7A;--fg3:#9A8ABE;
+  --ok:#2D9148;--err:#C0392B;--line:rgba(75,22,142,.12);
+  --r:14px;--r2:10px;--sh:0 2px 16px rgba(75,22,142,.10);
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --mo:#9B66E8;--mo2:#7B46C8;--mo3:#1E1030;
+    --or:#D4AC00;--or2:#F0C800;--or3:#2A2100;
+    --bg:#0F0820;--bg2:#1A102E;
+    --fg:#EDE8F7;--fg2:#B8A8D8;--fg3:#6A5A8A;
+    --ok:#4DB868;--err:#E74C3C;--line:rgba(155,102,232,.15);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --mo:#9B66E8;--mo2:#7B46C8;--mo3:#1E1030;
+  --or:#D4AC00;--or2:#F0C800;--or3:#2A2100;
+  --bg:#0F0820;--bg2:#1A102E;
+  --fg:#EDE8F7;--fg2:#B8A8D8;--fg3:#6A5A8A;
+  --ok:#4DB868;--err:#E74C3C;--line:rgba(155,102,232,.15);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--fg);font-size:15px;line-height:1.6}
+
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg2);border-bottom:1px solid var(--line);flex-shrink:0;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--mo),var(--or));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+.hdr-title{font-size:14px;font-weight:600;color:var(--fg)}
+.hdr-sub{font-size:11px;color:var(--fg3)}
+.hdr-btn{background:none;border:none;cursor:pointer;color:var(--fg3);padding:6px;border-radius:8px;display:flex;align-items:center;font-family:inherit;font-size:13px;gap:5px;transition:background .15s}
+.hdr-btn:hover{background:var(--mo3);color:var(--mo)}
+
+/* SCROLL */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px}
+
+/* AUTH */
+.auth-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;gap:20px}
+.auth-logo{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--mo),var(--or));display:flex;align-items:center;justify-content:center;font-size:32px}
+.auth-title{font-family:'Playfair Display',serif;font-size:24px;text-align:center;color:var(--fg)}
+.auth-sub{font-size:14px;color:var(--fg3);text-align:center}
+.auth-card{background:var(--bg2);border-radius:var(--r);padding:24px;width:100%;max-width:380px;border:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.4px;text-transform:uppercase}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:var(--r2);background:var(--bg);color:var(--fg);font-family:inherit;font-size:15px;outline:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mo)}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:42px}
+.pass-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--fg3);padding:4px;display:flex}
+.btn{width:100%;padding:13px;border:none;border-radius:var(--r2);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(135deg,var(--mo),var(--mo2));color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-sm{padding:8px 16px;font-size:13px;border-radius:8px;width:auto}
+.btn-ghost{background:none;border:1.5px solid var(--line);color:var(--fg2)}
+.btn-ghost:hover{border-color:var(--mo);color:var(--mo)}
+.btn-danger{background:none;border:1.5px solid var(--err);color:var(--err)}
+.btn-danger:hover{background:var(--err);color:#fff}
+.msg{padding:12px;border-radius:var(--r2);font-size:13px;text-align:center}
+.msg-ok{background:rgba(45,145,72,.12);color:var(--ok)}
+.msg-err{background:rgba(192,57,43,.12);color:var(--err)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--bg2);flex-shrink:0;overflow-x:auto}
+.tab{padding:12px 20px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:500;color:var(--fg3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s}
+.tab.active{color:var(--mo);border-bottom-color:var(--mo);font-weight:600}
+
+/* ALUMNAS LIST */
+.search-bar{position:relative;margin-bottom:16px}
+.search-bar input{width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--line);border-radius:var(--r2);background:var(--bg2);color:var(--fg);font-family:inherit;font-size:14px;outline:none}
+.search-bar input:focus{border-color:var(--mo)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fg3);pointer-events:none}
+.alumna-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.alumna-card:hover{border-color:var(--mo);box-shadow:var(--sh)}
+.alumna-row{display:flex;align-items:center;gap:12px}
+.alumna-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--mo3),var(--or3));border:2px solid var(--mo);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;color:var(--mo);flex-shrink:0}
+.alumna-info{flex:1;min-width:0}
+.alumna-name{font-weight:600;font-size:15px;color:var(--fg)}
+.alumna-email{font-size:12px;color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alumna-meta{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-mod{background:var(--mo3);color:var(--mo)}
+.badge-ok{background:rgba(45,145,72,.12);color:var(--ok)}
+.badge-gray{background:var(--bg);color:var(--fg3);border:1px solid var(--line)}
+.alumna-last{font-size:11px;color:var(--fg3);margin-top:4px}
+
+/* FICHA ALUMNA */
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--mo);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0;margin-bottom:16px}
+.section-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.section-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--mo);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kv{display:flex;flex-direction:column;gap:3px}
+.kv-label{font-size:11px;font-weight:600;color:var(--fg3);letter-spacing:.4px;text-transform:uppercase}
+.kv-val{font-size:14px;color:var(--fg)}
+.tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{padding:4px 10px;border-radius:20px;font-size:12px;background:var(--mo3);color:var(--mo);font-weight:500}
+.tag-or{background:var(--or3);color:var(--or2)}
+
+/* MODULOS TOGGLE */
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mod-toggle{background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r2);padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:border-color .2s}
+.mod-toggle.on{border-color:var(--ok);background:rgba(45,145,72,.06)}
+.mod-toggle-hdr{display:flex;align-items:center;justify-content:space-between}
+.mod-toggle-name{font-size:13px;font-weight:600;color:var(--fg)}
+.mod-toggle-icon{font-size:18px}
+.toggle-sw{width:36px;height:20px;border-radius:10px;background:var(--fg3);position:relative;transition:background .2s;flex-shrink:0}
+.toggle-sw.on{background:var(--ok)}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle-sw.on::after{transform:translateX(16px)}
+.mod-status{font-size:11px;color:var(--fg3)}
+.mod-toggle.on .mod-status{color:var(--ok)}
+
+/* SESIONES */
+.ses-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ses-card{background:var(--bg);border:1px solid var(--line);border-radius:var(--r2);padding:14px;margin-bottom:10px}
+.ses-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ses-meta{display:flex;flex-direction:column;gap:2px}
+.ses-num{font-size:12px;font-weight:700;color:var(--mo)}
+.ses-fecha{font-size:11px;color:var(--fg3)}
+.ses-tema{font-size:14px;font-weight:600;color:var(--fg)}
+.ses-body{font-size:13px;color:var(--fg2);line-height:1.5;margin-top:6px}
+.ses-compromisos{margin-top:8px;padding:8px;background:var(--or3);border-radius:8px;font-size:12px;color:var(--fg2)}
+.ses-obs{margin-top:6px;font-size:12px;color:var(--fg3);font-style:italic}
+.ses-actions{display:flex;gap:6px}
+.icon-btn{background:none;border:none;cursor:pointer;color:var(--fg3);padding:4px;border-radius:6px;display:flex;align-items:center;transition:color .15s,background .15s}
+.icon-btn:hover{background:var(--mo3);color:var(--mo)}
+.icon-btn.del:hover{background:rgba(192,57,43,.1);color:var(--err)}
+
+/* FORM SESION */
+.form-ses{background:var(--bg2);border:1.5px solid var(--mo);border-radius:var(--r);padding:18px;margin-bottom:16px;display:flex;flex-direction:column;gap:12px}
+.form-ses-title{font-weight:600;color:var(--mo);font-size:15px;margin-bottom:4px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field textarea{resize:vertical;min-height:80px}
+.form-ses-btns{display:flex;gap:8px;justify-content:flex-end}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px;color:var(--fg3)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-txt{font-size:14px}
+
+/* NUEVA ALUMNA */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal-overlay[hidden]{display:none!important}
+.modal{background:var(--bg2);border-radius:var(--r) var(--r) 0 0;padding:24px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.modal-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--mo)}
+.modal-close{position:absolute;right:20px;top:20px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--fg3)}
+
+/* SPINNER */
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2);padding:12px;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--mo)}
+.stat-lbl{font-size:11px;color:var(--fg3);margin-top:2px}
+
+@media(max-width:400px){
+  .kv-grid{grid-template-columns:1fr}
+  .mod-grid{grid-template-columns:1fr}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .row-2{grid-template-columns:1fr}
+}
+</style>
+
+<!-- AUTH -->
+<div id="s-auth" class="screen active">
+  <div class="auth-wrap">
+    <div class="auth-logo">🌟</div>
+    <div>
+      <div class="auth-title" style="font-family:'Playfair Display',serif">Panel Mentora</div>
+      <div class="auth-sub" style="margin-top:4px">Construye y Sostiene tu Negocio</div>
+    </div>
+    <div class="auth-card">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <div class="pass-wrap">
+          <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+          <button class="pass-eye" onclick="togglePass()" type="button" aria-label="Ver contraseña">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="auth-msg" class="msg" hidden></div>
+      <button class="btn btn-primary" onclick="login()">
+        <span id="btn-login-txt">Entrar al panel</span>
+      </button>
+    </div>
+    <div style="font-size:12px;color:var(--fg3);text-align:center">Acceso exclusivo para la mentora</div>
+  </div>
+</div>
+
+<!-- PANEL PRINCIPAL -->
+<div id="s-panel" class="screen">
+  <div class="hdr">
+    <div class="hdr-brand">
+      <div class="hdr-logo">🌟</div>
+      <div>
+        <div class="hdr-title">Panel Mentora</div>
+        <div class="hdr-sub">Construye y Sostiene</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="hdr-btn" onclick="abrirNuevaAlumna()" title="Nueva alumna">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Alumna
+      </button>
+      <button class="hdr-btn" onclick="signOut()" title="Salir">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('alumnas')">Alumnas</button>
+    <button class="tab" onclick="setTab('sesiones')">Sesiones</button>
+  </div>
+
+  <!-- TAB ALUMNAS -->
+  <div id="tab-alumnas" class="scroll">
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat"><div class="stat-num" id="st-total">—</div><div class="stat-lbl">Alumnas</div></div>
+      <div class="stat"><div class="stat-num" id="st-activas">—</div><div class="stat-lbl">Activas</div></div>
+      <div class="stat"><div class="stat-num" id="st-sesiones">—</div><div class="stat-lbl">Sesiones</div></div>
+      <div class="stat"><div class="stat-num" id="st-completas">—</div><div class="stat-lbl">M1 ✓</div></div>
+    </div>
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="search-alumnas" placeholder="Buscar alumna..." oninput="filtrarAlumnas()" autocomplete="off">
+    </div>
+    <div id="lista-alumnas"></div>
+  </div>
+
+  <!-- TAB SESIONES (todas) -->
+  <div id="tab-sesiones" class="scroll" hidden>
+    <div class="ses-hdr">
+      <div style="font-weight:600;color:var(--fg)">Todas las sesiones</div>
+      <button class="btn btn-primary btn-sm" onclick="abrirFormSesion(null)">+ Nueva sesión</button>
+    </div>
+    <div id="lista-sesiones-global"></div>
+  </div>
+</div>
+
+<!-- FICHA ALUMNA -->
+<div id="s-ficha" class="screen">
+  <div class="hdr">
+    <div class="hdr-brand">
+      <button class="hdr-btn" onclick="goPanel()" style="gap:4px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Alumnas
+      </button>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="hdr-btn btn-danger" onclick="eliminarAlumna()" title="Eliminar alumna" style="font-size:12px;color:var(--err);border:1px solid var(--err);border-radius:8px;padding:5px 10px">Eliminar</button>
+    </div>
+  </div>
+  <div class="scroll" id="ficha-content"></div>
+</div>
+
+<!-- MODAL NUEVA ALUMNA -->
+<div class="modal-overlay" id="modal-alumna" hidden onclick="cerrarModal(event)">
+  <div class="modal">
+    <div class="modal-title">Nueva alumna</div>
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="new-nombre" placeholder="Nombre Apellido">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="new-email" placeholder="alumna@email.com">
+    </div>
+    <div class="field">
+      <label>Contraseña temporal</label>
+      <input type="text" id="new-pass" placeholder="Mínimo 8 caracteres" value="Fenix2025!">
+    </div>
+    <div style="font-size:12px;color:var(--fg3)">Se creará la cuenta en Supabase. La alumna podrá cambiar su contraseña desde la app.</div>
+    <div id="new-msg" class="msg" hidden></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="cerrarModalBtn()">Cancelar</button>
+      <button class="btn btn-primary" onclick="crearAlumna()"><span id="new-btn-txt">Crear alumna</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SESION -->
+<div class="modal-overlay" id="modal-sesion" hidden onclick="cerrarModalSes(event)">
+  <div class="modal">
+    <div class="modal-title" id="modal-ses-title">Nueva sesión</div>
+    <div class="row-2">
+      <div class="field">
+        <label>Alumna</label>
+        <select id="ses-email-sel" style="font-size:14px"></select>
+      </div>
+      <div class="field">
+        <label>Fecha</label>
+        <input type="date" id="ses-fecha">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>N° sesión</label>
+        <input type="number" id="ses-num" min="1" placeholder="1">
+      </div>
+      <div class="field">
+        <label>Tema</label>
+        <input type="text" id="ses-tema" placeholder="Ej: Módulo 1 — Valores">
+      </div>
+    </div>
+    <div class="field">
+      <label>Contenido / Resumen</label>
+      <textarea id="ses-contenido" rows="5" placeholder="Resumen de lo trabajado en la sesión..."></textarea>
+    </div>
+    <div class="field">
+      <label>Compromisos</label>
+      <textarea id="ses-compromisos" rows="3" placeholder="Lo que la alumna se comprometió a hacer..."></textarea>
+    </div>
+    <div class="field">
+      <label>Notas privadas (solo tú las ves)</label>
+      <textarea id="ses-obs" rows="2" placeholder="Observaciones para ti..."></textarea>
+    </div>
+    <div id="ses-msg" class="msg" hidden></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="cerrarModalSesBtn()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarSesion()"><span id="ses-btn-txt">Guardar sesión</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SUPA_URL = 'https://zcovuvkqsmnedfnevmpm.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpjb3Z1dmtxc21uZWRmbmV2bXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NDUyOTIsImV4cCI6MjA5ODQyMTI5Mn0.1VXulShYlMcTsqUgSicfzOzsVS8tS4rLD_gpgn31cPo';
+var MENTORA_EMAIL = 'conyenrione@gmail.com';
+
+var sb = null;
+var userToken = null;
+var alumnas = [];
+var sesionesGlobal = [];
+var alumnaActual = null;
+var sesEditId = null;
+var currentTab = 'alumnas';
+
+// ─── SUPABASE MINI CLIENT ───
+function sbFetch(path, opts) {
+  opts = opts || {};
+  var headers = Object.assign({
+    'apikey': SUPA_KEY,
+    'Content-Type': 'application/json'
+  }, opts.headers || {});
+  if (userToken) headers['Authorization'] = 'Bearer ' + userToken;
+  return fetch(SUPA_URL + path, Object.assign({}, opts, { headers: headers }));
+}
+
+sb = {
+  auth: {
+    signInWithPassword: function(email, pass) {
+      return sbFetch('/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        body: JSON.stringify({ email: email, password: pass })
+      }).then(function(r) { return r.json(); });
+    },
+    signUp: function(email, pass) {
+      return sbFetch('/auth/v1/admin/users', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + SUPA_KEY },
+        body: JSON.stringify({ email: email, password: pass, email_confirm: true })
+      }).then(function(r) { return r.json(); });
+    },
+    signOut: function() {
+      return sbFetch('/auth/v1/logout', { method: 'POST' });
+    }
+  },
+  from: function(table) {
+    return {
+      select: function(cols, opts) {
+        cols = cols || '*';
+        var url = '/rest/v1/' + table + '?select=' + encodeURIComponent(cols);
+        if (opts && opts.order) url += '&order=' + opts.order;
+        if (opts && opts.limit) url += '&limit=' + opts.limit;
+        return sbFetch(url, {
+          headers: { 'Prefer': 'return=representation' }
+        }).then(function(r) { return r.json(); });
+      },
+      upsert: function(data) {
+        return sbFetch('/rest/v1/' + table, {
+          method: 'POST',
+          headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+          body: JSON.stringify(data)
+        }).then(function(r) { return r.json(); });
+      },
+      insert: function(data) {
+        return sbFetch('/rest/v1/' + table, {
+          method: 'POST',
+          headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify(data)
+        }).then(function(r) { return r.json(); });
+      },
+      update: function(data, filter) {
+        var url = '/rest/v1/' + table + '?' + filter;
+        return sbFetch(url, {
+          method: 'PATCH',
+          headers: { 'Prefer': 'return=representation' },
+          body: JSON.stringify(data)
+        }).then(function(r) { return r.json(); });
+      },
+      delete: function(filter) {
+        var url = '/rest/v1/' + table + '?' + filter;
+        return sbFetch(url, { method: 'DELETE' });
+      }
+    };
+  }
+};
+
+// ─── PANTALLAS ───
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+function goPanel() {
+  alumnaActual = null;
+  goTo('s-panel');
+  if (currentTab === 'sesiones') cargarSesionesGlobal();
+}
+
+// ─── AUTH ───
+function togglePass() {
+  var i = document.getElementById('inp-pass');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+function showAuthMsg(txt, ok) {
+  var m = document.getElementById('auth-msg');
+  m.textContent = txt;
+  m.className = 'msg ' + (ok ? 'msg-ok' : 'msg-err');
+  m.hidden = false;
+}
+
+async function login() {
+  var email = document.getElementById('inp-email').value.trim();
+  var pass = document.getElementById('inp-pass').value;
+  if (!email || !pass) { showAuthMsg('Ingresa email y contraseña', false); return; }
+  if (email !== MENTORA_EMAIL) { showAuthMsg('Este panel es solo para la mentora', false); return; }
+  var btn = document.getElementById('btn-login-txt');
+  btn.innerHTML = '<span class="spin"></span>';
+  try {
+    var data = await sb.auth.signInWithPassword(email, pass);
+    if (data.error || !data.access_token) {
+      showAuthMsg(data.error ? data.error.message : 'Error de acceso', false);
+      btn.textContent = 'Entrar al panel';
+      return;
+    }
+    userToken = data.access_token;
+    btn.textContent = 'Entrar al panel';
+    await cargarTodo();
+    goTo('s-panel');
+  } catch(e) {
+    showAuthMsg('Error de conexión', false);
+    btn.textContent = 'Entrar al panel';
+  }
+}
+
+function signOut() {
+  if (sb) sb.auth.signOut();
+  userToken = null;
+  alumnas = [];
+  sesionesGlobal = [];
+  goTo('s-auth');
+}
+
+document.getElementById('inp-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') login();
+});
+
+// ─── CARGA DATOS ───
+async function cargarTodo() {
+  await Promise.all([cargarAlumnas(), cargarSesionesGlobal()]);
+  renderStats();
+}
+
+async function cargarAlumnas() {
+  try {
+    var data = await sb.from('mentoria_cys').select('*', { order: 'updated_at.desc' });
+    if (Array.isArray(data)) {
+      alumnas = data;
+      renderAlumnas(alumnas);
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function cargarSesionesGlobal() {
+  try {
+    var data = await sb.from('mentoria_sesiones').select('*', { order: 'fecha.desc,created_at.desc' });
+    if (Array.isArray(data)) {
+      sesionesGlobal = data;
+      renderSesionesGlobal();
+    }
+  } catch(e) { console.error(e); }
+}
+
+// ─── STATS ───
+function renderStats() {
+  document.getElementById('st-total').textContent = alumnas.length;
+  var activas = alumnas.filter(function(a) {
+    var d = a.data || {};
+    return (d.modulos_activos || [1]).length > 0;
+  }).length;
+  document.getElementById('st-activas').textContent = activas;
+  document.getElementById('st-sesiones').textContent = sesionesGlobal.length;
+  var m1ok = alumnas.filter(function(a) {
+    return (a.data || {}).m1 && (a.data.m1.completado);
+  }).length;
+  document.getElementById('st-completas').textContent = m1ok;
+}
+
+// ─── LISTA ALUMNAS ───
+function filtrarAlumnas() {
+  var q = document.getElementById('search-alumnas').value.toLowerCase();
+  var filtradas = q ? alumnas.filter(function(a) {
+    var d = a.data || {};
+    return a.email.toLowerCase().includes(q) || (d.nombre || '').toLowerCase().includes(q);
+  }) : alumnas;
+  renderAlumnas(filtradas);
+}
+
+function renderAlumnas(lista) {
+  var c = document.getElementById('lista-alumnas');
+  if (!lista.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">👩‍💼</div><div class="empty-txt">No hay alumnas aún.<br>Haz click en "+ Alumna" para agregar.</div></div>';
+    return;
+  }
+  c.innerHTML = lista.map(function(a) {
+    var d = a.data || {};
+    var nombre = d.nombre || a.email.split('@')[0];
+    var inicial = nombre.charAt(0).toUpperCase();
+    var mods = d.modulos_activos || [1];
+    var badgesMod = mods.map(function(m) {
+      return '<span class="badge badge-mod">M' + m + '</span>';
+    }).join('');
+    var m1ok = d.m1 && d.m1.completado ? '<span class="badge badge-ok">M1 ✓</span>' : '';
+    var m2ok = d.m2 && d.m2.completado ? '<span class="badge badge-ok">M2 ✓</span>' : '';
+    var nSes = sesionesGlobal.filter(function(s) { return s.email === a.email; }).length;
+    var updated = a.updated_at ? new Date(a.updated_at).toLocaleDateString('es-CL') : '';
+    return '<div class="alumna-card" onclick="abrirFicha(\'' + a.email + '\')">' +
+      '<div class="alumna-row">' +
+        '<div class="alumna-avatar">' + inicial + '</div>' +
+        '<div class="alumna-info">' +
+          '<div class="alumna-name">' + nombre + '</div>' +
+          '<div class="alumna-email">' + a.email + '</div>' +
+          '<div class="alumna-meta">' + badgesMod + m1ok + m2ok +
+            '<span class="badge badge-gray">' + nSes + ' ses.</span>' +
+          '</div>' +
+          (updated ? '<div class="alumna-last">Última actividad: ' + updated + '</div>' : '') +
+        '</div>' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ─── SESIONES GLOBAL ───
+function renderSesionesGlobal() {
+  var c = document.getElementById('lista-sesiones-global');
+  if (!sesionesGlobal.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-txt">Sin sesiones aún.<br>Usa "+ Nueva sesión" para agregar.</div></div>';
+    return;
+  }
+  c.innerHTML = sesionesGlobal.map(function(s) {
+    return renderSesCard(s, true);
+  }).join('');
+}
+
+function renderSesCard(s, showEmail) {
+  var nombre = '';
+  if (showEmail) {
+    var a = alumnas.find(function(x) { return x.email === s.email; });
+    nombre = a ? ((a.data || {}).nombre || s.email) : s.email;
+  }
+  return '<div class="ses-card">' +
+    '<div class="ses-top">' +
+      '<div class="ses-meta">' +
+        (showEmail ? '<div style="font-size:12px;color:var(--fg2);font-weight:600;margin-bottom:2px">' + nombre + '</div>' : '') +
+        '<div class="ses-num">Sesión ' + (s.num || '—') + '</div>' +
+        '<div class="ses-fecha">' + (s.fecha || '') + '</div>' +
+      '</div>' +
+      '<div class="ses-actions">' +
+        '<button class="icon-btn" onclick="editarSesion(\'' + s.id + '\')" title="Editar">' +
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+        '</button>' +
+        '<button class="icon-btn del" onclick="eliminarSesion(\'' + s.id + '\')" title="Eliminar">' +
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>' +
+        '</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="ses-tema">' + (s.tema || '') + '</div>' +
+    (s.contenido ? '<div class="ses-body">' + s.contenido.substring(0, 300) + (s.contenido.length > 300 ? '…' : '') + '</div>' : '') +
+    (s.compromisos ? '<div class="ses-compromisos">📌 ' + s.compromisos + '</div>' : '') +
+    (s.obs ? '<div class="ses-obs">🔒 ' + s.obs + '</div>' : '') +
+  '</div>';
+}
+
+// ─── FICHA ALUMNA ───
+function abrirFicha(email) {
+  alumnaActual = alumnas.find(function(a) { return a.email === email; });
+  if (!alumnaActual) return;
+  renderFicha();
+  goTo('s-ficha');
+}
+
+function renderFicha() {
+  var a = alumnaActual;
+  var d = a.data || {};
+  var nombre = d.nombre || a.email.split('@')[0];
+  var mods = d.modulos_activos || [1];
+  var m1 = d.m1 || {};
+  var m2 = d.m2 || {};
+  var sesFicha = sesionesGlobal.filter(function(s) { return s.email === a.email; });
+
+  var html = '';
+
+  // Encabezado
+  html += '<div class="section-card" style="background:linear-gradient(135deg,var(--mo3),var(--or3));border:none">' +
+    '<div style="display:flex;align-items:center;gap:14px">' +
+      '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--mo),var(--or));display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:26px;color:#fff;flex-shrink:0">' + nombre.charAt(0).toUpperCase() + '</div>' +
+      '<div>' +
+        '<div style="font-family:Playfair Display,serif;font-size:20px;color:var(--mo)">' + nombre + '</div>' +
+        '<div style="font-size:13px;color:var(--fg3)">' + a.email + '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // Módulos activos
+  html += '<div class="section-card">' +
+    '<div class="section-title">🔓 Módulos activos</div>' +
+    '<div class="mod-grid">' +
+    [1,2,3,4].map(function(m) {
+      var on = mods.indexOf(m) !== -1;
+      var nombres = {1:'Quién eres',2:'La vida que eliges',3:'Bases del negocio',4:'Objetivos y plan'};
+      return '<div class="mod-toggle ' + (on?'on':'') + '" onclick="toggleMod(' + m + ')">' +
+        '<div class="mod-toggle-hdr">' +
+          '<div class="mod-toggle-name">M' + m + ' — ' + nombres[m] + '</div>' +
+          '<div class="toggle-sw ' + (on?'on':'') + '" id="sw-m' + m + '"></div>' +
+        '</div>' +
+        '<div class="mod-status">' + (on ? '✓ Desbloqueado' : 'Bloqueado') + '</div>' +
+      '</div>';
+    }).join('') +
+    '</div>' +
+  '</div>';
+
+  // Datos M1
+  if (m1.declaracion || m1.quien || m1.valores) {
+    html += '<div class="section-card">' +
+      '<div class="section-title">🌱 Módulo 1 — Recuerda quién eres</div>';
+    if (m1.quien && m1.quien.length) html += '<div class="kv"><div class="kv-label">Quién soy</div><div class="tags-row">' + m1.quien.map(function(t){return'<span class="tag">'+t+'</span>';}).join('') + '</div></div>';
+    if (m1.valor_ppal) html += '<div class="kv" style="margin-top:10px"><div class="kv-label">Valor principal</div><div class="kv-val">' + m1.valor_ppal + '</div></div>';
+    if (m1.valores && m1.valores.length) html += '<div class="kv" style="margin-top:10px"><div class="kv-label">Valores</div><div class="tags-row">' + m1.valores.map(function(t){return'<span class="tag tag-or">'+t+'</span>';}).join('') + '</div></div>';
+    if (m1.declaracion) html += '<div class="kv" style="margin-top:10px"><div class="kv-label">Declaración</div><div class="kv-val" style="font-style:italic">"' + m1.declaracion + '"</div></div>';
+    html += '</div>';
+  }
+
+  // Datos M2
+  if (m2.vision || m2.frutos) {
+    html += '<div class="section-card">' +
+      '<div class="section-title">🌿 Módulo 2 — La vida que eliges</div>';
+    if (m2.frutos) {
+      var fr = m2.frutos;
+      html += '<div class="kv-grid">' +
+        ['finanzas','relaciones','talentos','tranquilidad','disfrute','salud'].map(function(k) {
+          return '<div class="kv"><div class="kv-label">' + k + '</div><div class="kv-val" style="font-weight:600">' + (fr[k]||5) + '/10</div></div>';
+        }).join('') +
+      '</div>';
+    }
+    if (m2.vision && m2.vision.vida) html += '<div class="kv" style="margin-top:10px"><div class="kv-label">Visión de vida</div><div class="kv-val">' + m2.vision.vida + '</div></div>';
+    if (m2.vision_declaracion) html += '<div class="kv" style="margin-top:10px"><div class="kv-label">Declaración de visión</div><div class="kv-val" style="font-style:italic">"' + m2.vision_declaracion + '"</div></div>';
+    html += '</div>';
+  }
+
+  // Sesiones
+  html += '<div class="section-card">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
+      '<div class="section-title" style="margin:0">📋 Sesiones (' + sesFicha.length + ')</div>' +
+      '<button class="btn btn-primary btn-sm" onclick="abrirFormSesion(\'' + a.email + '\')">+ Nueva</button>' +
+    '</div>' +
+    (sesFicha.length ? sesFicha.map(function(s){ return renderSesCard(s, false); }).join('') :
+      '<div class="empty" style="padding:20px 0"><div class="empty-icon" style="font-size:32px">📋</div><div class="empty-txt">Sin sesiones aún</div></div>') +
+  '</div>';
+
+  document.getElementById('ficha-content').innerHTML = html;
+}
+
+// ─── TOGGLE MÓDULO ───
+async function toggleMod(num) {
+  if (!alumnaActual) return;
+  var d = alumnaActual.data || {};
+  var mods = (d.modulos_activos || [1]).slice();
+  var idx = mods.indexOf(num);
+  if (idx === -1) mods.push(num);
+  else mods.splice(idx, 1);
+  mods.sort();
+  d.modulos_activos = mods;
+  alumnaActual.data = d;
+  try {
+    await sb.from('mentoria_cys').upsert({ email: alumnaActual.email, data: d, updated_at: new Date().toISOString() });
+    // Actualizar en lista local
+    var idx2 = alumnas.findIndex(function(a){ return a.email === alumnaActual.email; });
+    if (idx2 !== -1) alumnas[idx2].data = d;
+    toast('Módulos actualizados');
+    renderFicha();
+  } catch(e) { toast('Error al guardar'); }
+}
+
+// ─── NUEVA ALUMNA ───
+function abrirNuevaAlumna() {
+  document.getElementById('new-nombre').value = '';
+  document.getElementById('new-email').value = '';
+  document.getElementById('new-pass').value = 'Fenix2025!';
+  document.getElementById('new-msg').hidden = true;
+  document.getElementById('modal-alumna').hidden = false;
+}
+
+function cerrarModal(e) { if (e.target === document.getElementById('modal-alumna')) cerrarModalBtn(); }
+function cerrarModalBtn() { document.getElementById('modal-alumna').hidden = true; }
+
+async function crearAlumna() {
+  var nombre = document.getElementById('new-nombre').value.trim();
+  var email = document.getElementById('new-email').value.trim();
+  var pass = document.getElementById('new-pass').value.trim();
+  var msg = document.getElementById('new-msg');
+  if (!email || !pass) { showMsg(msg, 'Completa email y contraseña', false); return; }
+  if (pass.length < 8) { showMsg(msg, 'La contraseña debe tener al menos 8 caracteres', false); return; }
+  var btn = document.getElementById('new-btn-txt');
+  btn.innerHTML = '<span class="spin"></span>';
+  try {
+    // Crear usuario en Supabase Auth (admin endpoint)
+    var res = await fetch(SUPA_URL + '/auth/v1/admin/users', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + userToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email, password: pass, email_confirm: true })
+    }).then(function(r){ return r.json(); });
+
+    if (res.error) { showMsg(msg, res.error.message || 'Error al crear usuario', false); btn.textContent = 'Crear alumna'; return; }
+
+    // Crear registro en mentoria_cys
+    var initData = {
+      nombre: nombre,
+      modulos_activos: [1],
+      m1: { quien:[], valores:[], valor_ppal:'', empresaria:[], declaracion:'', completado:false }
+    };
+    await sb.from('mentoria_cys').upsert({ email: email, data: initData, updated_at: new Date().toISOString() });
+
+    showMsg(msg, '✓ Alumna creada. Contraseña temporal: ' + pass, true);
+    await cargarAlumnas();
+    renderStats();
+    btn.textContent = 'Crear alumna';
+    setTimeout(function(){ cerrarModalBtn(); }, 2000);
+  } catch(e) {
+    showMsg(msg, 'Error de conexión', false);
+    btn.textContent = 'Crear alumna';
+  }
+}
+
+// ─── SESIONES ───
+function abrirFormSesion(emailPre) {
+  sesEditId = null;
+  document.getElementById('modal-ses-title').textContent = 'Nueva sesión';
+  document.getElementById('ses-btn-txt').textContent = 'Guardar sesión';
+  document.getElementById('ses-fecha').value = new Date().toISOString().slice(0,10);
+  document.getElementById('ses-num').value = '';
+  document.getElementById('ses-tema').value = '';
+  document.getElementById('ses-contenido').value = '';
+  document.getElementById('ses-compromisos').value = '';
+  document.getElementById('ses-obs').value = '';
+  document.getElementById('ses-msg').hidden = true;
+
+  // Llenar select de alumnas
+  var sel = document.getElementById('ses-email-sel');
+  sel.innerHTML = alumnas.map(function(a) {
+    var d = a.data || {};
+    var nombre = d.nombre || a.email;
+    return '<option value="' + a.email + '" ' + (a.email === emailPre ? 'selected' : '') + '>' + nombre + '</option>';
+  }).join('');
+
+  // Auto número
+  if (emailPre) {
+    var nSes = sesionesGlobal.filter(function(s){ return s.email === emailPre; }).length;
+    document.getElementById('ses-num').value = nSes + 1;
+  }
+
+  document.getElementById('modal-sesion').hidden = false;
+}
+
+function editarSesion(id) {
+  var s = sesionesGlobal.find(function(x){ return x.id === id; });
+  if (!s) return;
+  sesEditId = id;
+  document.getElementById('modal-ses-title').textContent = 'Editar sesión';
+  document.getElementById('ses-btn-txt').textContent = 'Actualizar';
+  var sel = document.getElementById('ses-email-sel');
+  sel.innerHTML = alumnas.map(function(a) {
+    var d = a.data || {};
+    return '<option value="' + a.email + '" ' + (a.email === s.email ? 'selected' : '') + '>' + (d.nombre || a.email) + '</option>';
+  }).join('');
+  document.getElementById('ses-fecha').value = s.fecha || '';
+  document.getElementById('ses-num').value = s.num || '';
+  document.getElementById('ses-tema').value = s.tema || '';
+  document.getElementById('ses-contenido').value = s.contenido || '';
+  document.getElementById('ses-compromisos').value = s.compromisos || '';
+  document.getElementById('ses-obs').value = s.obs || '';
+  document.getElementById('ses-msg').hidden = true;
+  document.getElementById('modal-sesion').hidden = false;
+}
+
+function cerrarModalSes(e) { if (e.target === document.getElementById('modal-sesion')) cerrarModalSesBtn(); }
+function cerrarModalSesBtn() { document.getElementById('modal-sesion').hidden = true; sesEditId = null; }
+
+async function guardarSesion() {
+  var email = document.getElementById('ses-email-sel').value;
+  var fecha = document.getElementById('ses-fecha').value;
+  var num = parseInt(document.getElementById('ses-num').value) || null;
+  var tema = document.getElementById('ses-tema').value.trim();
+  var contenido = document.getElementById('ses-contenido').value.trim();
+  var compromisos = document.getElementById('ses-compromisos').value.trim();
+  var obs = document.getElementById('ses-obs').value.trim();
+  var msg = document.getElementById('ses-msg');
+  if (!email || !contenido) { showMsg(msg, 'El contenido es obligatorio', false); return; }
+  var btn = document.getElementById('ses-btn-txt');
+  btn.innerHTML = '<span class="spin"></span>';
+  try {
+    var payload = { email: email, fecha: fecha, num: num, tema: tema, contenido: contenido, compromisos: compromisos, obs: obs };
+    var res;
+    if (sesEditId) {
+      res = await sb.from('mentoria_sesiones').update(payload, 'id=eq.' + sesEditId);
+    } else {
+      res = await sb.from('mentoria_sesiones').insert(payload);
+    }
+    await cargarSesionesGlobal();
+    renderStats();
+    if (alumnaActual && alumnaActual.email === email) renderFicha();
+    toast(sesEditId ? 'Sesión actualizada' : 'Sesión guardada');
+    cerrarModalSesBtn();
+    btn.textContent = sesEditId ? 'Actualizar' : 'Guardar sesión';
+  } catch(e) {
+    showMsg(msg, 'Error al guardar', false);
+    btn.textContent = sesEditId ? 'Actualizar' : 'Guardar sesión';
+  }
+}
+
+async function eliminarSesion(id) {
+  if (!confirm('¿Eliminar esta sesión?')) return;
+  try {
+    await sb.from('mentoria_sesiones').delete('id=eq.' + id);
+    sesionesGlobal = sesionesGlobal.filter(function(s){ return s.id !== id; });
+    renderSesionesGlobal();
+    renderStats();
+    if (alumnaActual) renderFicha();
+    toast('Sesión eliminada');
+  } catch(e) { toast('Error al eliminar'); }
+}
+
+// ─── ELIMINAR ALUMNA ───
+async function eliminarAlumna() {
+  if (!alumnaActual) return;
+  var nombre = (alumnaActual.data||{}).nombre || alumnaActual.email;
+  if (!confirm('¿Eliminar a ' + nombre + ' y todas sus sesiones? Esta acción no se puede deshacer.')) return;
+  try {
+    await sb.from('mentoria_sesiones').delete('email=eq.' + encodeURIComponent(alumnaActual.email));
+    await sb.from('mentoria_cys').delete('email=eq.' + encodeURIComponent(alumnaActual.email));
+    alumnas = alumnas.filter(function(a){ return a.email !== alumnaActual.email; });
+    sesionesGlobal = sesionesGlobal.filter(function(s){ return s.email !== alumnaActual.email; });
+    alumnaActual = null;
+    renderAlumnas(alumnas);
+    renderStats();
+    toast('Alumna eliminada');
+    goTo('s-panel');
+  } catch(e) { toast('Error al eliminar'); }
+}
+
+// ─── TABS ───
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(function(t, i) {
+    t.classList.toggle('active', (i===0 && tab==='alumnas') || (i===1 && tab==='sesiones'));
+  });
+  document.getElementById('tab-alumnas').hidden = tab !== 'alumnas';
+  document.getElementById('tab-sesiones').hidden = tab !== 'sesiones';
+  if (tab === 'sesiones') renderSesionesGlobal();
+}
+
+// ─── HELPERS ───
+function showMsg(el, txt, ok) {
+  el.textContent = txt;
+  el.className = 'msg ' + (ok ? 'msg-ok' : 'msg-err');
+  el.hidden = false;
+}
+
+function toast(txt) {
+  var t = document.getElementById('toast');
+  t.textContent = txt;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+</script>
