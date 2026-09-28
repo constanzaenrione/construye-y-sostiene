@@ -293,10 +293,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       <input type="email" id="new-email" placeholder="alumna@email.com">
     </div>
     <div class="field">
-      <label>Contraseña temporal</label>
-      <input type="text" id="new-pass" placeholder="Mínimo 8 caracteres" value="Fenix2025!">
+      <label>Contraseña temporal <span style="font-weight:400;color:var(--fg3)">(opcional si ya tiene cuenta)</span></label>
+      <input type="text" id="new-pass" placeholder="Dejar vacío si ya tiene cuenta en Mujer Fénix" value="">
     </div>
-    <div style="font-size:12px;color:var(--fg3)">Se creará la cuenta en Supabase. La alumna podrá cambiar su contraseña desde la app.</div>
+    <div style="font-size:12px;color:var(--fg3)">Si la alumna ya tiene cuenta (ej: Mujer Fénix), deja la contraseña vacía — entrará con la que ya tiene. Si es nueva, ponle una contraseña temporal.</div>
     <div id="new-msg" class="msg" hidden></div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-ghost" onclick="cerrarModalBtn()">Cancelar</button>
@@ -750,37 +750,60 @@ async function crearAlumna() {
   var email = document.getElementById('new-email').value.trim();
   var pass = document.getElementById('new-pass').value.trim();
   var msg = document.getElementById('new-msg');
-  if (!email || !pass) { showMsg(msg, 'Completa email y contraseña', false); return; }
-  if (pass.length < 8) { showMsg(msg, 'La contraseña debe tener al menos 8 caracteres', false); return; }
+  if (!email) { showMsg(msg, 'Ingresa el email de la alumna', false); return; }
   var btn = document.getElementById('new-btn-txt');
   btn.innerHTML = '<span class="spin"></span>';
   try {
-    // Crear usuario en Supabase Auth (admin endpoint)
-    var res = await fetch(SUPA_URL + '/auth/v1/admin/users', {
-      method: 'POST',
-      headers: {
-        'apikey': SUPA_KEY,
-        'Authorization': 'Bearer ' + userToken,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email: email, password: pass, email_confirm: true })
-    }).then(function(r){ return r.json(); });
+    // Verificar si ya existe en mentoria_cys
+    var existente = alumnas.find(function(a){ return a.email === email; });
+    if (existente) {
+      showMsg(msg, 'Esta alumna ya está en el programa', false);
+      btn.textContent = 'Crear alumna'; return;
+    }
 
-    if (res.error) { showMsg(msg, res.error.message || 'Error al crear usuario', false); btn.textContent = 'Crear alumna'; return; }
-
-    // Crear registro en mentoria_cys
     var initData = {
       nombre: nombre,
       modulos_activos: [1],
       m1: { quien:[], valores:[], valor_ppal:'', empresaria:[], declaracion:'', completado:false }
     };
+
+    // Intentar crear en Auth solo si tiene contraseña
+    var authCreada = false;
+    if (pass && pass.length >= 8) {
+      var res = await fetch(SUPA_URL + '/auth/v1/admin/users', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': 'Bearer ' + userToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, password: pass, email_confirm: true })
+      }).then(function(r){ return r.json(); });
+
+      if (res.error) {
+        // Si el error es que ya existe → ok, solo creamos el registro CYS
+        if (res.error.message && res.error.message.toLowerCase().includes('already')) {
+          authCreada = false; // ya tenía cuenta, no pasa nada
+        } else {
+          showMsg(msg, res.error.message || 'Error al crear cuenta', false);
+          btn.textContent = 'Crear alumna'; return;
+        }
+      } else {
+        authCreada = true;
+      }
+    }
+
+    // Crear/actualizar registro en mentoria_cys
     await sb.from('mentoria_cys').upsert({ email: email, data: initData, updated_at: new Date().toISOString() });
 
-    showMsg(msg, '✓ Alumna creada. Contraseña temporal: ' + pass, true);
+    var txtOk = authCreada
+      ? '✓ Alumna creada. Contraseña temporal: ' + pass
+      : '✓ Alumna agregada al programa. Usará su contraseña existente.';
+    showMsg(msg, txtOk, true);
     await cargarAlumnas();
     renderStats();
     btn.textContent = 'Crear alumna';
-    setTimeout(function(){ cerrarModalBtn(); }, 2000);
+    setTimeout(function(){ cerrarModalBtn(); }, 2500);
   } catch(e) {
     showMsg(msg, 'Error de conexión', false);
     btn.textContent = 'Crear alumna';
