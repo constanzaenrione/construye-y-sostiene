@@ -794,7 +794,11 @@ async function crearAlumna() {
     }
 
     // Crear/actualizar registro en mentoria_cys
-    await sb.from('mentoria_cys').upsert({ email: email, data: initData, updated_at: new Date().toISOString() });
+    var upsertRes = await sb.from('mentoria_cys').upsert({ email: email, data: initData, updated_at: new Date().toISOString() });
+    if (upsertRes && upsertRes.error) {
+      showMsg(msg, upsertRes.error.message || 'Error al guardar la alumna', false);
+      btn.textContent = 'Crear alumna'; return;
+    }
 
     var txtOk = authCreada
       ? '✓ Alumna creada. Contraseña temporal: ' + pass
@@ -811,7 +815,7 @@ async function crearAlumna() {
 }
 
 // ─── SESIONES ───
-function abrirFormSesion(emailPre) {
+async function abrirFormSesion(emailPre) {
   sesEditId = null;
   document.getElementById('modal-ses-title').textContent = 'Nueva sesión';
   document.getElementById('ses-btn-txt').textContent = 'Guardar sesión';
@@ -823,8 +827,15 @@ function abrirFormSesion(emailPre) {
   document.getElementById('ses-obs').value = '';
   document.getElementById('ses-msg').hidden = true;
 
-  // Llenar select de alumnas
+  // Mostrar modal enseguida con spinner mientras recarga
+  document.getElementById('modal-sesion').hidden = false;
   var sel = document.getElementById('ses-email-sel');
+  sel.innerHTML = '<option disabled>Cargando…</option>';
+
+  // Siempre recargar alumnas para tener la lista más reciente
+  await cargarAlumnas();
+
+  // Llenar select de alumnas
   sel.innerHTML = alumnas.map(function(a) {
     var d = a.data || {};
     var nombre = d.nombre || a.email;
@@ -836,8 +847,6 @@ function abrirFormSesion(emailPre) {
     var nSes = sesionesGlobal.filter(function(s){ return s.email === emailPre; }).length;
     document.getElementById('ses-num').value = nSes + 1;
   }
-
-  document.getElementById('modal-sesion').hidden = false;
 }
 
 function editarSesion(id) {
