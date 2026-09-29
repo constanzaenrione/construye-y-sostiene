@@ -338,6 +338,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       <textarea id="ses-compromisos" rows="3" placeholder="Lo que la alumna se comprometió a hacer..."></textarea>
     </div>
     <div class="field">
+      <label>Transcripción <span style="font-weight:400;color:var(--fg3)">(opcional — pega el texto completo)</span></label>
+      <textarea id="ses-transcripcion" rows="6" placeholder="Pega aquí la transcripción de la sesión..."></textarea>
+    </div>
+    <div class="field">
       <label>Notas privadas (solo tú las ves)</label>
       <textarea id="ses-obs" rows="2" placeholder="Observaciones para ti..."></textarea>
     </div>
@@ -824,6 +828,7 @@ async function abrirFormSesion(emailPre) {
   document.getElementById('ses-tema').value = '';
   document.getElementById('ses-contenido').value = '';
   document.getElementById('ses-compromisos').value = '';
+  document.getElementById('ses-transcripcion').value = '';
   document.getElementById('ses-obs').value = '';
   document.getElementById('ses-msg').hidden = true;
 
@@ -865,6 +870,7 @@ function editarSesion(id) {
   document.getElementById('ses-tema').value = s.tema || '';
   document.getElementById('ses-contenido').value = s.contenido || '';
   document.getElementById('ses-compromisos').value = s.compromisos || '';
+  document.getElementById('ses-transcripcion').value = s.transcripcion || '';
   document.getElementById('ses-obs').value = s.obs || '';
   document.getElementById('ses-msg').hidden = true;
   document.getElementById('modal-sesion').hidden = false;
@@ -880,13 +886,14 @@ async function guardarSesion() {
   var tema = document.getElementById('ses-tema').value.trim();
   var contenido = document.getElementById('ses-contenido').value.trim();
   var compromisos = document.getElementById('ses-compromisos').value.trim();
+  var transcripcion = document.getElementById('ses-transcripcion').value.trim();
   var obs = document.getElementById('ses-obs').value.trim();
   var msg = document.getElementById('ses-msg');
   if (!email || !contenido) { showMsg(msg, 'El contenido es obligatorio', false); return; }
   var btn = document.getElementById('ses-btn-txt');
   btn.innerHTML = '<span class="spin"></span>';
   try {
-    var payload = { email: email, fecha: fecha, num: num, tema: tema, contenido: contenido, compromisos: compromisos, obs: obs };
+    var payload = { email: email, fecha: fecha, num: num, tema: tema, contenido: contenido, compromisos: compromisos, transcripcion: transcripcion, obs: obs };
     var res;
     if (sesEditId) {
       res = await sb.from('mentoria_sesiones').update(payload, 'id=eq.' + sesEditId);
