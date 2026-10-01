@@ -522,38 +522,7 @@ body {
       <div style="margin-top:20px">
         <div style="font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--fg3);margin-bottom:12px">Tu camino</div>
         <div class="modulos-list">
-          <div class="modulo-card active-mod" onclick="goTo('s-m1-intro')">
-            <div class="modulo-num current">1</div>
-            <div class="modulo-info">
-              <div class="modulo-nombre">Recuerda quién eres</div>
-              <div class="modulo-desc">Identidad · Valores · Empresaria</div>
-            </div>
-            <div class="modulo-status current">En curso →</div>
-          </div>
-          <div class="modulo-card locked">
-            <div class="modulo-num locked">2</div>
-            <div class="modulo-info">
-              <div class="modulo-nombre">La vida que eliges</div>
-              <div class="modulo-desc">Frutos · Visión · El negocio que elijo</div>
-            </div>
-            <div class="modulo-status locked">🔒 Próximo</div>
-          </div>
-          <div class="modulo-card locked">
-            <div class="modulo-num locked">3</div>
-            <div class="modulo-info">
-              <div class="modulo-nombre">Bases del negocio</div>
-              <div class="modulo-desc">Nicho · Cliente ideal · Oferta</div>
-            </div>
-            <div class="modulo-status locked">🔒 Próximo</div>
-          </div>
-          <div class="modulo-card locked">
-            <div class="modulo-num locked">4</div>
-            <div class="modulo-info">
-              <div class="modulo-nombre">Objetivos y plan</div>
-              <div class="modulo-desc">Metas · Carta Gantt · Sistemas</div>
-            </div>
-            <div class="modulo-status locked">🔒 Próximo</div>
-          </div>
+          <!-- renderPortada() llena esto dinámicamente según modulosActivos -->
         </div>
       </div>
     </div>
@@ -1099,6 +1068,7 @@ var D = {
 };
 var saveTimer = null;
 var userEmail = '';
+var modulosActivos = [1]; // siempre módulo 1 disponible
 
 // ── SUPABASE INIT ──
 function initSB() {
@@ -1259,9 +1229,14 @@ async function cargarDatos() {
   try {
     var res = await sb.from('mentoria_cys').select('data').eq('email', userEmail).single();
     if (res.data && res.data.data) {
-      D = Object.assign(D, res.data.data);
+      var raw = res.data.data;
+      // modulos_activos vive dentro de data (lo guarda la mentora ahí)
+      if (raw.modulos_activos && Array.isArray(raw.modulos_activos)) {
+        modulosActivos = raw.modulos_activos;
+        if (modulosActivos.indexOf(1) === -1) modulosActivos.unshift(1);
+      }
+      D = Object.assign(D, raw);
     } else {
-      // Intentar importar desde Mujer Fénix
       await importarDesdeMF();
     }
   } catch(e) {}
@@ -1495,6 +1470,57 @@ function renderPortada() {
     if (pbar) pbar.style.width = '25%';
     if (pval) pval.textContent = 'Módulo 1 completado ✓';
   }
+
+  // Desbloquear módulos según modulosActivos
+  var config = [
+    { num: 1, screen: 's-m1-intro', nombre: 'Recuerda quién eres', desc: 'Identidad · Valores · Empresaria' },
+    { num: 2, screen: 's-m2-intro', nombre: 'La vida que eliges',   desc: 'Frutos · Visión · El negocio que elijo' },
+    { num: 3, screen: 's-m3-intro', nombre: 'Bases del negocio',    desc: 'Nicho · Cliente ideal · Oferta' },
+    { num: 4, screen: 's-m4-intro', nombre: 'Objetivos y plan',     desc: 'Metas · Carta Gantt · Sistemas' }
+  ];
+
+  var lista = document.querySelector('.modulos-list');
+  if (!lista) return;
+  lista.innerHTML = '';
+
+  config.forEach(function(m) {
+    var activo = modulosActivos.indexOf(m.num) !== -1;
+    var completado = m.num === 1 && D.m1.completado;
+    var esCurrent = activo && !completado && m.num === Math.max.apply(null, modulosActivos.filter(function(x){ return x <= 4; }));
+
+    var card = document.createElement('div');
+    if (!activo) {
+      card.className = 'modulo-card locked';
+      card.innerHTML =
+        '<div class="modulo-num locked">' + m.num + '</div>' +
+        '<div class="modulo-info">' +
+          '<div class="modulo-nombre">' + m.nombre + '</div>' +
+          '<div class="modulo-desc">' + m.desc + '</div>' +
+        '</div>' +
+        '<div class="modulo-status locked">🔒 Próximo</div>';
+    } else if (completado) {
+      card.className = 'modulo-card';
+      card.onclick = function(){ goTo(m.screen); };
+      card.innerHTML =
+        '<div class="modulo-num done">✓</div>' +
+        '<div class="modulo-info">' +
+          '<div class="modulo-nombre">' + m.nombre + '</div>' +
+          '<div class="modulo-desc">' + m.desc + '</div>' +
+        '</div>' +
+        '<div class="modulo-status done">Completado ✓</div>';
+    } else {
+      card.className = 'modulo-card' + (esCurrent ? ' active-mod' : '');
+      card.onclick = function(){ goTo(m.screen); };
+      card.innerHTML =
+        '<div class="modulo-num ' + (esCurrent ? 'current' : '') + '">' + m.num + '</div>' +
+        '<div class="modulo-info">' +
+          '<div class="modulo-nombre">' + m.nombre + '</div>' +
+          '<div class="modulo-desc">' + m.desc + '</div>' +
+        '</div>' +
+        '<div class="modulo-status ' + (esCurrent ? 'current' : '') + '">' + (esCurrent ? 'En curso →' : 'Disponible →') + '</div>';
+    }
+    lista.appendChild(card);
+  });
 }
 
 // ── FICHA ──
