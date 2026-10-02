@@ -1041,6 +1041,681 @@ body {
   </nav>
 </div>
 
+<!-- ═══════════ MÓDULO 2 · INTRO ═══════════ -->
+<div class="screen" id="s-m2-intro">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#1A6B3A 0%,#2D9E5F 60%,#3BAA6A 100%)">
+    <div class="mod-eyebrow">Módulo 2 · Visión</div>
+    <div class="mod-hero-title">La vida que eliges</div>
+    <div class="mod-hero-sub">Claridad sobre lo que quieres cosechar y el camino desde el que lo construyes.</div>
+    <div class="mod-steps">
+      <button class="mod-step active" onclick="goTo('s-m2-intro')">① Contexto</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-frutos')">② Frutos</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-vision')">③ Visión</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-negocio')">④ Mi camino</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-ia')">⑤ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div id="m2-sesion-banner"></div>
+    <div class="ej-card">
+      <div class="ej-card-title">¿Por qué este módulo?</div>
+      <div class="ej-card-sub">Antes de definir tu estrategia, necesitas saber a dónde vas. Muchas empresarias construyen sin una dirección clara — y se agotan en el camino. Este módulo te da el norte.</div>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#1A6B3A;line-height:1.7;padding:14px;background:rgba(45,158,95,.08);border-radius:var(--r2);margin-top:4px;border-left:3px solid #2D9E5F">
+        "La visión no es un sueño etéreo.<br>Es la decisión clara de lo que eliges construir."
+      </div>
+      <div style="font-size:12px;color:var(--fg3);margin-top:8px;text-align:right">— Constanza Enrione</div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">En este módulo vas a:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:#2D9E5F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</div>
+          <div style="font-size:14px;color:var(--fg2)">Identificar los frutos que quieres cosechar — lo que realmente buscas con tu negocio</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:#2D9E5F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</div>
+          <div style="font-size:14px;color:var(--fg2)">Construir tu visión de negocio a 3 años con claridad y emoción</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:22px;height:22px;border-radius:50%;background:#2D9E5F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</div>
+          <div style="font-size:14px;color:var(--fg2)">Definir el camino que eliges — negocio, proyecto o meta — tu misión y el impacto que quieres generar</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-or" onclick="guardarYSeguir('s-m2-frutos')">Comenzar → Mis frutos</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
+  </nav>
+</div>
+
+<!-- ═══════════ MÓDULO 2 · FRUTOS ═══════════ -->
+<div class="screen" id="s-m2-frutos">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#1A6B3A 0%,#2D9E5F 100%)">
+    <div class="mod-eyebrow">Módulo 2 · Paso 1</div>
+    <div class="mod-hero-title">Mis frutos</div>
+    <div class="mod-hero-sub">¿Qué quieres cosechar con tu negocio?</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m2-intro')">① Contexto</button>
+      <button class="mod-step active" onclick="goTo('s-m2-frutos')">② Frutos</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-vision')">③ Visión</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-negocio')">④ Mi camino</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-ia')">⑤ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">¿Qué es un fruto?</div>
+      <div class="ej-card-sub">Un fruto es el resultado real que quieres obtener de tu negocio — no solo dinero, sino también libertad, impacto, reconocimiento, tiempo, aprendizaje. Lo que genuinamente buscas cosechar.</div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">Selecciona tus frutos</div>
+      <div class="ej-card-sub">Elige todos los que resuenen contigo. Puedes agregar los tuyos.</div>
+      <div class="chips" id="chips-frutos">
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">💰 Ingresos sólidos</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">⏰ Tiempo libre</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🌍 Impacto real</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">✨ Reconocimiento</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🏡 Flexibilidad</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">📚 Aprendizaje</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🤝 Comunidad</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🌱 Crecimiento personal</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🔥 Propósito</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">💎 Legado</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">🗺️ Libertad geográfica</div>
+        <div class="chip" onclick="toggleChipM2(this,'frutos')">💪 Autonomía</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input class="field-inp" id="inp-fruto-custom" placeholder="Agregar otro fruto…" style="flex:1;padding:10px 12px" onkeydown="if(event.key==='Enter')addFrutoCustom()">
+        <button class="chip-add" onclick="addFrutoCustom()">+ Agregar</button>
+      </div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">Tu fruto principal</div>
+      <div class="ej-card-sub">De todos los frutos que elegiste, ¿cuál es el más importante para ti ahora mismo?</div>
+      <input class="field-inp" id="inp-fruto-ppal" placeholder="El fruto que más me importa hoy es…" style="margin-top:4px">
+      <label class="field-lbl" style="margin-top:14px">¿Por qué es el más importante?</label>
+      <textarea class="ej-textarea" id="ta-fruto-porque" placeholder="Cuando imagino que lo logro, siento…"></textarea>
+      <div class="ej-hint">Sé honesta contigo misma. No hay respuesta correcta o incorrecta.</div>
+    </div>
+    <button class="btn-or" onclick="guardarM2YSeguir('s-m2-vision')">Guardar y continuar →</button>
+    <button class="btn-outline" onclick="goTo('s-m2-intro')" style="margin-top:8px">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
+  </nav>
+</div>
+
+<!-- ═══════════ MÓDULO 2 · VISIÓN ═══════════ -->
+<div class="screen" id="s-m2-vision">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#1A6B3A 0%,#2D9E5F 100%)">
+    <div class="mod-eyebrow">Módulo 2 · Paso 2</div>
+    <div class="mod-hero-title">Mi visión de negocio</div>
+    <div class="mod-hero-sub">¿Cómo se ve tu negocio en 3 años?</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m2-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m2-frutos')">② Frutos</button>
+      <button class="mod-step active" onclick="goTo('s-m2-vision')">③ Visión</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-negocio')">④ Mi camino</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-ia')">⑤ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">¿En cuántos años vas a visualizar?</div>
+      <div class="ej-card-sub">Elige el horizonte que más te conecta. Recomendamos 3 años — lo suficientemente lejos para soñar, lo suficientemente cerca para planificar.</div>
+      <div class="chips" id="chips-vision-anios">
+        <div class="chip" onclick="selectAnios(this,'1')">1 año</div>
+        <div class="chip" onclick="selectAnios(this,'2')">2 años</div>
+        <div class="chip sel" onclick="selectAnios(this,'3')">3 años</div>
+        <div class="chip" onclick="selectAnios(this,'5')">5 años</div>
+      </div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">Palabras que describen tu negocio ideal</div>
+      <div class="ej-card-sub">Cuando piensas en tu negocio en <span id="anios-lbl">3</span> años, ¿qué palabras lo describen? Elige o agrega las tuyas.</div>
+      <div class="chips" id="chips-vision-palabras">
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Rentable</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Reconocida</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Escalable</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Simple</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Con equipo</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Online</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Local</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Global</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Con propósito</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Sostenible</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Innovador</div>
+        <div class="chip" onclick="toggleChipM2(this,'vision_palabras')">Íntimo / boutique</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input class="field-inp" id="inp-vision-word" placeholder="Agregar palabra…" style="flex:1;padding:10px 12px" onkeydown="if(event.key==='Enter')addVisionWord()">
+        <button class="chip-add" onclick="addVisionWord()">+ Agregar</button>
+      </div>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">Escribe tu visión en detalle</div>
+      <div class="ej-card-sub">Imagina que ya llegaste a ese futuro. ¿Qué ves? ¿Cómo trabajas, con quién, dónde, qué impacto generas, cómo te sientes?</div>
+      <textarea class="ej-textarea" id="ta-vision" style="min-height:140px" placeholder="En [X] años, mi negocio es… Trabajo con… Impacto en… Me siento…"></textarea>
+      <div class="ej-hint">Escribe en presente como si ya estuvieras ahí. Eso activa tu mente para construirlo.</div>
+    </div>
+    <button class="btn-or" onclick="guardarM2YSeguir('s-m2-negocio')">Guardar y continuar →</button>
+    <button class="btn-outline" onclick="goTo('s-m2-frutos')" style="margin-top:8px">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
+  </nav>
+</div>
+
+<!-- ═══════════ MÓDULO 2 · MI NEGOCIO ═══════════ -->
+<div class="screen" id="s-m2-negocio">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#1A6B3A 0%,#2D9E5F 100%)">
+    <div class="mod-eyebrow">Módulo 2 · Paso 3</div>
+    <div class="mod-hero-title">El camino que elijo</div>
+    <div class="mod-hero-sub">Claridad sobre qué tipo de proyecto o meta quieres construir y por qué</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m2-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m2-frutos')">② Frutos</button>
+      <button class="mod-step done" onclick="goTo('s-m2-vision')">③ Visión</button>
+      <button class="mod-step active" onclick="goTo('s-m2-negocio')">④ Mi camino</button>
+      <button class="mod-step pending" onclick="goTo('s-m2-ia')">⑤ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ej-card">
+      <div class="ej-card-title">¿Qué describes mejor tu camino?</div>
+      <div class="ej-card-sub">No todas partimos desde un negocio propio. Elige lo que más resuena con tu momento actual (puede ser más de uno).</div>
+      <div class="emp-grid" id="negocio-tipo-grid">
+        <div class="emp-item" onclick="toggleNegTipo(this,'Negocio propio')" data-key="Negocio propio">
+          <span class="emp-item-icon">🏢</span>
+          <div class="emp-item-lbl">Negocio propio</div>
+          <div class="emp-item-sub">Ya tengo o estoy creando</div>
+        </div>
+        <div class="emp-item" onclick="toggleNegTipo(this,'Servicios freelance')" data-key="Servicios freelance">
+          <span class="emp-item-icon">🤝</span>
+          <div class="emp-item-lbl">Servicios freelance</div>
+          <div class="emp-item-sub">Consultora, independiente</div>
+        </div>
+        <div class="emp-item" onclick="toggleNegTipo(this,'Proyecto personal')" data-key="Proyecto personal">
+          <span class="emp-item-icon">🌱</span>
+          <div class="emp-item-lbl">Proyecto personal</div>
+          <div class="emp-item-sub">Meta que quiero lograr</div>
+        </div>
+        <div class="emp-item" onclick="toggleNegTipo(this,'Trabajo dependiente mejor')" data-key="Trabajo dependiente mejor">
+          <span class="emp-item-icon">💼</span>
+          <div class="emp-item-lbl">Trabajo dependiente</div>
+          <div class="emp-item-sub">Mejorar mi situación actual</div>
+        </div>
+        <div class="emp-item" onclick="toggleNegTipo(this,'Emprendimiento en ideas')" data-key="Emprendimiento en ideas">
+          <span class="emp-item-icon">💡</span>
+          <div class="emp-item-lbl">Emprendimiento</div>
+          <div class="emp-item-sub">Tengo ideas, explorando</div>
+        </div>
+        <div class="emp-item" onclick="toggleNegTipo(this,'Liderazgo / comunidad')" data-key="Liderazgo / comunidad">
+          <span class="emp-item-icon">🌍</span>
+          <div class="emp-item-lbl">Liderazgo / causa</div>
+          <div class="emp-item-sub">Impacto social, comunidad</div>
+        </div>
+      </div>
+      <input class="field-inp" id="inp-neg-tipo-custom" placeholder="Otro camino o situación…" style="margin-top:12px" onkeydown="if(event.key==='Enter')addNegTipoCustom()">
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">¿Por qué este camino?</div>
+      <div class="ej-card-sub">¿Qué te llevó aquí? ¿Qué necesitas resolver, qué quieres construir, qué te mueve?</div>
+      <textarea class="ej-textarea" id="ta-neg-porque" placeholder="Elegí este camino porque…"></textarea>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">Tu propósito en una frase</div>
+      <div class="ej-card-sub">¿Para qué existe lo que estás construyendo? Completa a tu manera:</div>
+      <textarea class="ej-textarea" id="ta-neg-mision" style="min-height:80px" placeholder="Lo que estoy construyendo existe para…"></textarea>
+    </div>
+    <div class="ej-card">
+      <div class="ej-card-title">El impacto que quieres generar</div>
+      <div class="ej-card-sub">Si en algunos años logras lo que te propones, ¿qué habrá cambiado — en tu vida, en tu trabajo, en las personas que tocas?</div>
+      <textarea class="ej-textarea" id="ta-neg-impacto" placeholder="Si lo logro, habrá cambiado…"></textarea>
+    </div>
+    <button class="btn-or" onclick="guardarM2YSeguir('s-m2-ia')">Guardar y continuar → Declaración</button>
+    <button class="btn-outline" onclick="goTo('s-m2-vision')" style="margin-top:8px">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
+  </nav>
+</div>
+
+<!-- ═══════════ MÓDULO 2 · IA ═══════════ -->
+<div class="screen" id="s-m2-ia">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#1A6B3A 0%,#2D9E5F 100%)">
+    <div class="mod-eyebrow">Módulo 2 · Paso 4</div>
+    <div class="mod-hero-title">Tu declaración de visión</div>
+    <div class="mod-hero-sub">La IA integra todo lo que escribiste en una declaración poderosa</div>
+    <div class="mod-steps">
+      <button class="mod-step done" onclick="goTo('s-m2-intro')">① Contexto</button>
+      <button class="mod-step done" onclick="goTo('s-m2-frutos')">② Frutos</button>
+      <button class="mod-step done" onclick="goTo('s-m2-vision')">③ Visión</button>
+      <button class="mod-step done" onclick="goTo('s-m2-negocio')">④ Mi camino</button>
+      <button class="mod-step active" onclick="goTo('s-m2-ia')">⑤ IA</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="ia-card">
+      <div class="ia-card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Declaración de visión generada por IA
+      </div>
+      <div class="ia-resp empty" id="ia-vision-resp">Completa los pasos anteriores y haz clic en "Generar" para crear tu declaración de visión.</div>
+      <button class="btn-mo" id="btn-generar-vision-ia" onclick="generarVisionIA()" style="margin-top:14px">✨ Generar mi declaración de visión</button>
+    </div>
+    <div class="ej-card" id="vision-edit-card" style="display:none">
+      <div class="ej-card-title">Edita o personaliza tu declaración</div>
+      <div class="ej-card-sub">La IA te da un punto de partida. Tú la haces tuya.</div>
+      <textarea class="ej-textarea" id="ta-vision-declaracion" style="min-height:160px" placeholder="Tu declaración de visión…"></textarea>
+      <button class="btn-mo" onclick="guardarVisionDeclaracion()" style="margin-top:10px">💾 Guardar</button>
+    </div>
+    <div class="habito-card">
+      <div class="habito-tag">🌿 Práctica de visión</div>
+      <div class="habito-title">Lee tu visión cada mañana</div>
+      <div class="habito-desc">Dedica 2 minutos al comenzar el día a leer tu declaración de visión. Esto entrena tu mente para tomar decisiones alineadas con el futuro que elegiste construir.</div>
+    </div>
+    <button class="btn-or" onclick="completarModulo2()">🎉 Completar Módulo 2</button>
+    <button class="btn-outline" onclick="goTo('s-m2-negocio')" style="margin-top:8px">← Volver</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- MÓDULO 3 · BASES DEL NEGOCIO                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+
+<!-- M3 · INTRO -->
+<div class="screen" id="s-m3-intro">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#0F4C7A 0%,#1A7DBF 100%)">
+    <div class="mod-eyebrow">Módulo 3 · Negocio</div>
+    <div class="mod-hero-title">Bases del negocio</div>
+    <div class="mod-hero-sub">Nicho · Cliente ideal · Oferta</div>
+  </div>
+  <div class="scroll" style="padding:20px 20px 100px">
+    <div class="mod-steps-row">
+      <button class="mod-step active" onclick="goTo('s-m3-intro')">① Inicio</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-nicho')">② Nicho</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-cliente')">③ Cliente</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-oferta')">④ Oferta</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-ia')">⑤ IA</button>
+    </div>
+
+    <div id="m3-intro-perfil" style="background:var(--bg2);border-radius:var(--r);padding:18px;margin-bottom:20px;border:1px solid var(--line)">
+      <!-- Se llena con JS según M2 -->
+    </div>
+
+    <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:12px;color:var(--mo)">¿Qué vas a construir en este módulo?</div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+      <div style="background:var(--bg2);border-radius:var(--r);padding:16px;border-left:4px solid #1A7DBF;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:22px">🎯</span>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px">Tu nicho y subnicho</div>
+          <div style="font-size:13px;color:var(--fg2)">Exactamente a quién ayudas, con qué problema y qué solución ofreces.</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:16px;border-left:4px solid #1A7DBF;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:22px">👤</span>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px">Tu cliente ideal</div>
+          <div style="font-size:13px;color:var(--fg2)">Sus dolores, deseos, miedos y cómo busca soluciones.</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:16px;border-left:4px solid #1A7DBF;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:22px">💎</span>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px">Tu oferta y propuesta de valor</div>
+          <div style="font-size:13px;color:var(--fg2)">Qué ofreces exactamente, cómo se llama, cuánto vale y por qué la necesitan.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(26,125,191,.12),rgba(26,125,191,.06));border-radius:var(--r);padding:18px;margin-bottom:24px;border:1px solid rgba(26,125,191,.2)">
+      <div style="font-size:13px;color:var(--fg2);font-style:italic;line-height:1.6">"La claridad sobre a quién ayudas y cómo lo ayudas es la diferencia entre una empresaria que vende y una que espera."</div>
+    </div>
+
+    <button class="btn-or" onclick="goTo('s-m3-nicho')">Comenzar → Mi nicho</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- M3 · NICHO -->
+<div class="screen" id="s-m3-nicho">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#0F4C7A 0%,#1A7DBF 100%)">
+    <div class="mod-eyebrow">Módulo 3 · Paso 1 de 4</div>
+    <div class="mod-hero-title">Tu nicho</div>
+    <div class="mod-hero-sub">Define a quién ayudas y cómo</div>
+  </div>
+  <div class="scroll" style="padding:20px 20px 100px">
+    <div class="mod-steps-row">
+      <button class="mod-step done" onclick="goTo('s-m3-intro')">① Inicio</button>
+      <button class="mod-step active" onclick="goTo('s-m3-nicho')">② Nicho</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-cliente')">③ Cliente</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-oferta')">④ Oferta</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-ia')">⑤ IA</button>
+    </div>
+
+    <!-- Nicho principal -->
+    <div class="form-group">
+      <label class="form-label">¿Cuál es tu nicho principal?</label>
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">El área general en la que trabajas (ej: salud, finanzas, crianza, moda, negocios...)</div>
+      <input id="inp-nicho" class="inp" placeholder="Ej: bienestar y salud femenina" oninput="autoguardar()">
+    </div>
+
+    <!-- Subnicho -->
+    <div class="form-group">
+      <label class="form-label">¿Cuál es tu subnicho?</label>
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">Más específico: el segmento concreto dentro de tu nicho.</div>
+      <input id="inp-subnicho" class="inp" placeholder="Ej: mujeres con hipotiroidismo que quieren bajar de peso" oninput="autoguardar()">
+    </div>
+
+    <!-- Fórmula de nicho -->
+    <div style="background:linear-gradient(135deg,rgba(26,125,191,.1),rgba(26,125,191,.05));border-radius:var(--r);padding:18px;margin-bottom:20px;border:1px solid rgba(26,125,191,.2)">
+      <div style="font-weight:600;margin-bottom:12px;font-size:14px;color:#1A7DBF">🎯 Construye tu fórmula de nicho</div>
+      <div style="font-size:13px;color:var(--fg2);margin-bottom:12px">Completa la frase:</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:13px;color:var(--fg2)">Ayudo a…</div>
+        <input id="inp-nicho-f1" class="inp" style="font-size:13px" placeholder="tipo de persona específica" oninput="actualizarFormulaNicho()">
+        <div style="font-size:13px;color:var(--fg2)">…que…</div>
+        <input id="inp-nicho-f2" class="inp" style="font-size:13px" placeholder="está viviendo X problema o situación" oninput="actualizarFormulaNicho()">
+        <div style="font-size:13px;color:var(--fg2)">…y necesita…</div>
+        <input id="inp-nicho-f3" class="inp" style="font-size:13px" placeholder="solución concreta que ofreces" oninput="actualizarFormulaNicho()">
+      </div>
+    </div>
+
+    <!-- Preview fórmula -->
+    <div id="nicho-formula-preview" style="background:var(--bg2);border-radius:var(--r);padding:16px;margin-bottom:20px;border:1px solid var(--line);display:none">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--fg3);margin-bottom:8px">Tu fórmula de nicho</div>
+      <div id="nicho-formula-txt" style="font-size:14px;line-height:1.7;color:var(--fg)"></div>
+    </div>
+
+    <!-- Test de conexión emocional -->
+    <div style="font-family:'Playfair Display',serif;font-size:17px;margin-bottom:12px;color:var(--mo)">Test de conexión emocional</div>
+    <div style="font-size:13px;color:var(--fg2);margin-bottom:14px">Marca las que aplican a tu nicho elegido:</div>
+    <div id="chips-nicho-test" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:10px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--line)">
+        <input type="checkbox" id="nc1" style="width:16px;height:16px;margin-top:2px;accent-color:#1A7DBF" onchange="autoguardar()">
+        <span style="font-size:13px">Yo misma he vivido este problema o situación</span>
+      </label>
+      <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:10px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--line)">
+        <input type="checkbox" id="nc2" style="width:16px;height:16px;margin-top:2px;accent-color:#1A7DBF" onchange="autoguardar()">
+        <span style="font-size:13px">Conozco profundamente el dolor que vive esta persona</span>
+      </label>
+      <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:10px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--line)">
+        <input type="checkbox" id="nc3" style="width:16px;height:16px;margin-top:2px;accent-color:#1A7DBF" onchange="autoguardar()">
+        <span style="font-size:13px">Tengo experiencia, formación o resultados comprobables en esta área</span>
+      </label>
+      <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:10px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--line)">
+        <input type="checkbox" id="nc4" style="width:16px;height:16px;margin-top:2px;accent-color:#1A7DBF" onchange="autoguardar()">
+        <span style="font-size:13px">Podría hablar de este tema todo el día sin cansarme</span>
+      </label>
+      <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:10px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--line)">
+        <input type="checkbox" id="nc5" style="width:16px;height:16px;margin-top:2px;accent-color:#1A7DBF" onchange="autoguardar()">
+        <span style="font-size:13px">Esta persona está dispuesta a invertir para resolver su problema</span>
+      </label>
+    </div>
+
+    <button class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF)" onclick="guardarM3YSeguir('s-m3-cliente')">Guardar y continuar → Cliente ideal</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- M3 · CLIENTE IDEAL -->
+<div class="screen" id="s-m3-cliente">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#0F4C7A 0%,#1A7DBF 100%)">
+    <div class="mod-eyebrow">Módulo 3 · Paso 2 de 4</div>
+    <div class="mod-hero-title">Tu cliente ideal</div>
+    <div class="mod-hero-sub">Estudio emocional profundo</div>
+  </div>
+  <div class="scroll" style="padding:20px 20px 100px">
+    <div class="mod-steps-row">
+      <button class="mod-step done" onclick="goTo('s-m3-intro')">① Inicio</button>
+      <button class="mod-step done" onclick="goTo('s-m3-nicho')">② Nicho</button>
+      <button class="mod-step active" onclick="goTo('s-m3-cliente')">③ Cliente</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-oferta')">④ Oferta</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-ia')">⑤ IA</button>
+    </div>
+
+    <!-- Datos generales -->
+    <div style="font-family:'Playfair Display',serif;font-size:17px;margin-bottom:12px;color:var(--mo)">¿Quién es tu cliente ideal?</div>
+
+    <div class="form-group">
+      <label class="form-label">Dale un nombre o apodo</label>
+      <input id="inp-cli-nombre" class="inp" placeholder="Ej: María, La emprendedora perdida, La mamá exitosa..." oninput="autoguardar()">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Descríbela brevemente</label>
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">Edad aproximada, situación, contexto de vida.</div>
+      <textarea id="ta-cli-descripcion" class="inp" rows="3" placeholder="Ej: Mujer de 35-50 años, profesional o emprendedora, con familia, que siente que perdió su rumbo y quiere reconectar con lo que realmente quiere..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <!-- Dolores -->
+    <div style="background:rgba(220,50,50,.07);border-radius:var(--r);padding:16px;margin-bottom:16px;border:1px solid rgba(220,50,50,.18)">
+      <div style="font-weight:600;margin-bottom:10px;color:#C0392B;font-size:14px">💔 Sus dolores y frustraciones</div>
+      <div style="font-size:12px;color:var(--fg2);margin-bottom:10px">¿Qué la tiene atascada? ¿Qué le duele? ¿Qué la frustra?</div>
+      <textarea id="ta-cli-dolores" class="inp" rows="4" placeholder="Ej: No sabe por dónde empezar su negocio. Lleva meses dando vueltas sin avanzar. Siente que siempre ayuda a todos menos a sí misma. Ve a otras mujeres avanzar y ella sigue igual..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <!-- Deseos -->
+    <div style="background:rgba(46,204,113,.07);border-radius:var(--r);padding:16px;margin-bottom:16px;border:1px solid rgba(46,204,113,.2)">
+      <div style="font-weight:600;margin-bottom:10px;color:#27AE60;font-size:14px">✨ Sus deseos y sueños</div>
+      <div style="font-size:12px;color:var(--fg2);margin-bottom:10px">¿Qué quiere lograr? ¿Cómo quiere sentirse? ¿Qué sueña?</div>
+      <textarea id="ta-cli-deseos" class="inp" rows="4" placeholder="Ej: Quiere tener un negocio propio que le dé independencia. Quiere ganar dinero haciendo algo que ama. Quiere ser un ejemplo para sus hijos. Quiere salir de la sensación de que está desperdiciando su potencial..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <!-- Miedos -->
+    <div style="background:rgba(155,89,182,.07);border-radius:var(--r);padding:16px;margin-bottom:16px;border:1px solid rgba(155,89,182,.2)">
+      <div style="font-weight:600;margin-bottom:10px;color:#8E44AD;font-size:14px">😨 Sus miedos y confusiones</div>
+      <div style="font-size:12px;color:var(--fg2);margin-bottom:10px">¿Qué la paraliza? ¿Qué la hace dudar? ¿Qué cree que no puede?</div>
+      <textarea id="ta-cli-miedos" class="inp" rows="4" placeholder="Ej: Miedo a fracasar. Miedo a invertir y perder. Cree que no tiene las habilidades necesarias. Siente que es muy tarde para empezar. Le da vergüenza cobrar por lo que sabe..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <!-- Objeciones -->
+    <div style="background:rgba(230,126,34,.07);border-radius:var(--r);padding:16px;margin-bottom:20px;border:1px solid rgba(230,126,34,.2)">
+      <div style="font-weight:600;margin-bottom:10px;color:#E67E22;font-size:14px">🚧 Sus objeciones para comprar</div>
+      <div style="font-size:12px;color:var(--fg2);margin-bottom:10px">¿Qué le dirá antes de decir que sí? ¿Por qué podría no comprarte?</div>
+      <textarea id="ta-cli-objeciones" class="inp" rows="4" placeholder="Ej: No tengo tiempo. No tengo dinero ahora. Ya he probado otras cosas y no me funcionó. No sé si esto es para mí. Tengo que consultarlo con mi pareja..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <button class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF)" onclick="guardarM3YSeguir('s-m3-oferta')">Guardar y continuar → Mi oferta</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- M3 · OFERTA -->
+<div class="screen" id="s-m3-oferta">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#0F4C7A 0%,#1A7DBF 100%)">
+    <div class="mod-eyebrow">Módulo 3 · Paso 3 de 4</div>
+    <div class="mod-hero-title">Tu oferta</div>
+    <div class="mod-hero-sub">Propuesta de valor + lo que vendes</div>
+  </div>
+  <div class="scroll" style="padding:20px 20px 100px">
+    <div class="mod-steps-row">
+      <button class="mod-step done" onclick="goTo('s-m3-intro')">① Inicio</button>
+      <button class="mod-step done" onclick="goTo('s-m3-nicho')">② Nicho</button>
+      <button class="mod-step done" onclick="goTo('s-m3-cliente')">③ Cliente</button>
+      <button class="mod-step active" onclick="goTo('s-m3-oferta')">④ Oferta</button>
+      <button class="mod-step pending" onclick="goTo('s-m3-ia')">⑤ IA</button>
+    </div>
+
+    <!-- Propuesta de valor -->
+    <div style="font-family:'Playfair Display',serif;font-size:17px;margin-bottom:12px;color:var(--mo)">Tu propuesta de valor</div>
+
+    <div style="background:linear-gradient(135deg,rgba(26,125,191,.1),rgba(26,125,191,.05));border-radius:var(--r);padding:18px;margin-bottom:20px;border:1px solid rgba(26,125,191,.2)">
+      <div style="font-weight:600;margin-bottom:10px;font-size:14px;color:#1A7DBF">Construye tu fórmula de propuesta de valor:</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+        <div style="font-size:13px;color:var(--fg2)">Ayudo a…</div>
+        <input id="inp-pv-f1" class="inp" style="font-size:13px" placeholder="tipo de persona" oninput="actualizarPropuestaValor()">
+        <div style="font-size:13px;color:var(--fg2)">…a lograr…</div>
+        <input id="inp-pv-f2" class="inp" style="font-size:13px" placeholder="resolver su problema o lograr su deseo" oninput="actualizarPropuestaValor()">
+        <div style="font-size:13px;color:var(--fg2)">…a través de…</div>
+        <input id="inp-pv-f3" class="inp" style="font-size:13px" placeholder="tu método, enfoque o servicio" oninput="actualizarPropuestaValor()">
+      </div>
+    </div>
+
+    <!-- Preview propuesta de valor -->
+    <div id="pv-preview" style="background:var(--bg2);border-radius:var(--r);padding:16px;margin-bottom:20px;border:1px solid var(--line);display:none">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--fg3);margin-bottom:8px">Tu propuesta de valor</div>
+      <div id="pv-txt" style="font-size:14px;line-height:1.7;color:var(--fg)"></div>
+    </div>
+
+    <!-- Nombre de la oferta -->
+    <div class="form-group">
+      <label class="form-label">¿Cómo se llama tu oferta o servicio?</label>
+      <input id="inp-oferta-nombre" class="inp" placeholder="Ej: Programa Fénix 12 semanas, Consultoría VIP, Taller Claridad Total..." oninput="autoguardar()">
+    </div>
+
+    <!-- Tipo de oferta -->
+    <div class="form-group">
+      <label class="form-label">¿Qué tipo de oferta es?</label>
+      <div id="chips-oferta-tipo" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <div class="chip" onclick="toggleChipOferta(this,'servicio')">Servicio 1:1</div>
+        <div class="chip" onclick="toggleChipOferta(this,'grupo')">Grupo / comunidad</div>
+        <div class="chip" onclick="toggleChipOferta(this,'programa')">Programa online</div>
+        <div class="chip" onclick="toggleChipOferta(this,'taller')">Taller / curso</div>
+        <div class="chip" onclick="toggleChipOferta(this,'producto')">Producto físico</div>
+        <div class="chip" onclick="toggleChipOferta(this,'digital')">Producto digital</div>
+        <div class="chip" onclick="toggleChipOferta(this,'agencia')">Servicio de agencia</div>
+        <div class="chip" onclick="toggleChipOferta(this,'freelance')">Freelance / proyectos</div>
+      </div>
+    </div>
+
+    <!-- Beneficios clave -->
+    <div class="form-group">
+      <label class="form-label">3 beneficios clave que obtiene tu cliente</label>
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">No lo que haces — lo que logra ella gracias a ti.</div>
+      <textarea id="ta-oferta-beneficios" class="inp" rows="4" placeholder="1. Claridad total sobre su negocio y próximos pasos&#10;2. Estrategia de ventas personalizada para su situación&#10;3. Confianza para lanzarse y cobrar lo que vale" oninput="autoguardar()"></textarea>
+    </div>
+
+    <!-- Inversión -->
+    <div class="form-group">
+      <label class="form-label">¿Cuánto vale tu oferta?</label>
+      <input id="inp-oferta-precio" class="inp" placeholder="Ej: $397 · $1,200 · $150/mes · Desde $500" oninput="autoguardar()">
+    </div>
+
+    <!-- Duración / formato -->
+    <div class="form-group">
+      <label class="form-label">¿Cuánto dura / cómo se entrega?</label>
+      <input id="inp-oferta-formato" class="inp" placeholder="Ej: 8 semanas · 3 sesiones de 90 min · Acceso de por vida" oninput="autoguardar()">
+    </div>
+
+    <!-- Diferenciador -->
+    <div class="form-group">
+      <label class="form-label">¿Por qué tu oferta es diferente?</label>
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">¿Qué te hace única? ¿Qué no va a encontrar en otro lugar?</div>
+      <textarea id="ta-oferta-diferenciador" class="inp" rows="3" placeholder="Ej: Mi método combina psicología del éxito con estrategia práctica. No doy teoría — trabajo con cada alumna en su situación real..." oninput="autoguardar()"></textarea>
+    </div>
+
+    <button class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF)" onclick="guardarM3YSeguir('s-m3-ia')">Guardar y continuar → Declaración IA</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- M3 · IA -->
+<div class="screen" id="s-m3-ia">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#0F4C7A 0%,#1A7DBF 100%)">
+    <div class="mod-eyebrow">Módulo 3 · Paso 4 de 4</div>
+    <div class="mod-hero-title">Tu declaración de negocio</div>
+    <div class="mod-hero-sub">IA resume tu nicho, cliente y oferta</div>
+  </div>
+  <div class="scroll" style="padding:20px 20px 100px">
+    <div class="mod-steps-row">
+      <button class="mod-step done" onclick="goTo('s-m3-intro')">① Inicio</button>
+      <button class="mod-step done" onclick="goTo('s-m3-nicho')">② Nicho</button>
+      <button class="mod-step done" onclick="goTo('s-m3-cliente')">③ Cliente</button>
+      <button class="mod-step done" onclick="goTo('s-m3-oferta')">④ Oferta</button>
+      <button class="mod-step active" onclick="goTo('s-m3-ia')">⑤ IA</button>
+    </div>
+
+    <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;color:var(--mo)">Declara tu negocio</div>
+    <div style="font-size:13px;color:var(--fg2);margin-bottom:20px;line-height:1.6">La IA va a crear un resumen poderoso de tu negocio integrando tu nicho, cliente ideal y oferta — una declaración que puedes usar para presentarte, en tu bio, o como guía interna.</div>
+
+    <button id="btn-generar-negocio-ia" class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF);margin-bottom:16px" onclick="generarNegocioIA()">✦ Generar mi declaración de negocio</button>
+
+    <div id="ia-negocio-resp" class="ia-resp empty">Tu declaración aparecerá aquí…</div>
+
+    <div id="negocio-edit-card" style="display:none;margin-top:16px">
+      <div style="font-size:13px;color:var(--fg2);margin-bottom:8px">Edita o personaliza tu declaración:</div>
+      <textarea id="ta-negocio-declaracion" class="inp" rows="10" oninput="autoguardar()"></textarea>
+      <button class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF);margin-top:12px" onclick="guardarNegocioDeclaracion()">Guardar mi declaración</button>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--line)">
+      <div style="font-size:12px;color:var(--fg3);margin-bottom:8px">Próximo paso</div>
+      <div style="font-size:14px;color:var(--fg2);line-height:1.6">Con estas bases claras, en el Módulo 4 construirás tu plan de acción: metas, carta Gantt y sistemas para que tu negocio funcione.</div>
+    </div>
+
+    <button class="btn-or" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF);margin-top:16px" onclick="completarModulo3()">🎉 Completar Módulo 3</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
+<!-- MÓDULO 4 · PRÓXIMAMENTE -->
+<div class="screen" id="s-m4-intro">
+  <div class="mod-hero" style="background:linear-gradient(135deg,#3B0F8A 0%,#6B2DAE 100%)">
+    <div class="mod-eyebrow">Módulo 4 · Plan</div>
+    <div class="mod-hero-title">Objetivos y plan</div>
+    <div class="mod-hero-sub">Metas · Carta Gantt · Sistemas</div>
+  </div>
+  <div class="scroll" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding-top:48px">
+    <div style="font-size:48px">🎯</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--mo)">Módulo 4 en construcción</div>
+    <div style="font-size:14px;color:var(--fg2);max-width:280px;line-height:1.6">Tu mentora lo habilitará cuando estés lista para dar este paso.</div>
+    <button class="btn-outline" onclick="goTo('s-portada')" style="width:auto;padding:11px 28px;margin-top:8px">← Volver al inicio</button>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
+    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
+    <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
+  </nav>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1063,6 +1738,33 @@ var D = {
     abecedario: {},
     declaracion: '', declaracion_ia: '',
     reflexion: '',
+    completado: false
+  },
+  m2: {
+    frutos: [],
+    fruto_principal: '',
+    fruto_porque: '',
+    vision_texto: '',
+    vision_anios: '3',
+    vision_palabras: [],
+    negocio_tipo: '',
+    negocio_porque: '',
+    negocio_mision: '',
+    negocio_impacto: '',
+    vision_ia: '',
+    completado: false
+  },
+  m3: {
+    nicho: '', subnicho: '',
+    nicho_f1: '', nicho_f2: '', nicho_f3: '',
+    nicho_test: [],
+    cli_nombre: '', cli_descripcion: '',
+    cli_dolores: '', cli_deseos: '', cli_miedos: '', cli_objeciones: '',
+    pv_f1: '', pv_f2: '', pv_f3: '',
+    oferta_nombre: '', oferta_tipo: [],
+    oferta_precio: '', oferta_formato: '',
+    oferta_beneficios: '', oferta_diferenciador: '',
+    negocio_ia: '',
     completado: false
   }
 };
@@ -1087,6 +1789,16 @@ function goTo(id) {
   if (id === 's-m1-empresaria') initEmpresaria();
   if (id === 's-m1-abc') initAbc();
   if (id === 's-m1-ia') initIa();
+  if (id === 's-m2-intro') initM2Intro();
+  if (id === 's-m2-frutos') initM2Frutos();
+  if (id === 's-m2-vision') initM2Vision();
+  if (id === 's-m2-negocio') initM2Negocio();
+  if (id === 's-m2-ia') initM2Ia();
+  if (id === 's-m3-intro')   initM3Intro();
+  if (id === 's-m3-nicho')   initM3Nicho();
+  if (id === 's-m3-cliente') initM3Cliente();
+  if (id === 's-m3-oferta')  initM3Oferta();
+  if (id === 's-m3-ia')      initM3Ia();
   if (id === 's-imprimible') renderFicha();
 }
 
@@ -1474,7 +2186,7 @@ function renderPortada() {
   // Desbloquear módulos según modulosActivos
   var config = [
     { num: 1, screen: 's-m1-intro', nombre: 'Recuerda quién eres', desc: 'Identidad · Valores · Empresaria' },
-    { num: 2, screen: 's-m2-intro', nombre: 'La vida que eliges',   desc: 'Frutos · Visión · El negocio que elijo' },
+    { num: 2, screen: 's-m2-intro', nombre: 'La vida que eliges',   desc: 'Frutos · Visión · El camino que elijo' },
     { num: 3, screen: 's-m3-intro', nombre: 'Bases del negocio',    desc: 'Nicho · Cliente ideal · Oferta' },
     { num: 4, screen: 's-m4-intro', nombre: 'Objetivos y plan',     desc: 'Metas · Carta Gantt · Sistemas' }
   ];
@@ -1485,7 +2197,7 @@ function renderPortada() {
 
   config.forEach(function(m) {
     var activo = modulosActivos.indexOf(m.num) !== -1;
-    var completado = m.num === 1 && D.m1.completado;
+    var completado = (m.num === 1 && D.m1.completado) || (m.num === 2 && D.m2 && D.m2.completado) || (m.num === 3 && D.m3 && D.m3.completado);
     var esCurrent = activo && !completado && m.num === Math.max.apply(null, modulosActivos.filter(function(x){ return x <= 4; }));
 
     var card = document.createElement('div');
@@ -1621,6 +2333,492 @@ function completarModulo1() {
   D.m1.completado = true;
   guardarDatos().then(function(){
     toast('🎉 ¡Módulo 1 completado!', 3000);
+    setTimeout(function(){ goTo('s-portada'); }, 1000);
+  });
+}
+
+// ══════════════════════════════════════════
+// MÓDULO 2
+// ══════════════════════════════════════════
+
+function recolectarDatosM2() {
+  var fp = document.getElementById('inp-fruto-ppal'); if (fp) D.m2.fruto_principal = fp.value.trim();
+  var fpc = document.getElementById('ta-fruto-porque'); if (fpc) D.m2.fruto_porque = fpc.value.trim();
+  var vis = document.getElementById('ta-vision'); if (vis) D.m2.vision_texto = vis.value.trim();
+  var npm = document.getElementById('ta-neg-porque'); if (npm) D.m2.negocio_porque = npm.value.trim();
+  var nm = document.getElementById('ta-neg-mision'); if (nm) D.m2.negocio_mision = nm.value.trim();
+  var ni = document.getElementById('ta-neg-impacto'); if (ni) D.m2.negocio_impacto = ni.value.trim();
+  var vd = document.getElementById('ta-vision-declaracion'); if (vd) D.m2.vision_ia = vd.value.trim();
+  // tipo de negocio
+  var tipos = [];
+  document.querySelectorAll('#negocio-tipo-grid .emp-item.sel').forEach(function(i){ tipos.push(i.dataset.key); });
+  D.m2.negocio_tipo = tipos.join(', ');
+}
+
+function guardarM2YSeguir(pantalla) {
+  recolectarDatosM2();
+  guardarDatos().then(function(){ toast('✓ Guardado'); });
+  goTo(pantalla);
+}
+
+function toggleChipM2(chip, campo) {
+  chip.classList.toggle('sel');
+  var arr = [];
+  var containerId = campo === 'frutos' ? 'chips-frutos' : 'chips-vision-palabras';
+  document.querySelectorAll('#' + containerId + ' .chip').forEach(function(c){
+    if (c.classList.contains('sel')) arr.push(c.textContent.replace(/^[^\s]+\s/,'').trim());
+  });
+  if (campo === 'frutos') D.m2.frutos = arr;
+  else D.m2.vision_palabras = arr;
+  autoguardar();
+}
+
+function addFrutoCustom() {
+  var inp = document.getElementById('inp-fruto-custom');
+  var val = inp.value.trim(); if (!val) return;
+  var c = document.createElement('div');
+  c.className = 'chip sel';
+  c.textContent = val;
+  c.onclick = function(){ toggleChipM2(c, 'frutos'); };
+  document.getElementById('chips-frutos').appendChild(c);
+  inp.value = '';
+  D.m2.frutos.push(val);
+  autoguardar();
+}
+
+function addVisionWord() {
+  var inp = document.getElementById('inp-vision-word');
+  var val = inp.value.trim(); if (!val) return;
+  var c = document.createElement('div');
+  c.className = 'chip sel';
+  c.textContent = val;
+  c.onclick = function(){ toggleChipM2(c, 'vision_palabras'); };
+  document.getElementById('chips-vision-palabras').appendChild(c);
+  inp.value = '';
+  D.m2.vision_palabras.push(val);
+  autoguardar();
+}
+
+function selectAnios(el, val) {
+  document.querySelectorAll('#chips-vision-anios .chip').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  D.m2.vision_anios = val;
+  var lbl = document.getElementById('anios-lbl'); if (lbl) lbl.textContent = val;
+  autoguardar();
+}
+
+function toggleNegTipo(el, key) {
+  el.classList.toggle('sel');
+  autoguardar();
+}
+
+function addNegTipoCustom() {
+  var inp = document.getElementById('inp-neg-tipo-custom');
+  var val = inp.value.trim(); if (!val) return;
+  var item = document.createElement('div');
+  item.className = 'emp-item sel';
+  item.dataset.key = val;
+  item.innerHTML = '<span class="emp-item-icon">⭐</span><div class="emp-item-lbl">' + val + '</div>';
+  item.onclick = function(){ toggleNegTipo(item, val); };
+  document.getElementById('negocio-tipo-grid').appendChild(item);
+  inp.value = '';
+  autoguardar();
+}
+
+function initM2Intro() {
+  // Mostrar banner si hay sesiones cargadas con info de M2
+  var banner = document.getElementById('m2-sesion-banner');
+  if (banner && D.sesiones && D.sesiones.length > 0) {
+    banner.innerHTML = '<div class="import-banner"><div class="import-icon">📋</div>' +
+      '<div class="import-text"><div class="import-title">Tienes ' + D.sesiones.length + ' sesión(es) registrada(s)</div>' +
+      '<div class="import-sub">Tus respuestas de sesiones están integradas en los ejercicios.</div></div></div>';
+  }
+}
+
+function initM2Frutos() {
+  // Restaurar chips frutos
+  D.m2.frutos.forEach(function(f) {
+    var found = false;
+    document.querySelectorAll('#chips-frutos .chip').forEach(function(c) {
+      var txt = c.textContent.replace(/^[^\s]+\s/,'').trim();
+      if (txt === f || c.textContent === f) { c.classList.add('sel'); found = true; }
+    });
+    if (!found) {
+      var c = document.createElement('div');
+      c.className = 'chip sel'; c.textContent = f;
+      c.onclick = function(){ toggleChipM2(c,'frutos'); };
+      document.getElementById('chips-frutos').appendChild(c);
+    }
+  });
+  var fp = document.getElementById('inp-fruto-ppal'); if (fp) fp.value = D.m2.fruto_principal || '';
+  var fpc = document.getElementById('ta-fruto-porque'); if (fpc) fpc.value = D.m2.fruto_porque || '';
+}
+
+function initM2Vision() {
+  // Restaurar chips palabras
+  D.m2.vision_palabras.forEach(function(p) {
+    var found = false;
+    document.querySelectorAll('#chips-vision-palabras .chip').forEach(function(c) {
+      if (c.textContent === p) { c.classList.add('sel'); found = true; }
+    });
+    if (!found) {
+      var c = document.createElement('div');
+      c.className = 'chip sel'; c.textContent = p;
+      c.onclick = function(){ toggleChipM2(c,'vision_palabras'); };
+      document.getElementById('chips-vision-palabras').appendChild(c);
+    }
+  });
+  // Restaurar selector de años
+  if (D.m2.vision_anios) {
+    document.querySelectorAll('#chips-vision-anios .chip').forEach(function(c){ c.classList.remove('sel'); });
+    document.querySelectorAll('#chips-vision-anios .chip').forEach(function(c){
+      if (c.textContent === D.m2.vision_anios + ' año' || c.textContent === D.m2.vision_anios + ' años') c.classList.add('sel');
+    });
+    var lbl = document.getElementById('anios-lbl'); if (lbl) lbl.textContent = D.m2.vision_anios;
+  }
+  var vis = document.getElementById('ta-vision'); if (vis) vis.value = D.m2.vision_texto || '';
+}
+
+function initM2Negocio() {
+  // Restaurar tipo negocio
+  if (D.m2.negocio_tipo) {
+    var tipos = D.m2.negocio_tipo.split(',').map(function(t){ return t.trim(); });
+    document.querySelectorAll('#negocio-tipo-grid .emp-item').forEach(function(item) {
+      if (tipos.indexOf(item.dataset.key) !== -1) item.classList.add('sel');
+    });
+  }
+  var np = document.getElementById('ta-neg-porque'); if (np) np.value = D.m2.negocio_porque || '';
+  var nm = document.getElementById('ta-neg-mision'); if (nm) nm.value = D.m2.negocio_mision || '';
+  var ni = document.getElementById('ta-neg-impacto'); if (ni) ni.value = D.m2.negocio_impacto || '';
+}
+
+function initM2Ia() {
+  var resp = document.getElementById('ia-vision-resp');
+  var card = document.getElementById('vision-edit-card');
+  var dec = document.getElementById('ta-vision-declaracion');
+  if (D.m2.vision_ia) {
+    if (resp) { resp.textContent = D.m2.vision_ia; resp.classList.remove('empty'); }
+    if (card) card.style.display = 'block';
+    if (dec) dec.value = D.m2.vision_ia;
+    var btn = document.getElementById('btn-generar-vision-ia');
+    if (btn) btn.textContent = '↺ Regenerar';
+  }
+}
+
+async function generarVisionIA() {
+  var btn = document.getElementById('btn-generar-vision-ia');
+  var resp = document.getElementById('ia-vision-resp');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generando…';
+  resp.textContent = '';
+  resp.classList.remove('empty');
+
+  recolectarDatosM2();
+  var ctx = '';
+  ctx += 'Nombre: ' + (D.nombre || 'ella') + '. ';
+  ctx += 'Frutos que quiere cosechar: ' + (D.m2.frutos.join(', ') || 'no completado') + '. ';
+  ctx += 'Fruto principal: ' + (D.m2.fruto_principal || '') + '. ';
+  ctx += 'Por qué ese fruto: ' + (D.m2.fruto_porque || '') + '. ';
+  ctx += 'Horizonte de visión: ' + (D.m2.vision_anios || '3') + ' años. ';
+  ctx += 'Palabras que describen su negocio ideal: ' + (D.m2.vision_palabras.join(', ') || '') + '. ';
+  ctx += 'Descripción de la visión: ' + (D.m2.vision_texto || '') + '. ';
+  ctx += 'Tipo de negocio: ' + (D.m2.negocio_tipo || '') + '. ';
+  ctx += 'Por qué eligió ese negocio: ' + (D.m2.negocio_porque || '') + '. ';
+  ctx += 'Misión del negocio: ' + (D.m2.negocio_mision || '') + '. ';
+  ctx += 'Impacto que quiere generar: ' + (D.m2.negocio_impacto || '') + '.';
+
+  var sys = 'Eres una mentora experta que acompaña a mujeres en distintas etapas de vida y trabajo — algunas tienen negocio propio, otras están en transición, otras construyen proyectos personales. Tu tarea es crear una declaración de visión poderosa y personal en primera persona, que integre los frutos que busca, su visión a futuro y el camino que eligió recorrer. Reglas: 1) En primera persona, tiempo presente o futuro próximo. 2) 3-4 párrafos cortos, emotivos y concretos. 3) Integra sus frutos, visión y propósito de manera fluida. 4) Que suene auténtica, ambiciosa y real — no corporativa. 5) Empieza directamente, sin introducción. 6) Solo español con tildes.';
+
+  if (OPENAI_KEY === 'TU_OPENAI_KEY') {
+    var nombre = D.nombre || 'ella';
+    var frutos = D.m2.frutos.slice(0,3).join(', ') || 'ingresos sólidos, tiempo libre e impacto real';
+    var palabras = D.m2.vision_palabras.slice(0,3).join(', ') || 'rentable, con propósito y sostenible';
+    var anios = D.m2.vision_anios || '3';
+    var mision = D.m2.negocio_mision || 'transformar la vida de mis clientes';
+    var texto = 'En ' + anios + ' años, mi negocio es exactamente lo que elegí construir: ' + palabras + '. No llegué aquí por accidente — tomé decisiones conscientes desde el principio, sabiendo lo que quería cosechar: ' + frutos + '.\n\nMi negocio existe para ' + mision + '. Cada decisión que tomo está filtrada por esa misión — si no me acerca a ella, lo descarto.\n\nLo que construyo no es solo un negocio — es la vida que elegí. Una vida donde el trabajo tiene propósito, la libertad es real y el impacto es concreto. Eso ya no es un sueño. Es el camino que recorro hoy.';
+    resp.textContent = texto;
+    D.m2.vision_ia = texto;
+    var card = document.getElementById('vision-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-vision-declaracion');
+    if (dec && !D.m2.vision_ia_editada) dec.value = texto;
+    guardarDatos();
+    btn.disabled = false; btn.textContent = '↺ Regenerar';
+    return;
+  }
+
+  try {
+    var r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + OPENAI_KEY },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de visión para esta empresaria: ' + ctx }],
+        max_tokens: 500, temperature: 0.85
+      })
+    });
+    var json = await r.json();
+    var txt = json.choices[0].message.content.trim();
+    resp.textContent = txt;
+    D.m2.vision_ia = txt;
+    var card = document.getElementById('vision-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-vision-declaracion');
+    if (dec && !D.m2.vision_ia_editada) dec.value = txt;
+    guardarDatos();
+  } catch(e) {
+    resp.textContent = 'Hubo un problema al conectar con la IA. Verifica tu conexión e intenta nuevamente.';
+    resp.classList.add('empty');
+  }
+  btn.disabled = false; btn.textContent = '↺ Regenerar';
+}
+
+function guardarVisionDeclaracion() {
+  var dec = document.getElementById('ta-vision-declaracion');
+  if (dec) { D.m2.vision_ia = dec.value.trim(); D.m2.vision_ia_editada = true; }
+  guardarDatos().then(function(){ toast('✓ Declaración guardada'); });
+}
+
+function completarModulo2() {
+  recolectarDatosM2();
+  D.m2.completado = true;
+  guardarDatos().then(function(){
+    toast('🎉 ¡Módulo 2 completado!', 3000);
+    setTimeout(function(){ goTo('s-portada'); }, 1000);
+  });
+}
+
+// ══════════════════════════════════════════
+// MÓDULO 3
+// ══════════════════════════════════════════
+
+function recolectarDatosM3() {
+  if (!D.m3) D.m3 = {};
+  var v = function(id){ var e = document.getElementById(id); return e ? e.value.trim() : ''; };
+  D.m3.nicho         = v('inp-nicho');
+  D.m3.subnicho      = v('inp-subnicho');
+  D.m3.nicho_f1      = v('inp-nicho-f1');
+  D.m3.nicho_f2      = v('inp-nicho-f2');
+  D.m3.nicho_f3      = v('inp-nicho-f3');
+  D.m3.cli_nombre    = v('inp-cli-nombre');
+  D.m3.cli_descripcion = v('ta-cli-descripcion');
+  D.m3.cli_dolores   = v('ta-cli-dolores');
+  D.m3.cli_deseos    = v('ta-cli-deseos');
+  D.m3.cli_miedos    = v('ta-cli-miedos');
+  D.m3.cli_objeciones = v('ta-cli-objeciones');
+  D.m3.pv_f1         = v('inp-pv-f1');
+  D.m3.pv_f2         = v('inp-pv-f2');
+  D.m3.pv_f3         = v('inp-pv-f3');
+  D.m3.oferta_nombre = v('inp-oferta-nombre');
+  D.m3.oferta_precio = v('inp-oferta-precio');
+  D.m3.oferta_formato = v('inp-oferta-formato');
+  D.m3.oferta_beneficios = v('ta-oferta-beneficios');
+  D.m3.oferta_diferenciador = v('ta-oferta-diferenciador');
+  D.m3.negocio_ia    = v('ta-negocio-declaracion');
+  // checkboxes nicho test
+  D.m3.nicho_test = [1,2,3,4,5].filter(function(i){
+    var el = document.getElementById('nc'+i); return el && el.checked;
+  });
+  // chips tipo oferta
+  var tipos = [];
+  document.querySelectorAll('#chips-oferta-tipo .chip.sel').forEach(function(c){ tipos.push(c.dataset.key || c.textContent.trim()); });
+  D.m3.oferta_tipo = tipos;
+}
+
+function guardarM3YSeguir(pantalla) {
+  recolectarDatosM3();
+  guardarDatos().then(function(){ toast('✓ Guardado'); });
+  goTo(pantalla);
+}
+
+function toggleChipOferta(chip, key) {
+  chip.classList.toggle('sel');
+  autoguardar();
+}
+
+function actualizarFormulaNicho() {
+  var f1 = (document.getElementById('inp-nicho-f1') || {}).value || '';
+  var f2 = (document.getElementById('inp-nicho-f2') || {}).value || '';
+  var f3 = (document.getElementById('inp-nicho-f3') || {}).value || '';
+  var prev = document.getElementById('nicho-formula-preview');
+  var txt = document.getElementById('nicho-formula-txt');
+  if (!prev || !txt) return;
+  if (f1 || f2 || f3) {
+    prev.style.display = 'block';
+    txt.innerHTML = '<em>Ayudo a</em> <strong>' + (f1||'…') + '</strong> <em>que</em> <strong>' + (f2||'…') + '</strong> <em>y necesita</em> <strong>' + (f3||'…') + '</strong>';
+  } else {
+    prev.style.display = 'none';
+  }
+  autoguardar();
+}
+
+function actualizarPropuestaValor() {
+  var f1 = (document.getElementById('inp-pv-f1') || {}).value || '';
+  var f2 = (document.getElementById('inp-pv-f2') || {}).value || '';
+  var f3 = (document.getElementById('inp-pv-f3') || {}).value || '';
+  var prev = document.getElementById('pv-preview');
+  var txt = document.getElementById('pv-txt');
+  if (!prev || !txt) return;
+  if (f1 || f2 || f3) {
+    prev.style.display = 'block';
+    txt.innerHTML = '<em>Ayudo a</em> <strong>' + (f1||'…') + '</strong> <em>a lograr</em> <strong>' + (f2||'…') + '</strong> <em>a través de</em> <strong>' + (f3||'…') + '</strong>';
+  } else {
+    prev.style.display = 'none';
+  }
+  autoguardar();
+}
+
+function initM3Intro() {
+  var perfil = document.getElementById('m3-intro-perfil');
+  if (!perfil) return;
+  var tipo = D.m2 && D.m2.negocio_tipo ? D.m2.negocio_tipo : '';
+  var frutos = D.m2 && D.m2.frutos ? D.m2.frutos.slice(0,3).join(', ') : '';
+  perfil.innerHTML =
+    '<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--fg3);margin-bottom:10px">Tu perfil de Módulo 2</div>' +
+    '<div style="display:flex;flex-direction:column;gap:6px">' +
+      (tipo ? '<div style="font-size:13px"><span style="color:var(--fg3)">Camino elegido:</span> <strong>' + tipo + '</strong></div>' : '') +
+      (frutos ? '<div style="font-size:13px"><span style="color:var(--fg3)">Frutos que buscas:</span> <strong>' + frutos + '</strong></div>' : '') +
+      (D.m2 && D.m2.negocio_mision ? '<div style="font-size:13px"><span style="color:var(--fg3)">Tu misión:</span> ' + D.m2.negocio_mision + '</div>' : '') +
+    '</div>';
+}
+
+function initM3Nicho() {
+  var m3 = D.m3 || {};
+  var s = function(id, val){ var e = document.getElementById(id); if (e && val) e.value = val; };
+  s('inp-nicho', m3.nicho); s('inp-subnicho', m3.subnicho);
+  s('inp-nicho-f1', m3.nicho_f1); s('inp-nicho-f2', m3.nicho_f2); s('inp-nicho-f3', m3.nicho_f3);
+  if (m3.nicho_test) {
+    m3.nicho_test.forEach(function(i){ var el = document.getElementById('nc'+i); if (el) el.checked = true; });
+  }
+  actualizarFormulaNicho();
+}
+
+function initM3Cliente() {
+  var m3 = D.m3 || {};
+  var s = function(id, val){ var e = document.getElementById(id); if (e && val) e.value = val; };
+  s('inp-cli-nombre', m3.cli_nombre);
+  s('ta-cli-descripcion', m3.cli_descripcion);
+  s('ta-cli-dolores', m3.cli_dolores);
+  s('ta-cli-deseos', m3.cli_deseos);
+  s('ta-cli-miedos', m3.cli_miedos);
+  s('ta-cli-objeciones', m3.cli_objeciones);
+}
+
+function initM3Oferta() {
+  var m3 = D.m3 || {};
+  var s = function(id, val){ var e = document.getElementById(id); if (e && val) e.value = val; };
+  s('inp-pv-f1', m3.pv_f1); s('inp-pv-f2', m3.pv_f2); s('inp-pv-f3', m3.pv_f3);
+  s('inp-oferta-nombre', m3.oferta_nombre);
+  s('inp-oferta-precio', m3.oferta_precio);
+  s('inp-oferta-formato', m3.oferta_formato);
+  s('ta-oferta-beneficios', m3.oferta_beneficios);
+  s('ta-oferta-diferenciador', m3.oferta_diferenciador);
+  if (m3.oferta_tipo && m3.oferta_tipo.length) {
+    document.querySelectorAll('#chips-oferta-tipo .chip').forEach(function(c){
+      if (m3.oferta_tipo.indexOf(c.textContent.trim()) !== -1) c.classList.add('sel');
+    });
+  }
+  actualizarPropuestaValor();
+}
+
+function initM3Ia() {
+  var m3 = D.m3 || {};
+  var resp = document.getElementById('ia-negocio-resp');
+  var card = document.getElementById('negocio-edit-card');
+  var dec = document.getElementById('ta-negocio-declaracion');
+  if (m3.negocio_ia) {
+    if (resp) { resp.textContent = m3.negocio_ia; resp.classList.remove('empty'); }
+    if (card) card.style.display = 'block';
+    if (dec) dec.value = m3.negocio_ia;
+    var btn = document.getElementById('btn-generar-negocio-ia');
+    if (btn) btn.textContent = '↺ Regenerar';
+  }
+}
+
+async function generarNegocioIA() {
+  var btn = document.getElementById('btn-generar-negocio-ia');
+  var resp = document.getElementById('ia-negocio-resp');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generando…';
+  resp.textContent = '';
+  resp.classList.remove('empty');
+
+  recolectarDatosM3();
+  var m3 = D.m3 || {};
+  var ctx = '';
+  ctx += 'Nombre: ' + (D.nombre || 'ella') + '. ';
+  ctx += 'Nicho: ' + (m3.nicho || '') + '. Subnicho: ' + (m3.subnicho || '') + '. ';
+  if (m3.nicho_f1) ctx += 'Ayuda a: ' + m3.nicho_f1 + ' que ' + (m3.nicho_f2||'') + ' y necesita ' + (m3.nicho_f3||'') + '. ';
+  ctx += 'Cliente ideal: ' + (m3.cli_nombre||'') + '. Descripción: ' + (m3.cli_descripcion||'') + '. ';
+  ctx += 'Dolores del cliente: ' + (m3.cli_dolores||'') + '. ';
+  ctx += 'Deseos del cliente: ' + (m3.cli_deseos||'') + '. ';
+  ctx += 'Oferta: ' + (m3.oferta_nombre||'') + '. Tipo: ' + (m3.oferta_tipo ? m3.oferta_tipo.join(', ') : '') + '. ';
+  if (m3.pv_f1) ctx += 'Propuesta de valor: Ayudo a ' + m3.pv_f1 + ' a lograr ' + (m3.pv_f2||'') + ' a través de ' + (m3.pv_f3||'') + '. ';
+  ctx += 'Precio: ' + (m3.oferta_precio||'') + '. Formato: ' + (m3.oferta_formato||'') + '. ';
+  ctx += 'Beneficios clave: ' + (m3.oferta_beneficios||'') + '. ';
+  ctx += 'Diferenciador: ' + (m3.oferta_diferenciador||'') + '.';
+
+  var sys = 'Eres una mentora de negocios experta que ayuda a mujeres empresarias a clarificar y comunicar su negocio. Tu tarea es crear una declaración de negocio poderosa en primera persona que integre nicho, cliente ideal, propuesta de valor y oferta. Reglas: 1) En primera persona, presente. 2) 3 párrafos: primero quién ayudas y su dolor; segundo qué ofreces y cómo transforma; tercero por qué eres diferente y a quién invitas. 3) Emotiva, directa y real — no corporativa ni genérica. 4) Que sirva como bio, presentación o guía interna. 5) Solo español con tildes.';
+
+  if (OPENAI_KEY === 'TU_OPENAI_KEY') {
+    var nombre = D.nombre || 'ella';
+    var nicho = m3.nicho_f1 || m3.nicho || 'mujeres que quieren transformar su vida';
+    var problema = m3.nicho_f2 || m3.cli_dolores ? m3.cli_dolores.split('.')[0] : 'están atascadas y no saben cómo avanzar';
+    var oferta = m3.oferta_nombre || 'mi programa';
+    var diferenciador = m3.oferta_diferenciador || 'mi método personalizado y mi experiencia de vida';
+    var texto = 'Trabajo con ' + nicho + ' que ' + problema + '. Las entiendo porque yo también he pasado por eso — y sé exactamente lo que necesitan para salir de donde están.\n\nA través de ' + oferta + ' acompaño a mis clientas a pasar de la confusión a la claridad, de la parálisis a la acción concreta. No doy fórmulas genéricas — trabajo con lo que cada una tiene, desde donde está.\n\nLo que me hace diferente es ' + diferenciador + '. Si eres una mujer que sabe que tiene más por dar y estás lista para construirlo, quiero acompañarte.';
+    resp.textContent = texto;
+    if (!D.m3) D.m3 = {};
+    D.m3.negocio_ia = texto;
+    var card = document.getElementById('negocio-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-negocio-declaracion');
+    if (dec) dec.value = texto;
+    guardarDatos();
+    btn.disabled = false; btn.textContent = '↺ Regenerar';
+    return;
+  }
+
+  try {
+    var r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + OPENAI_KEY },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de negocio para esta empresaria: ' + ctx }],
+        max_tokens: 500, temperature: 0.85
+      })
+    });
+    var json = await r.json();
+    var txt = json.choices[0].message.content.trim();
+    resp.textContent = txt;
+    if (!D.m3) D.m3 = {};
+    D.m3.negocio_ia = txt;
+    var card = document.getElementById('negocio-edit-card');
+    if (card) card.style.display = 'block';
+    var dec = document.getElementById('ta-negocio-declaracion');
+    if (dec) dec.value = txt;
+    guardarDatos();
+  } catch(e) {
+    resp.textContent = 'Hubo un problema al conectar con la IA. Verifica tu conexión e intenta nuevamente.';
+    resp.classList.add('empty');
+  }
+  btn.disabled = false; btn.textContent = '↺ Regenerar';
+}
+
+function guardarNegocioDeclaracion() {
+  var dec = document.getElementById('ta-negocio-declaracion');
+  if (!D.m3) D.m3 = {};
+  if (dec) D.m3.negocio_ia = dec.value.trim();
+  guardarDatos().then(function(){ toast('✓ Declaración guardada'); });
+}
+
+function completarModulo3() {
+  recolectarDatosM3();
+  if (!D.m3) D.m3 = {};
+  D.m3.completado = true;
+  guardarDatos().then(function(){
+    toast('🎉 ¡Módulo 3 completado!', 3000);
     setTimeout(function(){ goTo('s-portada'); }, 1000);
   });
 }
