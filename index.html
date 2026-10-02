@@ -2381,6 +2381,11 @@ function initM2Frutos() {
         } else {
           console.warn('[CYS] No se encontró s2 en:', JSON.stringify(fila));
         }
+        // Si s2 llegó como array, tomar el primer elemento
+        if (Array.isArray(s2)) {
+          console.log('[CYS] s2 es array, len:', s2.length, '- tomando [0]');
+          s2 = s2.length > 0 ? s2[0] : null;
+        }
         if (s2) {
           console.log('[CYS] s2 keys:', Object.keys(s2));
           var claves = ['salud','finanzas','relaciones','talentos','tranquilidad','disfrute'];
