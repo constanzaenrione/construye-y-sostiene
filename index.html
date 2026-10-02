@@ -2352,26 +2352,54 @@ function initM2Frutos() {
     D.m2.frutos = { finanzas:'', relaciones:'', talentos:'', tranquilidad:'', disfrute:'', salud:'' };
   }
   // Si ya hay datos propios de CYS, renderizar directo
-  var tieneDatosPropios = D.m2.frutos && Object.values(D.m2.frutos).some(function(v){ return v; });
+  // Solo saltar la importación si ya hay texto real guardado en CYS (no solo el objeto vacío inicial)
+  var tieneDatosPropios = D.m2.frutos && typeof D.m2.frutos === 'object' && !Array.isArray(D.m2.frutos) &&
+    Object.values(D.m2.frutos).some(function(v){ return v && v.trim && v.trim().length > 0; });
   if (tieneDatosPropios) {
     renderFrutosM2(); renderFocoM2(); return;
   }
   // Intentar cargar frutos desde tabla fichas de Mujer Fénix
   if (userEmail && sb) {
+    console.log('[CYS] Buscando fichas para:', userEmail);
     sb.from('fichas').select('data').eq('email', userEmail).single()
       .then(function(res) {
-        if (res.data && res.data.data && res.data.data.s2) {
-          var s2 = res.data.data.s2;
-          // Mapear claves de Mujer Fénix a las de CYS
-          var mapa = { salud:'salud', finanzas:'finanzas', relaciones:'relaciones', talentos:'talentos', tranquilidad:'tranquilidad', disfrute:'disfrute' };
-          Object.keys(mapa).forEach(function(k) {
-            if (s2[k] && !D.m2.frutos[mapa[k]]) D.m2.frutos[mapa[k]] = s2[k];
+        console.log('[CYS] fichas res completo:', JSON.stringify(res));
+        if (res.error) {
+          console.warn('[CYS] fichas error:', res.error);
+          renderFrutosM2(); renderFocoM2(); return;
+        }
+        var fila = res.data;
+        console.log('[CYS] fichas fila:', JSON.stringify(fila));
+        var s2 = null;
+        // Supabase JS v2: res.data es la fila, la columna "data" es el JSONB
+        if (fila && fila.data && typeof fila.data === 'object' && fila.data.s2) {
+          s2 = fila.data.s2;
+          console.log('[CYS] s2 encontrado en fila.data.s2');
+        } else if (fila && fila.s2) {
+          s2 = fila.s2;
+          console.log('[CYS] s2 encontrado en fila.s2');
+        } else {
+          console.warn('[CYS] No se encontró s2 en:', JSON.stringify(fila));
+        }
+        if (s2) {
+          console.log('[CYS] s2 keys:', Object.keys(s2));
+          var claves = ['salud','finanzas','relaciones','talentos','tranquilidad','disfrute'];
+          claves.forEach(function(k) {
+            if (s2[k] && !D.m2.frutos[k]) {
+              D.m2.frutos[k] = s2[k];
+              console.log('[CYS] importado', k, ':', s2[k].substring(0,40));
+            }
           });
+          if (!D.m2.fruto_foco && s2.prioritario) {
+            D.m2.fruto_foco = s2.prioritario;
+            console.log('[CYS] fruto_foco:', D.m2.fruto_foco);
+          }
         }
         renderFrutosM2(); renderFocoM2();
       })
-      .catch(function() { renderFrutosM2(); renderFocoM2(); });
+      .catch(function(e) { console.warn('[CYS] fichas fetch error:', e); renderFrutosM2(); renderFocoM2(); });
   } else {
+    console.log('[CYS] No hay sb o userEmail, sb:', !!sb, 'email:', userEmail);
     renderFrutosM2(); renderFocoM2();
   }
 }
