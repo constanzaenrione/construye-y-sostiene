@@ -703,19 +703,6 @@ function renderFicha() {
     html += '</div>';
   }
 
-  // Cambiar clave
-  html += '<div class="section-card">' +
-    '<div class="section-title">🔑 Cambiar contraseña</div>' +
-    '<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">' +
-      '<div style="flex:1;min-width:180px">' +
-        '<label style="font-size:12px;color:var(--fg3);display:block;margin-bottom:4px">Nueva contraseña</label>' +
-        '<input id="new-pass-input" type="password" class="input" placeholder="Mínimo 8 caracteres" style="width:100%;box-sizing:border-box">' +
-      '</div>' +
-      '<button class="btn btn-primary" id="btn-cambiar-clave" onclick="cambiarClave(\'' + a.email + '\')">Cambiar clave</button>' +
-    '</div>' +
-    '<div id="msg-cambiar-clave" style="margin-top:8px;font-size:13px;min-height:18px"></div>' +
-  '</div>';
-
   // Sesiones
   html += '<div class="section-card">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
@@ -727,59 +714,6 @@ function renderFicha() {
   '</div>';
 
   document.getElementById('ficha-content').innerHTML = html;
-}
-
-// ─── CAMBIAR CLAVE ───
-async function cambiarClave(email) {
-  var input = document.getElementById('new-pass-input');
-  var msg   = document.getElementById('msg-cambiar-clave');
-  var btn   = document.getElementById('btn-cambiar-clave');
-  var pass  = input ? input.value.trim() : '';
-  if (!pass || pass.length < 8) {
-    msg.style.color = 'var(--er)'; msg.textContent = 'La contraseña debe tener al menos 8 caracteres'; return;
-  }
-  btn.textContent = 'Cambiando…'; btn.disabled = true; msg.textContent = '';
-  try {
-    var SVC_KEY = 'sb_secret_EueA5Hg4sjyr35Ni3ctQzA_FrG1bHWG';
-
-    // 1. Buscar UUID por email
-    var listRes = await fetch(SUPA_URL + '/auth/v1/admin/users?page=1&per_page=1000', {
-      headers: { 'apikey': SVC_KEY, 'Authorization': 'Bearer ' + SVC_KEY }
-    }).then(function(r){ return r.json(); });
-
-    var allUsers = listRes.users || listRes;
-    var uid = null;
-    if (Array.isArray(allUsers)) {
-      var found = allUsers.find(function(u){ return u.email === email; });
-      if (found) uid = found.id;
-    }
-
-    if (!uid) {
-      msg.style.color = 'var(--er)'; msg.textContent = 'No se encontró la cuenta en Auth. Verifica que la alumna tenga cuenta activa.';
-      btn.textContent = 'Cambiar clave'; btn.disabled = false; return;
-    }
-
-    // 2. Actualizar contraseña
-    var updRes = await fetch(SUPA_URL + '/auth/v1/admin/users/' + uid, {
-      method: 'PUT',
-      headers: {
-        'apikey': SVC_KEY,
-        'Authorization': 'Bearer ' + SVC_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ password: pass })
-    }).then(function(r){ return r.json(); });
-
-    if (updRes.error) {
-      msg.style.color = 'var(--er)'; msg.textContent = updRes.error.message || 'Error al cambiar la contraseña';
-    } else {
-      msg.style.color = 'var(--su, #27ae60)'; msg.textContent = '✓ Contraseña cambiada correctamente';
-      input.value = '';
-    }
-  } catch(e) {
-    msg.style.color = 'var(--er)'; msg.textContent = 'Error de conexión';
-  }
-  btn.textContent = 'Cambiar clave'; btn.disabled = false;
 }
 
 // ─── TOGGLE MÓDULO ───
