@@ -2369,7 +2369,7 @@ function initM2Frutos() {
           renderFrutosM2(); renderFocoM2(); return;
         }
         var fila = res.data;
-        console.log('[CYS] fichas fila:', JSON.stringify(fila));
+        console.log('[CYS] fichas fila completa:', JSON.stringify(fila).substring(0, 500));
         var s2 = null;
         // Supabase JS v2: res.data es la fila, la columna "data" es el JSONB
         if (fila && fila.data && typeof fila.data === 'object' && fila.data.s2) {
