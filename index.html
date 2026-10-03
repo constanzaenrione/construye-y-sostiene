@@ -1250,20 +1250,16 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
     </button>
   </div>
-  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px"></div>
-  <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 0"></div>
-  <div style="padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line);display:flex;gap:8px;align-items:flex-end">
-    <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg2);color:var(--fg1);outline:none;max-height:100px;line-height:1.5" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
-    <button onclick="enviarM2C7()" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
+  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px"></div>
+  <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
+    <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+    <div style="display:flex;gap:8px;align-items:flex-end">
+      <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--fg);outline:none;max-height:100px;line-height:1.5" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
+      <button onclick="enviarM2C7()" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
   </div>
-  <nav class="nav">
-    <button class="nav-btn" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
-    <button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>Módulo 2</button>
-    <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
-    <button class="nav-btn" onclick="toggleMenuCuenta()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Mi cuenta</button>
-  </nav>
 </div>
 
 <!-- ═══════════ MÓDULO 2 · VISIÓN ═══════════ -->
@@ -2360,51 +2356,30 @@ function initM2Frutos() {
   }
   // Intentar cargar frutos desde tabla fichas de Mujer Fénix
   if (userEmail && sb) {
-    console.log('[CYS] Buscando fichas para:', userEmail);
     sb.from('fichas').select('data').eq('email', userEmail).single()
       .then(function(res) {
-        console.log('[CYS] fichas res completo:', JSON.stringify(res));
-        if (res.error) {
-          console.warn('[CYS] fichas error:', res.error);
-          renderFrutosM2(); renderFocoM2(); return;
-        }
+        if (res.error) { renderFrutosM2(); renderFocoM2(); return; }
         var fila = res.data;
-        console.log('[CYS] fichas fila completa:', JSON.stringify(fila).substring(0, 500));
         var s2 = null;
-        // Supabase JS v2: res.data es la fila, la columna "data" es el JSONB
         if (fila && fila.data && typeof fila.data === 'object' && fila.data.s2) {
           s2 = fila.data.s2;
-          console.log('[CYS] s2 encontrado en fila.data.s2');
         } else if (fila && fila.s2) {
           s2 = fila.s2;
-          console.log('[CYS] s2 encontrado en fila.s2');
-        } else {
-          console.warn('[CYS] No se encontró s2 en:', JSON.stringify(fila));
         }
-        // Si s2 llegó como array, tomar el primer elemento
         if (Array.isArray(s2)) {
-          console.log('[CYS] s2 es array, len:', s2.length, '- tomando [0]');
           s2 = s2.length > 0 ? s2[0] : null;
         }
         if (s2) {
-          console.log('[CYS] s2 keys:', Object.keys(s2));
           var claves = ['salud','finanzas','relaciones','talentos','tranquilidad','disfrute'];
           claves.forEach(function(k) {
-            if (s2[k] && !D.m2.frutos[k]) {
-              D.m2.frutos[k] = s2[k];
-              console.log('[CYS] importado', k, ':', s2[k].substring(0,40));
-            }
+            if (s2[k] && !D.m2.frutos[k]) D.m2.frutos[k] = s2[k];
           });
-          if (!D.m2.fruto_foco && s2.prioritario) {
-            D.m2.fruto_foco = s2.prioritario;
-            console.log('[CYS] fruto_foco:', D.m2.fruto_foco);
-          }
+          if (!D.m2.fruto_foco && s2.prioritario) D.m2.fruto_foco = s2.prioritario;
         }
         renderFrutosM2(); renderFocoM2();
       })
-      .catch(function(e) { console.warn('[CYS] fichas fetch error:', e); renderFrutosM2(); renderFocoM2(); });
+      .catch(function(e) { renderFrutosM2(); renderFocoM2(); });
   } else {
-    console.log('[CYS] No hay sb o userEmail, sb:', !!sb, 'email:', userEmail);
     renderFrutosM2(); renderFocoM2();
   }
 }
