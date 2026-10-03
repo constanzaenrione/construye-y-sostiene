@@ -2451,31 +2451,24 @@ var m2c7Busy = false;
 var M2C7_SYSTEM = function() {
   var foco = FRUTOS_M2.find(function(f){ return f.key === D.m2.fruto_foco; });
   var area = foco ? foco.titulo.toLowerCase() : 'tu vida';
-  var areaKey = foco ? foco.key : '';
   var respArea = (D.m2.frutos && foco) ? (D.m2.frutos[foco.key] || '') : '';
-  var negocioInstr = (areaKey === 'finanzas' || areaKey === 'talentos') ?
-    '4. Después de que ella confirme guardar el Motivo de Poder, hazle UNA pregunta más: "¿Este resultado que buscas está conectado con tu negocio o emprendimiento, o es algo más personal?" — según su respuesta, guarda mentalmente si el enfoque de la mentoría debe incluir resultados de negocio. Luego di: "Perfecto, lo tengo presente. Cuando quieras, continúa al siguiente paso 💚" y no hagas más preguntas.\n' : '';
-  var guardadoInstr = (areaKey === 'finanzas' || areaKey === 'talentos') ?
-    '- Si ella dice que sí a guardar el Motivo de Poder, NO respondas con "guardado" todavía — primero haz la pregunta sobre negocio/personal del paso 4.' :
-    '- Si ella dice que sí a guardar, responde con: "Perfecto, guardado 💚 Ya tienes tu ancla. Cuando quieras, continúa al siguiente paso." y no hagas más preguntas.';
-  var metaEspecifica = respArea ? '"' + respArea + '"' : 'algo en el área de ' + area;
+  var metaEspecifica = respArea ? '"' + respArea + '"' : 'su meta en ' + area;
   var nombre = D.nombre ? D.nombre.split(' ')[0] : 'ella';
   return 'Eres Paz, mentora cálida y perceptiva de Mujer Fénix 40+. Estás haciendo el ejercicio "7 Veces Para Qué" con ' + nombre + '.\n\n' +
     'Área elegida: ' + area + '\n' +
     'Lo que ella escribió: ' + metaEspecifica + '\n\n' +
-    'TU MISIÓN: profundizar 7 veces hasta llegar a su motivación más íntima. Cada pregunta tuya debe partir de lo que ella dijo en su respuesta anterior — usa sus propias palabras, no términos genéricos.\n\n' +
-    'PASOS:\n' +
-    '1. Ya le mostraste su texto y le preguntaste "¿Para qué quieres eso?". Ahora espera su respuesta.\n' +
-    '2. Con cada respuesta de ella, reformula brevemente lo que dijo y haz UNA sola pregunta que vaya más adentro: "¿Y para qué quieres eso?", "¿Qué significaría eso para ti?", "¿Qué ganás de verdad si lográs eso?". Varía siempre.\n' +
-    '3. Al llegar a la 7ª respuesta (o antes si ya emergió algo poderoso), revela el MOTIVO DE PODER: 2-3 líneas, poéticas y específicas, que nombren su motivación más profunda usando las palabras y imágenes que ella misma usó. Empieza con "✨ Tu Motivo de Poder:" y termina con "¿Querés guardar esto como tu ancla para la mentoría?".\n' +
-    negocioInstr + '\n' +
-    'REGLAS ESTRICTAS:\n' +
-    '- Una sola pregunta por respuesta. Nunca dos.\n' +
-    '- Siempre parte de lo que ella dijo, no del área genérica.\n' +
-    '- Máx 3 líneas por respuesta tuya. Sé directa y presente.\n' +
-    '- Sin consejos ni interpretaciones — solo preguntas que profundizan.\n' +
-    '- Español con tildes.\n' +
-    guardadoInstr;
+    'SECUENCIA EXACTA:\n' +
+    '1. Ya abriste el chat con su texto y la primera pregunta. Ahora profundiza con cada respuesta.\n' +
+    '2. Con cada respuesta de ella: reformula en 1 frase lo que dijo y haz UNA sola pregunta más adentro. Usa siempre SUS palabras, no el nombre del área. Varía la pregunta: "¿Y para qué querés eso?", "¿Qué cambia en tu vida si lo lográs?", "¿Qué ganás de verdad?", "¿Quién serías?", etc.\n' +
+    '3. A la 7ª respuesta (o antes si ya emergió algo muy poderoso): revela el MOTIVO DE PODER — 2-3 líneas poéticas y específicas usando las imágenes y palabras de ELLA. Empieza EXACTAMENTE con "✨ Tu Motivo de Poder:" y termina con "¿Querés guardar esto como tu ancla para la mentoría?".\n' +
+    '4. Cuando ella confirme guardar (diga "sí", "sí quiero", "guardar" o similar): pregúntale "¿Este resultado que buscás, está más conectado con tu negocio o emprendimiento, o es algo más personal de tu vida?" — espera su respuesta.\n' +
+    '5. Cuando ella responda eso: di "Perfecto, lo tengo presente 💚 Cuando quieras, continuá al siguiente paso." y no hagas más preguntas.\n\n' +
+    'REGLAS:\n' +
+    '- Una pregunta por turno, nunca dos.\n' +
+    '- Máx 3 líneas por respuesta.\n' +
+    '- Siempre parte de lo que ella dijo en su última respuesta.\n' +
+    '- Sin consejos. Sin interpretaciones. Solo preguntas que van más adentro.\n' +
+    '- Español con tildes.';
 };
 
 function initM2Chat7() {
@@ -2631,25 +2624,45 @@ function m2c7FallbackLocal(txt) {
   var opts = document.getElementById('m2c7-quick-opts');
   var foco = FRUTOS_M2.find(function(f){ return f.key === D.m2.fruto_foco; });
   var area = foco ? foco.titulo.toLowerCase() : 'tu vida';
+  // Detectar si Paz ya preguntó sobre negocio y esta es la respuesta
+  var lastAssistant = D.m2.m2c7_history.slice().reverse().find(function(m){ return m.role==='assistant'; });
+  if (lastAssistant && lastAssistant.content.includes('negocio o emprendimiento')) {
+    var txtLow = txt.toLowerCase();
+    D.m2.enfoque_negocio = (txtLow.includes('negocio') || txtLow.includes('emprendimiento') || txtLow.includes('empresa')) ? 'negocio' : (txtLow.includes('personal') || txtLow.includes('vida') || txtLow.includes('familia')) ? 'personal' : txt;
+    var cierre = 'Perfecto, lo tengo presente 💚 Cuando quieras, continuá al siguiente paso.';
+    D.m2.m2c7_history.push({ role:'assistant', content: cierre });
+    m2c7AppendBubble('assistant', cierre);
+    guardarDatos();
+    if (opts) opts.innerHTML = '<button onclick="goTo(\'s-m2-vision\')" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Continuar a Visión →</button>';
+    m2c7Busy = false;
+    return;
+  }
+  // Detectar si Paz ya reveló el Motivo de Poder y esta es la confirmación de guardar
+  if (D.m2.motivo_poder && lastAssistant && lastAssistant.content.includes('Motivo de Poder')) {
+    var pregNegocio = '¿Este resultado que buscás, está más conectado con tu negocio o emprendimiento, o es algo más personal de tu vida?';
+    D.m2.m2c7_history.push({ role:'assistant', content: pregNegocio });
+    m2c7AppendBubble('assistant', pregNegocio);
+    guardarDatos();
+    m2c7Busy = false;
+    return;
+  }
   var respuestas = [
-    '¿Y qué cambiaría en tu vida cotidiana si tuvieras eso en ' + area + '?',
-    '¿Y para qué necesitas ese cambio? ¿Qué se abre cuando lo tienes?',
-    '¿Qué es lo que más te duele de no tenerlo hoy?',
-    '¿Y si mañana lo tuvieras — qué harías diferente?',
-    '¿Quién serías si ese fruto ya estuviera en tu vida?',
-    '¿Y para qué quieres ser esa persona? ¿Qué protege o conquista?',
+    '¿Y qué cambiaría en tu vida si tuvieras eso?',
+    '¿Para qué necesitás ese cambio? ¿Qué se abre cuando lo tenés?',
+    '¿Qué es lo que más te pesa de no tenerlo hoy?',
+    '¿Y si mañana lo tuvieras, qué harías diferente?',
+    '¿Quién serías si eso ya estuviera en tu vida?',
+    '¿Y para qué querés ser esa persona?',
     function() {
-      var motivo = '✨ Tu Motivo de Poder:\n\nDetrás de todo lo que buscas en ' + area + ' hay algo más grande que el resultado: hay una versión de ti que quiere vivir sin miedo, sin escasez, sin rendirle cuentas a nadie. Eso que buscas no es solo una meta — es tu permiso para ser quién eres en serio.\n\n¿Quieres guardar esto como tu ancla para la mentoría?';
+      var motivo = '✨ Tu Motivo de Poder:\n\nDetrás de todo lo que buscás en ' + area + ' hay algo más grande que el resultado: hay una versión de vos que quiere vivir sin miedo, sin escasez, sin rendirle cuentas a nadie. Eso que buscás no es solo una meta — es tu permiso para ser quien sos en serio.\n\n¿Querés guardar esto como tu ancla para la mentoría?';
       D.m2.motivo_poder = motivo;
       guardarDatos();
-      if (opts) opts.innerHTML = '<button onclick="goTo(\'s-m2-vision\')" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Continuar a Visión →</button>';
       return motivo;
     }
   ];
   var idx = Math.min(m2c7Count - 1, respuestas.length - 1);
   var reply = typeof respuestas[idx] === 'function' ? respuestas[idx]() : respuestas[idx];
-  var assistantMsg = { role:'assistant', content: reply };
-  D.m2.m2c7_history.push(assistantMsg);
+  D.m2.m2c7_history.push({ role:'assistant', content: reply });
   m2c7AppendBubble('assistant', reply);
   guardarDatos();
   m2c7Busy = false;
