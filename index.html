@@ -2767,7 +2767,7 @@ async function generarVisionIA() {
   ctx += 'Misión del negocio: ' + (D.m2.negocio_mision || '') + '. ';
   ctx += 'Impacto que quiere generar: ' + (D.m2.negocio_impacto || '') + '.';
 
-  var sys = 'Eres una mentora experta que acompaña a mujeres en distintas etapas de vida y trabajo — algunas tienen negocio propio, otras están en transición, otras construyen proyectos personales. Tu tarea es crear una declaración de visión poderosa y personal en primera persona, que integre los frutos que busca, su visión a futuro y el camino que eligió recorrer. Reglas: 1) En primera persona, tiempo presente o futuro próximo. 2) 3-4 párrafos cortos, emotivos y concretos. 3) Integra sus frutos, visión y propósito de manera fluida. 4) Que suene auténtica, ambiciosa y real — no corporativa. 5) Empieza directamente, sin introducción. 6) Solo español con tildes.';
+  var sys = 'Eres una mentora experta que acompaña a mujeres en distintas etapas de vida y trabajo — algunas tienen negocio propio, otras están en transición, otras construyen proyectos personales. Tu tarea es crear una declaración de visión poderosa y personal, en primera persona, que integre los frutos que busca, su visión a futuro y el camino que eligió recorrer.\n\nREGLAS ESTRICTAS:\n1. Escrita en PRIMERA PERSONA, en TIEMPO PRESENTE ("vivo", "tengo", "soy", "disfruto") — no en futuro ni condicional.\n2. Empieza directamente con una oración en presente del tipo: "Vivo una vida..." o "Tengo un negocio..." o "Soy una mujer que..."\n3. 3-4 párrafos cortos, emotivos y concretos.\n4. Integra sus frutos, visión y propósito de manera fluida.\n5. Que suene auténtica, ambiciosa y real — no corporativa ni motivacional genérica.\n6. ESPAÑOL NEUTRO LATINOAMERICANO: usa "tú" (no "vos"), sin modismos argentinos ni rioplatenses, tildes correctas.\n7. Empieza directamente, sin introducción ni título.\n8. NUNCA uses: "vos", "hacés", "tenés", "querés", "sos" (rioplatense), ni frases como "En X años..."\n9. Usa lenguaje cercano, cálido y femenino sin ser cursi.';
 
   if (OPENAI_KEY === 'TU_OPENAI_KEY') {
     var nombre = D.nombre || 'ella';
@@ -2777,9 +2777,19 @@ async function generarVisionIA() {
     var anios = D.m2.vision_anios || '3';
     var area = D.m2.fruto_foco || 'mi vida';
     var motivo = D.m2.motivo_poder ? D.m2.motivo_poder.replace(/✨ Tu Motivo de Poder:\n\n/,'').split('¿Quieres guardar')[0].trim() : '';
-    var texto = 'En ' + anios + ' años, la vida que elegí es real y palpable. Me enfoqué en lo que más importaba — ' + area + ' — y desde ese centro construí todo lo demás.\n\n' +
-      (motivo ? 'Lo que me mueve no es solo lograr resultados. Es ' + motivo.toLowerCase().replace(/\.$/, '') + '.\n\n' : '') +
-      'Hoy tengo ' + frutos + '. No fue suerte — fue decisión, claridad y el coraje de elegir una vida que realmente es mía.\n\nEso ya no es un sueño. Es el camino que recorro hoy.';
+    var negTipo = D.m2.negocio_tipo || '';
+    var negMision = D.m2.negocio_mision || '';
+    var visionTexto = D.m2.vision_texto || '';
+    var palabrasStr = palabras;
+    var p1 = 'Vivo una vida ' + palabrasStr + ', enfocada en lo que más importa: ' + area + '. Cada día elijo con claridad y actúo desde ese centro.';
+    var p2 = negTipo
+      ? 'Tengo ' + negTipo + (negMision ? ' con una misión clara: ' + negMision.toLowerCase().replace(/\.$/, '') + '.' : '. Es el negocio que imaginé — funciona, genera y me da libertad.')
+      : 'Mi trabajo me genera ingresos, tiempo y propósito. No tengo que elegir entre ganar y vivir bien — las dos cosas coexisten en mi vida.';
+    var p3 = motivo
+      ? 'Lo que me sostiene no es la ambición — es algo más profundo: ' + motivo.split('\n')[0].toLowerCase().replace(/✨ tu motivo de poder:/i,'').replace(/\.$/, '').trim() + '. Eso le da sentido a todo.'
+      : 'Tengo ' + frutos + ' — y los tengo porque tomé la decisión de construirlos, una acción a la vez.';
+    var p4 = 'Esta es mi vida. No la que me tocó — la que elegí.';
+    var texto = p1 + '\n\n' + p2 + '\n\n' + p3 + '\n\n' + p4;
     resp.textContent = texto;
     D.m2.vision_ia = texto;
     var card = document.getElementById('vision-edit-card');
@@ -2797,7 +2807,7 @@ async function generarVisionIA() {
       headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + OPENAI_KEY },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de visión para esta empresaria: ' + ctx }],
+        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de visión en PRESENTE y PRIMERA PERSONA para esta mujer. IMPORTANTE: usa "vivo", "tengo", "soy" — nunca "en X años" ni futuro. Datos: ' + ctx }],
         max_tokens: 500, temperature: 0.85
       })
     });
