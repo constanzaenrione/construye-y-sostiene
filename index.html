@@ -1234,30 +1234,33 @@ body {
 </div>
 
 <!-- ═══════════ MÓDULO 2 · CHAT 7×PARA QUÉ ═══════════ -->
-<div class="screen" id="s-m2-chat7">
-  <div style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);padding:14px 20px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding-top:calc(14px + env(safe-area-inset-top,0px))">
-    <button onclick="goTo('s-m2-frutos')" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+<div class="screen" id="s-m2-chat7" style="position:relative">
+  <!-- Header fijo del chat -->
+  <div id="m2c7-hdr" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);padding:14px 20px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding-top:calc(14px + env(safe-area-inset-top,0px))">
+    <button onclick="goTo('s-m2-frutos')" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:36px;height:36px;min-width:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
     <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-      <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">🌿</div>
-      <div>
-        <div style="color:#fff;font-weight:600;font-size:14px">7 Veces Para Qué</div>
-        <div style="color:rgba(255,255,255,.7);font-size:11px">Encuentra tu motivación más profunda</div>
+      <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px">🌿</div>
+      <div style="min-width:0">
+        <div style="color:#fff;font-weight:600;font-size:15px;line-height:1.2">Paz · 7 Veces Para Qué</div>
+        <div style="color:rgba(255,255,255,.75);font-size:11px;margin-top:1px">Mentora Mujer Fénix 40+</div>
       </div>
     </div>
-    <button onclick="reiniciarM2Chat7()" title="Reiniciar" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+    <button onclick="reiniciarM2Chat7()" title="Reiniciar" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:36px;height:36px;min-width:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
     </button>
   </div>
-  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px">
+  <!-- Área de mensajes -->
+  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 14px 8px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch">
     <div data-spacer style="flex:1;min-height:0"></div>
   </div>
-  <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
-    <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+  <!-- Área de input pegada al fondo -->
+  <div id="m2c7-footer" style="padding:10px 14px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))">
+    <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;align-items:flex-end">
-      <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--fg);outline:none;max-height:100px;line-height:1.5" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
-      <button onclick="enviarM2C7()" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+      <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;background:var(--bg);color:var(--fg);outline:none;max-height:110px;line-height:1.5;-webkit-appearance:none" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
+      <button onclick="enviarM2C7()" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:50%;width:44px;height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(26,107,58,.35)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
@@ -2516,14 +2519,19 @@ function reiniciarM2Chat7() {
 function m2c7AppendBubble(role, text) {
   var msgs = document.getElementById('m2c7-messages');
   if (!msgs) return;
-  var div = document.createElement('div');
+  var wrap = document.createElement('div');
   var isUser = role === 'user';
-  div.style.cssText = 'display:flex;flex-direction:column;align-items:'+(isUser?'flex-end':'flex-start')+';gap:4px';
-  // Parse basic markdown bold/italic
+  wrap.style.cssText = 'display:flex;flex-direction:'+(isUser?'row-reverse':'row')+';align-items:flex-end;gap:7px';
   var html = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
-  div.innerHTML = '<div style="max-width:82%;padding:10px 13px;border-radius:'+(isUser?'16px 16px 4px 16px':'16px 16px 16px 4px')+';background:'+(isUser?'linear-gradient(135deg,#1A6B3A,#2D9E5F)':'var(--bg2)')+';color:'+(isUser?'#fff':'var(--fg)')+';font-size:14px;line-height:1.55;box-shadow:0 1px 4px rgba(0,0,0,.08)">'+html+'</div>';
+  var avatarHtml = isUser
+    ? ''
+    : '<div style="width:30px;height:30px;min-width:30px;border-radius:50%;background:linear-gradient(135deg,#1A6B3A,#2D9E5F);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;align-self:flex-end">🌿</div>';
+  var bubbleStyle = isUser
+    ? 'max-width:78%;padding:10px 14px;border-radius:18px 18px 4px 18px;background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;font-size:14px;line-height:1.6;box-shadow:0 2px 8px rgba(26,107,58,.25);word-wrap:break-word'
+    : 'max-width:78%;padding:10px 14px;border-radius:18px 18px 18px 4px;background:var(--bg2);color:var(--fg);font-size:14px;line-height:1.6;box-shadow:0 1px 6px rgba(0,0,0,.08);border:1px solid var(--line);word-wrap:break-word';
+  wrap.innerHTML = avatarHtml + '<div style="'+bubbleStyle+'">'+html+'</div>';
   var spacer = msgs.querySelector('[data-spacer]');
-  if (spacer) msgs.insertBefore(div, spacer); else msgs.appendChild(div);
+  if (spacer) msgs.insertBefore(wrap, spacer); else msgs.appendChild(wrap);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
@@ -2535,8 +2543,8 @@ function m2c7TypingIndicator(show) {
   if (show) {
     var div = document.createElement('div');
     div.id = 'm2c7-typing';
-    div.style.cssText = 'display:flex;align-items:flex-start;gap:4px';
-    div.innerHTML = '<div style="padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--bg2);color:var(--fg3);font-size:13px">escribiendo…</div>';
+    div.style.cssText = 'display:flex;align-items:flex-end;gap:7px';
+    div.innerHTML = '<div style="width:30px;height:30px;min-width:30px;border-radius:50%;background:linear-gradient(135deg,#1A6B3A,#2D9E5F);display:flex;align-items:center;justify-content:center;font-size:15px">🌿</div><div style="padding:10px 14px;border-radius:18px 18px 18px 4px;background:var(--bg2);color:var(--fg3);font-size:13px;border:1px solid var(--line)">escribiendo…</div>';
     var spacer = msgs.querySelector('[data-spacer]');
     if (spacer) msgs.insertBefore(div, spacer); else msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
@@ -2545,8 +2553,25 @@ function m2c7TypingIndicator(show) {
 
 function autoResizeM2C7(ta) {
   ta.style.height = 'auto';
-  ta.style.height = Math.min(ta.scrollHeight, 100) + 'px';
+  ta.style.height = Math.min(ta.scrollHeight, 110) + 'px';
 }
+
+// Cuando el teclado sube en celular, ajusta el chat para que el input no quede tapado
+(function() {
+  var vv = window.visualViewport;
+  if (!vv) return;
+  function onVVResize() {
+    var screen = document.getElementById('s-m2-chat7');
+    if (!screen || !screen.classList.contains('active')) return;
+    var offset = window.innerHeight - vv.height - vv.offsetTop;
+    var footer = document.getElementById('m2c7-footer');
+    if (footer) footer.style.marginBottom = offset > 0 ? offset + 'px' : '';
+    var msgs = document.getElementById('m2c7-messages');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+  }
+  vv.addEventListener('resize', onVVResize);
+  vv.addEventListener('scroll', onVVResize);
+})();
 
 function m2c7Enter(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarM2C7(); }
