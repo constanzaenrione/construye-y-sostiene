@@ -1250,7 +1250,9 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
     </button>
   </div>
-  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px"></div>
+  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px">
+    <div data-spacer style="flex:1;min-height:0"></div>
+  </div>
   <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
     <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
     <div style="display:flex;gap:8px;align-items:flex-end">
@@ -2456,19 +2458,23 @@ var M2C7_SYSTEM = function() {
   var guardadoInstr = (areaKey === 'finanzas' || areaKey === 'talentos') ?
     '- Si ella dice que sí a guardar el Motivo de Poder, NO respondas con "guardado" todavía — primero haz la pregunta sobre negocio/personal del paso 4.' :
     '- Si ella dice que sí a guardar, responde con: "Perfecto, guardado 💚 Ya tienes tu ancla. Cuando quieras, continúa al siguiente paso." y no hagas más preguntas.';
-  return 'Eres Valentina, una mentora cálida, curiosa y perceptiva de Mujer Fénix 40+. Tu única misión ahora es hacer el ejercicio "7 Veces Para Qué" con ' + (D.nombre||'ella') + ', enfocado en el área de ' + area + '.\n\n' +
-    'Lo que ella escribió sobre ese área: "' + respArea + '"\n\n' +
-    'CÓMO FUNCIONA:\n' +
-    '1. Empieza preguntando: "¿Para qué quieres eso en ' + area + '?" (o una variación cálida y específica basada en lo que escribió).\n' +
-    '2. Con CADA respuesta, hazle UNA nueva pregunta que profundice: "¿Y para qué quieres eso?", "¿Qué cambiaría en tu vida si lo tuvieras?", "¿Y si logras eso, qué ganas de verdad?"... Varía las palabras pero siempre apunta más adentro.\n' +
-    '3. Repite hasta 7 veces. En la 7ª respuesta (o antes si ya llegaste al núcleo emocional), revela el MOTIVO DE PODER: un párrafo corto, poético y poderoso que nombra su motivación más profunda. Empieza con "✨ Tu Motivo de Poder:" y termina con "¿Quieres guardar esto como tu ancla para la mentoría?".\n' +
+  var metaEspecifica = respArea ? '"' + respArea + '"' : 'algo en el área de ' + area;
+  var nombre = D.nombre ? D.nombre.split(' ')[0] : 'ella';
+  return 'Eres Paz, mentora cálida y perceptiva de Mujer Fénix 40+. Estás haciendo el ejercicio "7 Veces Para Qué" con ' + nombre + '.\n\n' +
+    'Área elegida: ' + area + '\n' +
+    'Lo que ella escribió: ' + metaEspecifica + '\n\n' +
+    'TU MISIÓN: profundizar 7 veces hasta llegar a su motivación más íntima. Cada pregunta tuya debe partir de lo que ella dijo en su respuesta anterior — usa sus propias palabras, no términos genéricos.\n\n' +
+    'PASOS:\n' +
+    '1. Ya le mostraste su texto y le preguntaste "¿Para qué quieres eso?". Ahora espera su respuesta.\n' +
+    '2. Con cada respuesta de ella, reformula brevemente lo que dijo y haz UNA sola pregunta que vaya más adentro: "¿Y para qué quieres eso?", "¿Qué significaría eso para ti?", "¿Qué ganás de verdad si lográs eso?". Varía siempre.\n' +
+    '3. Al llegar a la 7ª respuesta (o antes si ya emergió algo poderoso), revela el MOTIVO DE PODER: 2-3 líneas, poéticas y específicas, que nombren su motivación más profunda usando las palabras y imágenes que ella misma usó. Empieza con "✨ Tu Motivo de Poder:" y termina con "¿Querés guardar esto como tu ancla para la mentoría?".\n' +
     negocioInstr + '\n' +
-    'REGLAS:\n' +
-    '- Una sola pregunta a la vez. Nunca dos en una respuesta.\n' +
-    '- Sé cálida, específica y presente. Reformula lo que ella dijo antes de preguntar.\n' +
-    '- No des consejos ni interpretaciones — solo profundiza con preguntas.\n' +
-    '- Si al llegar a la 7ª respuesta ya emergió algo muy poderoso antes, puedes revelar el Motivo de Poder en ese momento.\n' +
-    '- Escribe en español con tildes. Respuestas cortas y directas (máx 4 líneas).\n' +
+    'REGLAS ESTRICTAS:\n' +
+    '- Una sola pregunta por respuesta. Nunca dos.\n' +
+    '- Siempre parte de lo que ella dijo, no del área genérica.\n' +
+    '- Máx 3 líneas por respuesta tuya. Sé directa y presente.\n' +
+    '- Sin consejos ni interpretaciones — solo preguntas que profundizan.\n' +
+    '- Español con tildes.\n' +
     guardadoInstr;
 };
 
@@ -2496,11 +2502,12 @@ function initM2Chat7() {
   var foco = FRUTOS_M2.find(function(f){ return f.key === D.m2.fruto_foco; });
   var area = foco ? foco.titulo : 'tu vida';
   var respArea = (D.m2.frutos && foco) ? (D.m2.frutos[foco.key] || '') : '';
+  var nombre = D.nombre ? D.nombre.split(' ')[0] : '';
   var bienvenida;
   if (respArea) {
-    bienvenida = '¡Hola ' + (D.nombre||'') + '! Soy Valentina 🌿\n\nMe alegra que eligieras trabajar el área de **' + area + '**. Escribiste: *"' + respArea.substring(0,120) + (respArea.length>120?'…':'') + '"*\n\nVamos a ir más adentro de eso.\n\n¿Para qué quieres eso en ' + area.toLowerCase() + '? ¿Qué cambiaría en tu vida si lo lograras?';
+    bienvenida = '¡Hola ' + nombre + '! Soy Paz 🌿\n\nEligiste trabajar **' + area + '** y escribiste:\n\n*"' + respArea.substring(0,150) + (respArea.length>150?'…':'') + '"*\n\n¿Para qué quieres eso?';
   } else {
-    bienvenida = '¡Hola ' + (D.nombre||'') + '! Soy Valentina 🌿\n\nElegiste trabajar el área de **' + area + '**. Vamos a explorar juntas qué hay detrás de ese deseo.\n\n¿Para qué quieres avanzar en ' + area.toLowerCase() + '?';
+    bienvenida = '¡Hola ' + nombre + '! Soy Paz 🌿\n\nElegiste trabajar el área de **' + area + '**.\n\n¿Qué es lo que más quieres cambiar o lograr ahí?';
   }
   var initMsg = { role:'assistant', content: bienvenida };
   D.m2.m2c7_history = [initMsg];
@@ -2522,7 +2529,8 @@ function m2c7AppendBubble(role, text) {
   // Parse basic markdown bold/italic
   var html = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
   div.innerHTML = '<div style="max-width:82%;padding:10px 13px;border-radius:'+(isUser?'16px 16px 4px 16px':'16px 16px 16px 4px')+';background:'+(isUser?'linear-gradient(135deg,#1A6B3A,#2D9E5F)':'var(--bg2)')+';color:'+(isUser?'#fff':'var(--fg)')+';font-size:14px;line-height:1.55;box-shadow:0 1px 4px rgba(0,0,0,.08)">'+html+'</div>';
-  msgs.appendChild(div);
+  var spacer = msgs.querySelector('[data-spacer]');
+  if (spacer) msgs.insertBefore(div, spacer); else msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
@@ -2536,7 +2544,8 @@ function m2c7TypingIndicator(show) {
     div.id = 'm2c7-typing';
     div.style.cssText = 'display:flex;align-items:flex-start;gap:4px';
     div.innerHTML = '<div style="padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--bg2);color:var(--fg3);font-size:13px">escribiendo…</div>';
-    msgs.appendChild(div);
+    var spacer = msgs.querySelector('[data-spacer]');
+    if (spacer) msgs.insertBefore(div, spacer); else msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
   }
 }
@@ -2598,10 +2607,10 @@ async function enviarM2C7() {
       D.m2.motivo_poder = reply;
       guardarDatos();
     } else if (reply.includes('negocio') || reply.includes('emprendimiento') || reply.toLowerCase().includes('personal')) {
-      // Valentina preguntó sobre negocio — guardar historial, mostrar botón de continuar después de respuesta de usuaria
+      // Paz preguntó sobre negocio — guardar historial, mostrar botón de continuar después de respuesta de usuaria
       guardarDatos();
     } else if (reply.includes('lo tengo presente') || reply.includes('continúa al siguiente paso')) {
-      // Valentina terminó la secuencia con negocio
+      // Paz terminó la secuencia con negocio
       guardarDatos();
       if (opts) opts.innerHTML = '<button onclick="goTo(\'s-m2-vision\')" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Continuar a Visión →</button>';
     } else if (reply.includes('guardado') && reply.includes('ancla')) {
