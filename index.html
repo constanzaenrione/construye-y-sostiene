@@ -1250,7 +1250,7 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
     </button>
   </div>
-  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px"></div>
+  <div id="m2c7-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px"></div>
   <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
     <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
     <div style="display:flex;gap:8px;align-items:flex-end">
@@ -1628,6 +1628,7 @@ var D = {
     frutos: { finanzas:'', relaciones:'', talentos:'', tranquilidad:'', disfrute:'', salud:'' },
     fruto_foco: '',
     motivo_poder: '',
+    enfoque_negocio: '',
     m2c7_history: [],
     vision_texto: '',
     vision_anios: '3',
@@ -2448,20 +2449,27 @@ var m2c7Busy = false;
 var M2C7_SYSTEM = function() {
   var foco = FRUTOS_M2.find(function(f){ return f.key === D.m2.fruto_foco; });
   var area = foco ? foco.titulo.toLowerCase() : 'tu vida';
+  var areaKey = foco ? foco.key : '';
   var respArea = (D.m2.frutos && foco) ? (D.m2.frutos[foco.key] || '') : '';
+  var negocioInstr = (areaKey === 'finanzas' || areaKey === 'talentos') ?
+    '4. Después de que ella confirme guardar el Motivo de Poder, hazle UNA pregunta más: "¿Este resultado que buscas está conectado con tu negocio o emprendimiento, o es algo más personal?" — según su respuesta, guarda mentalmente si el enfoque de la mentoría debe incluir resultados de negocio. Luego di: "Perfecto, lo tengo presente. Cuando quieras, continúa al siguiente paso 💚" y no hagas más preguntas.\n' : '';
+  var guardadoInstr = (areaKey === 'finanzas' || areaKey === 'talentos') ?
+    '- Si ella dice que sí a guardar el Motivo de Poder, NO respondas con "guardado" todavía — primero haz la pregunta sobre negocio/personal del paso 4.' :
+    '- Si ella dice que sí a guardar, responde con: "Perfecto, guardado 💚 Ya tienes tu ancla. Cuando quieras, continúa al siguiente paso." y no hagas más preguntas.';
   return 'Eres Valentina, una mentora cálida, curiosa y perceptiva de Mujer Fénix 40+. Tu única misión ahora es hacer el ejercicio "7 Veces Para Qué" con ' + (D.nombre||'ella') + ', enfocado en el área de ' + area + '.\n\n' +
     'Lo que ella escribió sobre ese área: "' + respArea + '"\n\n' +
     'CÓMO FUNCIONA:\n' +
     '1. Empieza preguntando: "¿Para qué quieres eso en ' + area + '?" (o una variación cálida y específica basada en lo que escribió).\n' +
     '2. Con CADA respuesta, hazle UNA nueva pregunta que profundice: "¿Y para qué quieres eso?", "¿Qué cambiaría en tu vida si lo tuvieras?", "¿Y si logras eso, qué ganas de verdad?"... Varía las palabras pero siempre apunta más adentro.\n' +
-    '3. Repite hasta 7 veces. En la 7ª respuesta (o antes si ya llegaste al núcleo emocional), revela el MOTIVO DE PODER: un párrafo corto, poético y poderoso que nombra su motivación más profunda. Empieza con "✨ Tu Motivo de Poder:" y termina con "¿Quieres guardar esto como tu ancla para la mentoría?".\n\n' +
+    '3. Repite hasta 7 veces. En la 7ª respuesta (o antes si ya llegaste al núcleo emocional), revela el MOTIVO DE PODER: un párrafo corto, poético y poderoso que nombra su motivación más profunda. Empieza con "✨ Tu Motivo de Poder:" y termina con "¿Quieres guardar esto como tu ancla para la mentoría?".\n' +
+    negocioInstr + '\n' +
     'REGLAS:\n' +
     '- Una sola pregunta a la vez. Nunca dos en una respuesta.\n' +
     '- Sé cálida, específica y presente. Reformula lo que ella dijo antes de preguntar.\n' +
     '- No des consejos ni interpretaciones — solo profundiza con preguntas.\n' +
     '- Si al llegar a la 7ª respuesta ya emergió algo muy poderoso antes, puedes revelar el Motivo de Poder en ese momento.\n' +
     '- Escribe en español con tildes. Respuestas cortas y directas (máx 4 líneas).\n' +
-    '- Si ella dice que sí a guardar, responde con: "Perfecto, guardado 💚 Ya tienes tu ancla. Cuando quieras, continúa al siguiente paso." y no hagas más preguntas.';
+    guardadoInstr;
 };
 
 function initM2Chat7() {
@@ -2553,6 +2561,18 @@ async function enviarM2C7() {
   D.m2.m2c7_history.push(userMsg);
   m2c7AppendBubble('user', txt);
   m2c7Count++;
+  // Detectar si usuaria está respondiendo sobre negocio/personal
+  var lastAssistant = D.m2.m2c7_history.slice().reverse().find(function(m){ return m.role==='assistant'; });
+  if (lastAssistant && (lastAssistant.content.includes('negocio') || lastAssistant.content.includes('emprendimiento'))) {
+    var txtLow = txt.toLowerCase();
+    if (txtLow.includes('negocio') || txtLow.includes('emprendimiento') || txtLow.includes('empresa') || txtLow.includes('ventas')) {
+      D.m2.enfoque_negocio = 'negocio';
+    } else if (txtLow.includes('personal') || txtLow.includes('familia') || txtLow.includes('vida')) {
+      D.m2.enfoque_negocio = 'personal';
+    } else {
+      D.m2.enfoque_negocio = txt;
+    }
+  }
   m2c7TypingIndicator(true);
   var opts = document.getElementById('m2c7-quick-opts');
   if (opts) opts.innerHTML = '';
@@ -2576,6 +2596,15 @@ async function enviarM2C7() {
     m2c7AppendBubble('assistant', reply);
     if (reply.includes('Motivo de Poder') || reply.includes('motivo de poder')) {
       D.m2.motivo_poder = reply;
+      guardarDatos();
+    } else if (reply.includes('negocio') || reply.includes('emprendimiento') || reply.toLowerCase().includes('personal')) {
+      // Valentina preguntó sobre negocio — guardar historial, mostrar botón de continuar después de respuesta de usuaria
+      guardarDatos();
+    } else if (reply.includes('lo tengo presente') || reply.includes('continúa al siguiente paso')) {
+      // Valentina terminó la secuencia con negocio
+      guardarDatos();
+      if (opts) opts.innerHTML = '<button onclick="goTo(\'s-m2-vision\')" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Continuar a Visión →</button>';
+    } else if (reply.includes('guardado') && reply.includes('ancla')) {
       guardarDatos();
       if (opts) opts.innerHTML = '<button onclick="goTo(\'s-m2-vision\')" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Continuar a Visión →</button>';
     } else {
