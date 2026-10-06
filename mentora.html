@@ -179,6 +179,65 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   .stats-bar{grid-template-columns:repeat(2,1fr)}
   .row-2{grid-template-columns:1fr}
 }
+/* ── Carta Gantt ── */
+.cg{font-size:14px;color:var(--fg);line-height:1.45}
+.cg-titulo{font-family:'Playfair Display',serif;font-size:19px;color:var(--mo);margin-bottom:10px}
+.cg-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cg-tabs button{border:1px solid var(--line);background:var(--bg2);color:var(--fg2);border-radius:20px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.cg-tabs button.on{background:var(--mo);color:#fff;border-color:var(--mo)}
+.cg-resumen{background:var(--mo3);border-radius:var(--r);padding:14px 16px;margin-bottom:14px}
+.cg-paso{font-size:17px;font-weight:700;color:var(--mo)}
+.cg-paso2{font-size:13.5px;margin:1px 0 8px}
+.cg-dia-t{font-size:16px;font-weight:700;color:var(--mo);margin-bottom:6px}
+.cg-barra{height:8px;border-radius:6px;background:var(--line);overflow:hidden;margin:8px 0 4px}
+.cg-barra span{display:block;height:100%;border-radius:6px}
+.cg-mini{font-size:11.5px;color:var(--fg3)}
+.cg-lbl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-bottom:2px}
+.cg-linea{font-size:13.5px;margin-top:9px}
+.cg ul,.cg ol{margin:2px 0 0 18px;padding:0}
+.cg-chip{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--fg2);background:var(--bg2);line-height:1.5}
+.cg-chips{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin:4px 0}
+.cg-etapa,.cg-reg,.cg-sem{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px;margin-bottom:10px}
+.cg-etapa{border-left:5px solid var(--mo)}
+.cg-etapa-t{font-weight:700;font-size:15px}
+.cg-reg-t{font-weight:600;font-size:14px;margin-top:2px}
+.cg-nota{font-size:12px;color:var(--or2);background:var(--or3);border-radius:6px;padding:4px 8px;margin-top:8px}
+.cg-nohacer{background:rgba(214,69,69,.08);border:1px dashed rgba(214,69,69,.45);border-radius:8px;padding:8px 11px;margin-top:10px;font-size:13px}
+.cg-nohacer .cg-lbl{color:#C0504D}
+.cg-intro{font-size:13px;color:var(--fg2);margin-bottom:12px}
+.cg-vacio{font-size:13px;color:var(--fg3);padding:14px 0;text-align:center}
+.cg-nav{display:flex;gap:6px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.cg input[type=date],.cg input[type=text],.cg select,.cg textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit;background:var(--bg2);color:var(--fg)}
+.cg-nav input[type=date]{width:auto;flex:1;min-width:140px}
+.cg textarea{min-height:54px;resize:vertical}
+.cg-btn,.cg-btn2{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.cg-btn{background:var(--mo);color:#fff}
+.cg-btn2{background:var(--bg2);color:var(--mo);border:1px solid var(--line)}
+.cg-link{border:none;background:none;color:#C0504D;font-size:12px;cursor:pointer;padding:0;font-family:inherit}
+.cg-acc{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.cg-act{display:flex;gap:10px;align-items:flex-start;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2);padding:10px 12px;margin-bottom:7px;cursor:pointer}
+.cg-act-n{display:block;font-size:14px;font-weight:500}
+.cg-act.ok .cg-act-n{text-decoration:line-through;color:var(--fg3)}
+.cg-check{flex-shrink:0;width:20px;height:20px;border-radius:6px;border:2px solid var(--mo);color:#fff;font-size:13px;line-height:16px;text-align:center;margin-top:1px}
+.cg-form{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px;margin:12px 0}
+.cg-form .cg-lbl{margin-top:10px}
+.cg-form-t{font-weight:700;color:var(--mo);font-size:14px}
+.cg-sem{padding:0}
+.cg-sem-t{padding:11px 14px;font-weight:700;font-size:13.5px;cursor:pointer}
+.cg-tabla{width:100%;border-collapse:collapse;font-size:12.5px}
+.cg-tabla th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);padding:6px 8px;border-bottom:2px solid var(--line);white-space:nowrap}
+.cg-tabla td{vertical-align:top;padding:8px;border-top:1px solid var(--line)}
+.cg-tabla tbody tr{cursor:pointer}
+.cg-hecha{text-decoration:line-through;color:var(--fg3)}
+.cg-td-nh{font-size:11.5px;color:#C0504D}
+@media (max-width:820px){
+  .cg-tabla thead{display:none}
+  .cg-tabla,.cg-tabla tbody{display:block}
+  .cg-tabla tr{display:block;border-top:1px solid var(--line);padding:9px 14px}
+  .cg-tabla td{display:block;border:none;padding:2px 0}
+  .cg-tabla td[data-l]::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-top:5px}
+  .cg-tabla td.cg-td1{display:inline-block;margin-right:6px;font-size:14px}
+}
 </style>
 
 <!-- AUTH -->
@@ -439,6 +498,328 @@ sb = {
   }
 };
 
+// ═══════════ CARTA GANTT (compartida por la app de la alumna y el panel mentora) ═══════════
+// plan   = el archivo .json que sube la mentora (proyecto, etapas, dias, actividades, decisiones, condiciones)
+// avance = lo que registra la alumna: { hechas:{clave:true}, dias:{fecha:{estado,avance,costo,descubri,necesito}}, condiciones:[], decisiones:[] }
+var CG = (function () {
+  var S = { el: null, plan: null, av: null, edit: false, cb: null, tab: 'mapa', fecha: null, form: null, semanas: {} };
+  var COLORES = ['#4B168E', '#A0740F', '#7C4DBC', '#C9932E', '#1E88E5', '#00897B', '#AD1457', '#5E35B1', '#6D4C41', '#2E7D32', '#546E7A'];
+  var NIVELES = { compromiso: 'Compromiso', meta: 'Meta', ritmo: 'Si el ritmo lo permite' };
+  var EST_ETAPA = { sin: 'Sin actividades', pendiente: '⬜ Pendiente', curso: '🟡 En curso', ajustar: '🔵 Por ajustar', completada: '🟢 Completada' };
+  var EST_DIA = { pendiente: '⬜ Pendiente', proceso: '🟡 En proceso', completado: '🟢 Completado', reprogramado: '🔵 Reprogramado', revisar: '🟣 Para revisar en sesión' };
+  var DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  var COND = [['accion', 'Acción'], ['ocurrio', 'Qué ocurrió'], ['dificulto', 'Qué lo dificultó'], ['necesito', 'Qué necesito'], ['ajuste', 'Ajuste / sistema']];
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function p2(n) { return (n < 10 ? '0' : '') + n; }
+  function iso(d) { return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); }
+  function hoy() { return iso(new Date()); }
+  function fecha(f) { return new Date(f + 'T00:00:00'); }
+  function corta(f) { if (!f) return ''; var p = f.split('-'); return p.length === 3 ? p[2] + '/' + p[1] : f; }
+  function larga(f) { var t = fecha(f).toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' }); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function lista(v) { return Array.isArray(v) ? v.filter(Boolean) : (v ? String(v).split('\n').filter(Boolean) : []); }
+  function clave(a) { return (a.area || '') + '|' + a.nombre + '|' + a.fecha; }
+  function acts() { return S.plan.actividades || []; }
+  function hecha(a) { return !!(S.av.hechas && S.av.hechas[clave(a)]); }
+  function dia(a) { return a.fecha.split('T')[0]; }
+  function actsDe(f) { return acts().filter(function (a) { return dia(a) === f; }).sort(function (x, y) { return x.fecha < y.fecha ? -1 : 1; }); }
+  function metas() {
+    var m = (S.plan.etapas || []).slice();
+    acts().forEach(function (a) { if (!m.some(function (e) { return e.area === a.area; })) m.push({ area: a.area }); });
+    return m;
+  }
+  function color(area) { var i = metas().findIndex(function (e) { return e.area === area; }); return COLORES[(i < 0 ? 0 : i) % COLORES.length]; }
+  function chip(t, c) { return '<span class="cg-chip" style="' + (c ? 'color:' + c + ';border-color:' + c : '') + '">' + esc(t) + '</span>'; }
+  function ul(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
+
+  function stats() {
+    var h = hoy();
+    return metas().map(function (m) {
+      var l = acts().filter(function (a) { return a.area === m.area; });
+      var n = l.filter(hecha).length;
+      var fs = l.map(dia).sort();
+      var ini = fs[0] || '', fin = fs[fs.length - 1] || '';
+      var est = !l.length ? 'sin' : n === l.length ? 'completada' : h > fin ? 'ajustar' : (h < ini && n === 0) ? 'pendiente' : 'curso';
+      return { m: m, area: m.area, total: l.length, hechas: n, pct: l.length ? Math.round(n / l.length * 100) : 0, ini: ini, fin: fin, est: est, color: color(m.area) };
+    });
+  }
+  function paso(st) {
+    var ps = st.filter(function (s) { return !s.m.transversal && s.total > 0; });
+    if (!ps.length) return null;
+    var i = -1;
+    ps.forEach(function (s, k) { if (s.hechas > 0) i = k; });
+    if (i === -1) i = 0; else if (ps[i].pct === 100 && i < ps.length - 1) i++;
+    return { n: i + 1, de: ps.length, etapa: ps[i], completo: ps.every(function (s) { return s.pct === 100; }) };
+  }
+  function etapasDia(l) {
+    var cuenta = {}, orden = [];
+    l.forEach(function (a) { if (!cuenta[a.area]) { cuenta[a.area] = 0; orden.push(a.area); } cuenta[a.area]++; });
+    var ms = metas();
+    orden.sort(function (x, y) { return ms.findIndex(function (e) { return e.area === x; }) - ms.findIndex(function (e) { return e.area === y; }); });
+    var propias = orden.filter(function (ar) { var m = ms.find(function (e) { return e.area === ar; }); return !(m && m.transversal); });
+    var vis = propias.length ? propias : orden, pri = null;
+    vis.forEach(function (ar) { if (pri === null || cuenta[ar] >= cuenta[pri]) pri = ar; });
+    return { vis: vis, pri: pri };
+  }
+  function planDia(f) { return (S.plan.dias || []).find(function (d) { return d.fecha === f; }) || {}; }
+  function avDia(f) { return (S.av.dias && S.av.dias[f]) || {}; }
+  function noHacer(f, l) {
+    var d = planDia(f);
+    if (lista(d.noHacer).length) return lista(d.noHacer);
+    var pri = etapasDia(l).pri, m = metas().find(function (e) { return e.area === pri; });
+    return m ? lista(m.noHacer) : [];
+  }
+  function estadoDia(f, l) {
+    var e = avDia(f).estado;
+    if (e && EST_DIA[e]) return e;
+    var n = l.filter(hecha).length;
+    return !l.length || !n ? 'pendiente' : n === l.length ? 'completado' : 'proceso';
+  }
+  function chipsDia(l) { return etapasDia(l).vis.map(function (ar) { return chip(ar, color(ar)); }).join(' '); }
+  function barra(pct, c) { return '<div class="cg-barra"><span style="width:' + pct + '%;background:' + c + '"></span></div>'; }
+  function guardar() { if (S.cb) S.cb(S.av); }
+
+  // ── Vista 1 · Mapa ──
+  function vMapa() {
+    var st = stats(), p = paso(st), pr = S.plan.proyecto || {};
+    var propias = st.filter(function (s) { return !s.m.transversal; });
+    var tot = propias.reduce(function (n, s) { return n + s.total; }, 0), he = propias.reduce(function (n, s) { return n + s.hechas; }, 0);
+    var pct = tot ? Math.round(he / tot * 100) : 0;
+    var h = '<div class="cg-resumen">';
+    if (p) h += p.completo ? '<div class="cg-paso">Proyecto completo</div>' : '<div class="cg-paso">Estás en el paso ' + p.n + ' de ' + p.de + '</div><div class="cg-paso2">' + esc(p.etapa.area) + '</div>';
+    h += barra(pct, 'var(--mo)') + '<div class="cg-mini">' + he + ' de ' + tot + ' actividades · ' + pct + '% de avance' + (pr.fechaLimite ? ' · hasta el ' + corta(pr.fechaLimite) : '') + '</div>';
+    if (pr.smart && pr.smart.especifica) h += '<div class="cg-linea"><span class="cg-lbl">Meta</span>' + esc(pr.smart.especifica) + '</div>';
+    if (pr.ritmo) h += '<div class="cg-linea"><span class="cg-lbl">Mi ritmo</span>' + esc(pr.ritmo) + '</div>';
+    if (S.plan.niveles) {
+      h += '<div class="cg-linea"><span class="cg-lbl">Hasta dónde llegamos</span>';
+      Object.keys(NIVELES).forEach(function (k) { if (S.plan.niveles[k]) h += '<div style="margin-top:4px">' + chip(NIVELES[k]) + ' ' + esc(S.plan.niveles[k]) + '</div>'; });
+      h += '</div>';
+    }
+    h += '</div>';
+    st.forEach(function (s) {
+      var m = s.m;
+      h += '<div class="cg-etapa" style="border-left-color:' + s.color + '">' +
+        '<div class="cg-etapa-t" style="color:' + s.color + '">' + esc(s.area) + '</div>' +
+        '<div class="cg-chips">' + chip(EST_ETAPA[s.est]) + (NIVELES[m.nivel] ? chip(NIVELES[m.nivel]) : '') + (m.transversal ? chip('Acompaña todas las etapas') : '') + '</div>' +
+        barra(s.pct, s.color) +
+        '<div class="cg-mini">' + s.hechas + ' de ' + s.total + ' · ' + s.pct + '% de avance' + (s.ini ? ' · ' + corta(s.ini) + ' → ' + corta(s.fin) : '') + '</div>';
+      if (m.resultado) h += '<div class="cg-linea"><span class="cg-lbl">Resultado</span>' + esc(m.resultado) + '</div>';
+      if (lista(m.entregables).length) h += '<div class="cg-linea"><span class="cg-lbl">Entregables</span>' + ul(lista(m.entregables)) + '</div>';
+      if (m.duracion) h += '<div class="cg-linea"><span class="cg-lbl">Duración estimada</span>' + esc(m.duracion) + '</div>';
+      if (m.hito) h += '<div class="cg-linea"><span class="cg-lbl">🏁 Hito de salida</span>' + esc(m.hito) + '</div>';
+      if (m.nota) h += '<div class="cg-nota">' + esc(m.nota) + '</div>';
+      if (lista(m.noHacer).length) h += '<div class="cg-nohacer"><span class="cg-lbl">🚫 No hacer todavía</span>' + ul(lista(m.noHacer)) + '</div>';
+      h += '</div>';
+    });
+    return h;
+  }
+
+  // ── Vista 2 · Día ──
+  function vDia() {
+    var f = S.fecha, l = actsDe(f), d = planDia(f), a = avDia(f), nh = noHacer(f, l), ro = S.edit ? '' : ' disabled';
+    var h = '<div class="cg-nav"><button class="cg-btn2" onclick="CG.mover(-1)">‹</button><input type="date" value="' + f + '" onchange="CG.irA(this.value)"><button class="cg-btn2" onclick="CG.mover(1)">›</button><button class="cg-btn2" onclick="CG.irA(\'' + hoy() + '\')">Hoy</button></div>';
+    h += '<div class="cg-resumen"><div class="cg-dia-t">' + esc(larga(f)) + '</div>';
+    if (l.length) h += '<div class="cg-chips">' + chipsDia(l) + ' ' + chip(EST_DIA[estadoDia(f, l)]) + '</div>';
+    if (d.resultado) h += '<div class="cg-linea"><span class="cg-lbl">Resultado del día</span>' + esc(d.resultado) + '</div>';
+    if (d.nota) h += '<div class="cg-nota">' + esc(d.nota) + '</div>';
+    if (nh.length) h += '<div class="cg-nohacer"><span class="cg-lbl">🚫 No hacer todavía</span>' + ul(nh) + '</div>';
+    h += '</div>';
+    if (!l.length) h += '<div class="cg-vacio">Sin actividades este día.</div>';
+    l.forEach(function (x) {
+      var i = acts().indexOf(x), ok = hecha(x), c = color(x.area);
+      h += '<div class="cg-act' + (ok ? ' ok' : '') + '"' + (S.edit ? ' onclick="CG.marcar(' + i + ')"' : '') + '>' +
+        '<span class="cg-check" style="border-color:' + c + ';' + (ok ? 'background:' + c : '') + '">' + (ok ? '✓' : '') + '</span>' +
+        '<span><span class="cg-act-n">' + esc(x.nombre) + '</span><span class="cg-mini">' + x.fecha.split('T')[1] + ' · ' + x.duracion + ' min · ' + esc(x.area) + '</span></span></div>';
+    });
+    var campo = function (k, t) { return '<label class="cg-lbl">' + t + '</label><textarea' + ro + ' onchange="CG.campo(\'' + k + '\',this.value)">' + esc(a[k]) + '</textarea>'; };
+    h += '<div class="cg-form"><div class="cg-form-t">🌙 Cierre del día · 5 minutos</div>' +
+      '<label class="cg-lbl">Estado del día</label><select' + ro + ' onchange="CG.campo(\'estado\',this.value)"><option value="">Automático (según lo marcado)</option>' +
+      Object.keys(EST_DIA).map(function (k) { return '<option value="' + k + '"' + (a.estado === k ? ' selected' : '') + '>' + EST_DIA[k] + '</option>'; }).join('') + '</select>' +
+      campo('avance', '¿Qué avancé?') + campo('costo', '¿Dónde me detuve o qué me costó?') + campo('descubri', '¿Qué descubrí?') + campo('necesito', '¿Qué necesito para continuar?') + '</div>';
+    return h;
+  }
+
+  // ── Vista 2 · Plan diario completo ──
+  function lunes(f) { var d = fecha(f); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return iso(d); }
+  function vPlan() {
+    var porF = {}, sem = {};
+    acts().forEach(function (a) { (porF[dia(a)] = porF[dia(a)] || []).push(a); });
+    Object.keys(porF).sort().forEach(function (f) { (sem[lunes(f)] = sem[lunes(f)] || []).push(f); });
+    var actual = lunes(hoy()), claves = Object.keys(sem).sort();
+    if (claves.indexOf(actual) === -1) actual = claves[0];
+    var h = '<div class="cg-mini" style="margin-bottom:10px">Toca un día para abrirlo.</div>';
+    claves.forEach(function (k) {
+      var ds = sem[k], todas = ds.reduce(function (l, f) { return l.concat(porF[f]); }, []);
+      var ab = S.semanas[k] !== undefined ? S.semanas[k] : k === actual;
+      h += '<div class="cg-sem"><div class="cg-sem-t" onclick="CG.semana(\'' + k + '\',' + (!ab) + ')">' + (ab ? '▾' : '▸') + ' Semana del ' + corta(ds[0]) + ' al ' + corta(ds[ds.length - 1]) + ' <span class="cg-mini">· ' + todas.filter(hecha).length + ' de ' + todas.length + '</span></div>';
+      if (ab) {
+        h += '<table class="cg-tabla"><thead><tr><th>Fecha</th><th>Día</th><th>Etapa</th><th>Actividades</th><th>Resultado del día</th><th>Estado</th><th>🚫 No hacer todavía</th></tr></thead><tbody>';
+        ds.forEach(function (f) {
+          var l = actsDe(f), d = planDia(f), nh = noHacer(f, l);
+          h += '<tr onclick="CG.irA(\'' + f + '\')"><td class="cg-td1"><b>' + corta(f) + '</b></td><td class="cg-td1">' + DIAS[fecha(f).getDay()] + '</td>' +
+            '<td data-l="Etapa">' + chipsDia(l) + '</td>' +
+            '<td data-l="Actividades"><ol>' + l.map(function (x) { return '<li class="' + (hecha(x) ? 'cg-hecha' : '') + '">' + esc(x.nombre) + '</li>'; }).join('') + '</ol></td>' +
+            '<td data-l="Resultado del día">' + (esc(d.resultado) || '—') + (d.nota ? '<div class="cg-nota">' + esc(d.nota) + '</div>' : '') + '</td>' +
+            '<td data-l="Estado">' + EST_DIA[estadoDia(f, l)] + '</td>' +
+            '<td data-l="🚫 No hacer todavía" class="cg-td-nh">' + (nh.length ? ul(nh) : '—') + '</td></tr>';
+        });
+        h += '</tbody></table>';
+      }
+      h += '</div>';
+    });
+    return h;
+  }
+
+  // ── Vistas 3 y 4 · Registros ──
+  function registros(tipo) { return (S.plan[tipo] || []).map(function (x) { return Object.assign({ base: true }, x); }).concat(S.av[tipo] || []); }
+  function vCond() {
+    var h = '<p class="cg-intro">No basta con saber qué acciones necesita tu negocio: necesitas crear las condiciones y sistemas que te permitan sostenerlas. Cuando una acción no se sostiene, anótala aquí.</p>';
+    if (S.edit && S.form === 'cond') {
+      h += '<div class="cg-form"><label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + hoy() + '">' +
+        COND.map(function (c) { return '<label class="cg-lbl">' + c[1] + '</label><textarea id="cgf_' + c[0] + '"></textarea>'; }).join('') +
+        '<label class="cg-lbl">Fecha de prueba</label><input type="date" id="cgf_fechaPrueba"><label class="cg-lbl">Resultado</label><input type="text" id="cgf_resultado" value="Por medir">' +
+        '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarCond()">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
+    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form(\'cond\')">＋ Nuevo registro</button></div>';
+    var l = registros('condiciones');
+    if (!l.length) return h + '<div class="cg-vacio">Todavía no hay registros.</div>';
+    l.slice().reverse().forEach(function (c) {
+      h += '<div class="cg-reg"><div class="cg-reg-t">' + esc(c.accion || '—') + (c.fecha ? ' <span class="cg-mini">· ' + corta(c.fecha) + '</span>' : '') + '</div>' +
+        COND.slice(1).map(function (k) { return c[k[0]] ? '<div class="cg-linea"><span class="cg-lbl">' + k[1] + '</span>' + esc(c[k[0]]) + '</div>' : ''; }).join('') +
+        '<div class="cg-linea"><span class="cg-lbl">Fecha de prueba · Resultado</span>' + (c.fechaPrueba ? corta(c.fechaPrueba) : '—') + ' · ' + (esc(c.resultado) || '—') + '</div>' +
+        (S.edit && !c.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.borrar(\'condiciones\',' + c.id + ')">Eliminar</button></div>' : '') + '</div>';
+    });
+    return h;
+  }
+  function vDec() {
+    var h = '<p class="cg-intro">Lo que ya decidimos queda escrito aquí. Una decisión se vuelve a abrir con evidencia nueva, no por duda ni por una idea distinta.</p>';
+    if (S.edit && S.form === 'dec') {
+      h += '<div class="cg-form"><label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + hoy() + '">' +
+        '<label class="cg-lbl">Tipo</label><select id="cgf_tipo"><option value="decision">Decisión</option><option value="aprendizaje">Aprendizaje</option></select>' +
+        '<label class="cg-lbl">Qué decidí o qué aprendí</label><textarea id="cgf_texto"></textarea>' +
+        '<label class="cg-lbl">En qué evidencia se basa</label><textarea id="cgf_evidencia"></textarea>' +
+        '<label class="cg-lbl">Se vuelve a revisar solo si…</label><textarea id="cgf_revisar"></textarea>' +
+        '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarDec()">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
+    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form(\'dec\')">＋ Nueva decisión o aprendizaje</button></div>';
+    var l = registros('decisiones');
+    if (!l.length) return h + '<div class="cg-vacio">Todavía no hay decisiones ni aprendizajes.</div>';
+    l.slice().reverse().forEach(function (d) {
+      h += '<div class="cg-reg"><div class="cg-chips">' + chip(d.tipo === 'aprendizaje' ? '💡 Aprendizaje' : '✔ Decisión') + (d.fecha ? ' <span class="cg-mini">' + corta(d.fecha) + '</span>' : '') + '</div>' +
+        '<div class="cg-reg-t">' + esc(d.texto) + '</div>' +
+        (d.evidencia ? '<div class="cg-linea"><span class="cg-lbl">Evidencia</span>' + esc(d.evidencia) + '</div>' : '') +
+        (d.revisar ? '<div class="cg-linea"><span class="cg-lbl">Se revisa solo si…</span>' + esc(d.revisar) + '</div>' : '') +
+        (S.edit && !d.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.borrar(\'decisiones\',' + d.id + ')">Eliminar</button></div>' : '') + '</div>';
+    });
+    return h;
+  }
+
+  function pintar() {
+    if (!S.el) return;
+    var tabs = [['mapa', '🗺️ Mapa'], ['dia', '☀️ Día'], ['plan', '📋 Plan diario'], ['cond', '🧩 Condiciones'], ['dec', '💡 Decisiones']];
+    var h = '<div class="cg"><div class="cg-titulo">' + esc((S.plan.proyecto || {}).nombre || 'Carta Gantt') + '</div><div class="cg-tabs">' +
+      tabs.map(function (t) { return '<button class="' + (S.tab === t[0] ? 'on' : '') + '" onclick="CG.tab(\'' + t[0] + '\')">' + t[1] + '</button>'; }).join('') + '</div>';
+    h += S.tab === 'mapa' ? vMapa() : S.tab === 'dia' ? vDia() : S.tab === 'plan' ? vPlan() : S.tab === 'cond' ? vCond() : vDec();
+    S.el.innerHTML = h + '</div>';
+  }
+  function val(id) { var e = document.getElementById('cgf_' + id); return e ? e.value.trim() : ''; }
+
+  return {
+    mount: function (el, o) {
+      S.el = el; S.plan = o.plan || {}; S.av = o.avance || {}; S.edit = !!o.editable; S.cb = o.onChange || null;
+      ['hechas', 'dias'].forEach(function (k) { if (!S.av[k] || typeof S.av[k] !== 'object') S.av[k] = {}; });
+      ['condiciones', 'decisiones'].forEach(function (k) { if (!Array.isArray(S.av[k])) S.av[k] = []; });
+      if (!S.fecha || o.reiniciar) { S.fecha = hoy(); S.tab = o.tab || 'mapa'; S.form = null; S.semanas = {}; }
+      var fs = acts().map(dia).sort();
+      if (fs.length && (S.fecha < fs[0] || S.fecha > fs[fs.length - 1])) S.fecha = S.fecha < fs[0] ? fs[0] : fs[fs.length - 1];
+      pintar();
+    },
+    tab: function (t) { S.tab = t; S.form = null; pintar(); },
+    irA: function (f) { if (!f) return; S.fecha = f; S.tab = 'dia'; pintar(); if (S.el.scrollIntoView) S.el.scrollIntoView(); },
+    mover: function (n) { var d = fecha(S.fecha); d.setDate(d.getDate() + n); S.fecha = iso(d); pintar(); },
+    semana: function (k, ab) { S.semanas[k] = ab; pintar(); },
+    form: function (f) { S.form = f; pintar(); },
+    marcar: function (i) {
+      if (!S.edit) return;
+      var k = clave(acts()[i]);
+      if (S.av.hechas[k]) delete S.av.hechas[k]; else S.av.hechas[k] = true;
+      guardar(); pintar();
+    },
+    campo: function (k, v) {
+      if (!S.edit) return;
+      (S.av.dias[S.fecha] = S.av.dias[S.fecha] || {})[k] = v;
+      guardar(); if (k === 'estado') pintar();
+    },
+    guardarCond: function () {
+      var r = { id: Date.now(), fecha: val('fecha'), fechaPrueba: val('fechaPrueba'), resultado: val('resultado') };
+      COND.forEach(function (c) { r[c[0]] = val(c[0]); });
+      if (!r.accion && !r.ocurrio) { alert('Escribe al menos la acción o qué ocurrió.'); return; }
+      S.av.condiciones.push(r); S.form = null; guardar(); pintar();
+    },
+    guardarDec: function () {
+      var r = { id: Date.now(), fecha: val('fecha'), tipo: val('tipo'), texto: val('texto'), evidencia: val('evidencia'), revisar: val('revisar') };
+      if (!r.texto) { alert('Escribe la decisión o el aprendizaje.'); return; }
+      S.av.decisiones.push(r); S.form = null; guardar(); pintar();
+    },
+    borrar: function (tipo, id) {
+      if (!confirm('¿Eliminar este registro?')) return;
+      S.av[tipo] = S.av[tipo].filter(function (x) { return x.id !== id; });
+      guardar(); pintar();
+    },
+    validar: function (p) { return !!(p && p.proyecto && p.proyecto.nombre && Array.isArray(p.actividades) && p.actividades.length); },
+    resumen: function (plan, av) {
+      var a = plan.actividades || [], h = (av && av.hechas) || {};
+      var n = a.filter(function (x) { return h[clave(x)]; }).length;
+      var fs = a.map(dia).sort();
+      return { total: a.length, hechas: n, ini: fs[0] || '', fin: fs[fs.length - 1] || '', etapas: (plan.etapas || []).length };
+    }
+  };
+})();
+
+// ─── CARTA GANTT DE LA ALUMNA ───
+var ganttVisible = false;
+function escM(t) { return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+async function datosFrescos(email) {
+  try {
+    var r = await sbFetch('/rest/v1/mentoria_cys?select=data&email=eq.' + encodeURIComponent(email)).then(function(x){ return x.json(); });
+    return (Array.isArray(r) && r[0] && r[0].data) ? r[0].data : null;
+  } catch(e) { return null; }
+}
+function ponerDatosAlumna(d) {
+  alumnaActual.data = d;
+  var i = alumnas.findIndex(function(a){ return a.email === alumnaActual.email; });
+  if (i !== -1) alumnas[i].data = d;
+}
+// Guarda (o quita, si plan es null) la carta sin tocar lo que la alumna ya registró
+async function guardarGantt(plan) {
+  if (!alumnaActual) return false;
+  var d = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+  if (plan) d.gantt = plan; else delete d.gantt;
+  var res = await sb.from('mentoria_cys').upsert({ email: alumnaActual.email, data: d, updated_at: new Date().toISOString() });
+  if (!Array.isArray(res)) { toast('Error al guardar la carta'); return false; }
+  ponerDatosAlumna(d);
+  return true;
+}
+function subirGantt(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = async function(e) {
+    var plan;
+    try { plan = JSON.parse(e.target.result); } catch(err) { toast('El archivo no es un JSON válido'); return; }
+    if (!CG.validar(plan)) { toast('El archivo no tiene proyecto y actividades'); return; }
+    if (await guardarGantt(plan)) { ganttVisible = true; toast('Carta Gantt cargada'); renderFicha(); }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+async function verGantt() {
+  ganttVisible = !ganttVisible;
+  if (ganttVisible) { var d = await datosFrescos(alumnaActual.email); if (d) ponerDatosAlumna(d); }
+  renderFicha();
+}
+async function quitarGantt() {
+  if (!confirm('¿Quitar la carta Gantt de esta alumna? Lo que ella ya registró no se borra.')) return;
+  if (await guardarGantt(null)) { ganttVisible = false; toast('Carta Gantt quitada'); renderFicha(); }
+}
+
 // ─── PANTALLAS ───
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
@@ -631,6 +1012,7 @@ function renderSesCard(s, showEmail) {
 function abrirFicha(email) {
   alumnaActual = alumnas.find(function(a) { return a.email === email; });
   if (!alumnaActual) return;
+  ganttVisible = false;
   renderFicha();
   goTo('s-ficha');
 }
@@ -703,6 +1085,21 @@ function renderFicha() {
     html += '</div>';
   }
 
+  // Carta Gantt
+  var gPlan = d.gantt, gRes = gPlan ? CG.resumen(gPlan, d.gantt_avance) : null;
+  html += '<div class="section-card">' +
+    '<div class="section-title">🗺️ Carta Gantt</div>' +
+    (gPlan
+      ? '<div class="kv"><div class="kv-label">' + escM((gPlan.proyecto || {}).nombre) + '</div><div class="kv-val">' + gRes.total + ' actividades · ' + gRes.ini.split('-').reverse().slice(0,2).join('/') + ' → ' + gRes.fin.split('-').reverse().slice(0,2).join('/') + ' · avance de la alumna: ' + gRes.hechas + ' de ' + gRes.total + '</div></div>' +
+        '<div style="font-size:12px;color:var(--fg3);margin-top:8px">' + (mods.indexOf(4) !== -1 ? '✓ La alumna ya la ve en su Módulo 4.' : '🔒 La alumna todavía no la ve: activa el Módulo 4 arriba cuando esté lista.') + '</div>'
+      : '<div style="font-size:13px;color:var(--fg3)">Aún no tiene carta Gantt. Sube el archivo .json para revisarla aquí.</div>') +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
+      '<label class="btn btn-primary btn-sm" style="cursor:pointer">' + (gPlan ? 'Reemplazar archivo' : 'Subir carta Gantt') + '<input type="file" accept=".json,application/json" hidden onchange="subirGantt(this)"></label>' +
+      (gPlan ? '<button class="btn btn-ghost btn-sm" onclick="verGantt()">' + (ganttVisible ? 'Ocultar carta' : 'Ver carta completa') + '</button><button class="btn btn-danger btn-sm" onclick="quitarGantt()">Quitar</button>' : '') +
+    '</div>' +
+    '<div id="ficha-gantt" style="margin-top:16px"></div>' +
+  '</div>';
+
   // Sesiones
   html += '<div class="section-card">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
@@ -714,6 +1111,7 @@ function renderFicha() {
   '</div>';
 
   document.getElementById('ficha-content').innerHTML = html;
+  if (gPlan && ganttVisible) CG.mount(document.getElementById('ficha-gantt'), { plan: gPlan, avance: JSON.parse(JSON.stringify(d.gantt_avance || {})), editable: false });
 }
 
 // ─── TOGGLE MÓDULO ───
