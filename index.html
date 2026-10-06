@@ -1716,6 +1716,7 @@ var D = {
 var saveTimer = null;
 var userEmail = '';
 var modulosActivos = [1]; // siempre módulo 1 disponible
+var inscrita = false; // true solo si la mentora creó su ficha en la mentoría
 
 // ═══════════ CARTA GANTT (compartida por la app de la alumna y el panel mentora) ═══════════
 // plan   = el archivo .json que sube la mentora (proyecto, etapas, dias, actividades, decisiones, condiciones)
@@ -2062,7 +2063,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (session && session.user) {
       userEmail = session.user.email;
-      cargarDatos().then(function(){ goTo('s-portada'); });
+      cargarDatos().then(function(){
+        if (inscrita === 'no') {
+          // Tiene cuenta (por ejemplo de Mujer Fénix) pero no está inscrita en esta mentoría
+          try { localStorage.removeItem('cys_m1'); } catch(e) {}
+          sb.auth.signOut(); userEmail = '';
+          goTo('s-auth');
+          var am = document.getElementById('auth-msg');
+          if (am) am.textContent = 'Tu cuenta aún no tiene acceso a esta mentoría. Escríbele a Constanza para activarlo.';
+          return;
+        }
+        goTo('s-portada');
+      });
     }
   });
 
@@ -2159,6 +2171,7 @@ async function cambiarClave() {
 // ── DATOS SUPABASE ──
 async function guardarDatos() {
   if (!sb || !userEmail) return;
+  if (inscrita !== true) return; // sin ficha creada por la mentora no se guarda nada en la nube
   // Lo que administra la mentora (carta Gantt y módulos activos) se toma siempre de la nube,
   // para que un guardado de la alumna no pise lo que la mentora acaba de cambiar.
   try {
@@ -2190,6 +2203,7 @@ async function cargarDatos() {
   try {
     var res = await sb.from('mentoria_cys').select('data').eq('email', userEmail).single();
     if (res.data && res.data.data) {
+      inscrita = true;
       var raw = res.data.data;
       // modulos_activos vive dentro de data (lo guarda la mentora ahí)
       if (raw.modulos_activos && Array.isArray(raw.modulos_activos)) {
@@ -2197,8 +2211,12 @@ async function cargarDatos() {
         if (modulosActivos.indexOf(1) === -1) modulosActivos.unshift(1);
       }
       D = Object.assign(D, raw);
+      // Primera vez que entra: trae su información de Mujer Fénix (solo una vez)
+      if (!D.mf_importado) { D.mf_importado = true; await importarDesdeMF(); await guardarDatos(); }
+    } else if (res.error && res.error.code === 'PGRST116') {
+      inscrita = 'no'; // no existe su ficha: no está inscrita
     } else {
-      await importarDesdeMF();
+      inscrita = false; // no se pudo consultar (sin conexión): puede mirar, pero no se guarda en la nube
     }
   } catch(e) {}
 
