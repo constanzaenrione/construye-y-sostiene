@@ -1653,14 +1653,19 @@ button { -webkit-tap-highlight-color: rgba(75,22,142,.15); }
 <div id="s-m3-oferta" style="display:none"></div>
 <div id="s-m3-ia" style="display:none"></div>
 
-<!-- MÓDULO 4 · PRÓXIMAMENTE -->
-<div class="screen" id="s-m4-intro">
+<!-- MÓDULO 3 · MI PLAN (objetivo + carta Gantt) -->
+<div class="screen" id="s-m3-plan">
   <div class="mod-hero" style="background:linear-gradient(135deg,#3B0F8A 0%,#6B2DAE 100%)">
-    <div class="mod-eyebrow">Módulo 4 · Plan</div>
-    <div class="mod-hero-title">Objetivos y plan</div>
-    <div class="mod-hero-sub">Metas · Carta Gantt · Sistemas</div>
+    <div class="mod-eyebrow">Módulo 3 · Mi Plan</div>
+    <div class="mod-hero-title">Mi Objetivo</div>
+    <div class="mod-hero-sub">Meta · Carta Gantt · Avance</div>
   </div>
-  <div class="scroll" id="m4-cg"></div>
+  <div class="scroll" id="m3-plan-scroll">
+    <!-- Sección objetivo SMART -->
+    <div id="m3-objetivo-wrap" style="padding:20px 20px 0"></div>
+    <!-- Carta Gantt -->
+    <div id="m3-cg" style="min-height:200px"></div>
+  </div>
   <nav class="nav">
     <button class="nav-btn active" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
     <button class="nav-btn" onclick="goTo('s-m1-intro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Módulo 1</button>
@@ -1709,6 +1714,7 @@ var D = {
     vision_ia: '',
     completado: false
   },
+  objetivo: null, // { especifica, medible, alcanzable, relevante, tiempo, alumna_editado_at }
   m3: {
     nicho: '', subnicho: '',
     nicho_f1: '', nicho_f2: '', nicho_f3: '',
@@ -2004,22 +2010,104 @@ var CG = (function () {
   };
 })();
 
-// ── MÓDULO 4 · CARTA GANTT ──
-var _m4Timer = null;
-function initM4() {
-  var el = document.getElementById('m4-cg');
+// ── MÓDULO 3 · OBJETIVO + CARTA GANTT ──
+var _m3planTimer = null;
+
+function initM3Plan() {
+  renderObjetivoM3();
+  var el = document.getElementById('m3-cg');
   if (!el) return;
   if (!D.gantt || !CG.validar(D.gantt)) {
-    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding-top:48px">' +
-      '<div style="font-size:48px">🎯</div>' +
-      '<div style="font-family:\'Playfair Display\',serif;font-size:22px;color:var(--mo)">Tu plan está en preparación</div>' +
-      '<div style="font-size:14px;color:var(--fg2);max-width:280px;line-height:1.6">Tu mentora lo habilitará cuando estés lista para dar este paso.</div>' +
-      '<button class="btn-outline" onclick="goTo(\'s-portada\')" style="width:auto;padding:11px 28px;margin-top:8px">← Volver al inicio</button></div>';
+    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:48px 24px">' +
+      '<div style="font-size:48px">📋</div>' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:20px;color:var(--mo)">Tu carta Gantt está en preparación</div>' +
+      '<div style="font-size:14px;color:var(--fg2);max-width:280px;line-height:1.6">Tu mentora la habilitará cuando estén listas para trabajarla juntas.</div></div>';
     return;
   }
   if (!D.gantt_avance || typeof D.gantt_avance !== 'object') D.gantt_avance = {};
   CG.mount(el, { plan: D.gantt, avance: D.gantt_avance, editable: true, reiniciar: true, tab: 'dia',
-    onChange: function(av) { D.gantt_avance = av; clearTimeout(_m4Timer); _m4Timer = setTimeout(guardarDatos, 700); } });
+    onChange: function(av) { D.gantt_avance = av; clearTimeout(_m3planTimer); _m3planTimer = setTimeout(guardarDatos, 700); } });
+}
+
+function renderObjetivoM3() {
+  var wrap = document.getElementById('m3-objetivo-wrap');
+  if (!wrap) return;
+  var obj = D.objetivo || null;
+
+  if (!obj || !obj.especifica) {
+    // No hay objetivo cargado por la mentora
+    wrap.innerHTML =
+      '<div style="background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:4px;text-align:center">' +
+        '<div style="font-size:32px;margin-bottom:10px">🎯</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:17px;color:var(--mo);margin-bottom:6px">Tu objetivo de mentoría</div>' +
+        '<div style="font-size:13px;color:var(--fg2);line-height:1.6">Tu mentora lo cargará cuando lo definan juntas.</div>' +
+      '</div>';
+    return;
+  }
+
+  var editando = false;
+  var claves = ['especifica','medible','alcanzable','relevante','tiempo'];
+  var labels = { especifica:'Específica', medible:'Medible', alcanzable:'Alcanzable', relevante:'Relevante', tiempo:'Tiempo' };
+  var letras = { especifica:'S', medible:'M', alcanzable:'A', relevante:'R', tiempo:'T' };
+
+  function renderVer() {
+    var editInfo = obj.alumna_editado_at
+      ? '<div style="font-size:11px;color:var(--fg3);margin-top:8px">Editado por ti el ' + fmtFechaCorta(obj.alumna_editado_at) + '</div>'
+      : '';
+    wrap.innerHTML =
+      '<div style="background:var(--bg2);border:1.5px solid var(--mo);border-radius:var(--r);padding:20px;margin-bottom:4px">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">' +
+          '<div style="font-family:\'Playfair Display\',serif;font-size:17px;color:var(--mo)">🎯 Mi Objetivo de Mentoría</div>' +
+          '<button onclick="editarObjetivoM3()" style="border:none;background:var(--mo3);color:var(--mo);border-radius:var(--r2);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Editar</button>' +
+        '</div>' +
+        claves.map(function(k) {
+          if (!obj[k]) return '';
+          return '<div style="margin-bottom:12px">' +
+            '<div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--fg3);text-transform:uppercase;margin-bottom:3px">' + letras[k] + ' · ' + labels[k] + '</div>' +
+            '<div style="font-size:14px;color:var(--fg);line-height:1.6">' + esc(obj[k]) + '</div>' +
+          '</div>';
+        }).join('') +
+        editInfo +
+      '</div>';
+  }
+
+  renderVer();
+
+  window.editarObjetivoM3 = function() {
+    wrap.innerHTML =
+      '<div style="background:var(--bg2);border:1.5px solid var(--mo);border-radius:var(--r);padding:20px;margin-bottom:4px">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:17px;color:var(--mo);margin-bottom:16px">✏️ Editar mi objetivo</div>' +
+        claves.map(function(k) {
+          return '<div style="margin-bottom:14px">' +
+            '<label style="display:block;font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--fg2);text-transform:uppercase;margin-bottom:5px">' + letras[k] + ' · ' + labels[k] + '</label>' +
+            '<textarea id="obj-edit-' + k + '" style="width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r2);padding:10px 12px;font-family:inherit;font-size:14px;color:var(--fg);resize:vertical;min-height:68px;outline:none" onfocus="this.style.borderColor=\'var(--mo)\'" onblur="this.style.borderColor=\'var(--line)\'">' + esc(obj[k]||'') + '</textarea>' +
+          '</div>';
+        }).join('') +
+        '<div style="display:flex;gap:10px;margin-top:4px">' +
+          '<button onclick="guardarObjetivoM3()" style="flex:1;padding:13px;background:var(--mo);color:#fff;border:none;border-radius:var(--r2);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">Guardar cambios</button>' +
+          '<button onclick="renderObjetivoM3()" style="padding:13px 16px;background:transparent;color:var(--fg2);border:1.5px solid var(--line);border-radius:var(--r2);font-family:inherit;font-size:14px;cursor:pointer">Cancelar</button>' +
+        '</div>' +
+      '</div>';
+  };
+
+  window.guardarObjetivoM3 = function() {
+    claves.forEach(function(k) {
+      var el = document.getElementById('obj-edit-' + k);
+      if (el) obj[k] = el.value.trim();
+    });
+    obj.alumna_editado_at = new Date().toISOString();
+    D.objetivo = obj;
+    guardarDatos();
+    toast('✓ Objetivo actualizado');
+    renderObjetivoM3();
+  };
+}
+
+function fmtFechaCorta(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  var M = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear();
 }
 
 // ── SUPABASE INIT ──
@@ -2034,7 +2122,7 @@ function goTo(id) {
   var el = document.getElementById(id);
   if (el) { el.classList.add('active'); el.scrollTop = 0; }
   if (id === 's-portada') renderPortada();
-  if (id === 's-m4-intro') initM4();
+  if (id === 's-m3-plan') initM3Plan();
   if (id === 's-m1-quien') initQuien();
   if (id === 's-m1-valores') initValores();
   if (id === 's-m1-empresaria') initEmpresaria();
@@ -2191,6 +2279,15 @@ async function guardarDatos() {
     if (fresco.data && fresco.data.data) {
       var rf = fresco.data.data;
       if (rf.gantt) D.gantt = rf.gantt; else delete D.gantt;
+      // objetivo: la mentora lo carga; la alumna puede editar *su contenido* pero no borrarlo.
+      // Si la copia fresca tiene objetivo y la local no tiene alumna_editado_at más reciente, toma la de la nube.
+      if (rf.objetivo) {
+        if (!D.objetivo || !D.objetivo.alumna_editado_at ||
+            (rf.objetivo.alumna_editado_at && rf.objetivo.alumna_editado_at >= D.objetivo.alumna_editado_at)) {
+          D.objetivo = rf.objetivo;
+        }
+        // Preservar edición local si es más reciente
+      }
       if (Array.isArray(rf.modulos_activos)) D.modulos_activos = rf.modulos_activos;
     }
   } catch(e) {}
@@ -2463,10 +2560,9 @@ function renderPortada() {
 
   // Desbloquear módulos según modulosActivos
   var config = [
-    { num: 1, screen: 's-m1-intro', nombre: 'Recuerda quién eres', desc: 'Identidad · Valores · Empresaria' },
-    { num: 2, screen: 's-m2-intro', nombre: 'La vida que eliges',   desc: 'Frutos · Visión · El camino que elijo' },
-    { num: 3, screen: 's-m3-intro', nombre: 'Bases del negocio',    desc: 'Nicho · Cliente ideal · Oferta' },
-    { num: 4, screen: 's-m4-intro', nombre: 'Objetivos y plan',     desc: 'Metas · Carta Gantt · Sistemas' }
+    { num: 1, screen: 's-m1-intro',  nombre: 'Recuerda quién eres', desc: 'Identidad · Valores · Empresaria' },
+    { num: 2, screen: 's-m2-intro',  nombre: 'La vida que eliges',  desc: 'Frutos · Visión · El camino que elijo' },
+    { num: 3, screen: 's-m3-plan',   nombre: 'Mi Plan',             desc: 'Objetivo · Carta Gantt · Avance' }
   ];
 
   var lista = document.querySelector('.modulos-list');
@@ -2475,7 +2571,7 @@ function renderPortada() {
 
   config.forEach(function(m) {
     var activo = modulosActivos.indexOf(m.num) !== -1;
-    var completado = (m.num === 1 && D.m1.completado) || (m.num === 2 && D.m2 && D.m2.completado) || (m.num === 3 && D.m3 && D.m3.completado);
+    var completado = (m.num === 1 && D.m1.completado) || (m.num === 2 && D.m2 && D.m2.completado);
     var esCurrent = activo && !completado && m.num === Math.max.apply(null, modulosActivos.filter(function(x){ return x <= 4; }));
 
     var card = document.createElement('div');
