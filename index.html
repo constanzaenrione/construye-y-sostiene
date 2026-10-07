@@ -1665,6 +1665,14 @@ button { -webkit-tap-highlight-color: rgba(75,22,142,.15); }
     <div id="m3-objetivo-wrap" style="padding:20px 20px 0"></div>
     <!-- Carta Gantt -->
     <div id="m3-cg" style="min-height:200px"></div>
+    <!-- Acceso al módulo de condición -->
+    <div style="padding:0 20px 20px">
+      <button onclick="goTo('s-m3-condicion')" style="width:100%;padding:14px;background:var(--mo3);color:var(--mo);border:1.5px solid var(--mo);border-radius:var(--r);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span style="font-size:20px">🧩</span>
+        <span>Mi Condición y Sistema</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
   </div>
   <nav class="nav">
     <button class="nav-btn active" onclick="goTo('s-portada')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
@@ -1672,6 +1680,35 @@ button { -webkit-tap-highlight-color: rgba(75,22,142,.15); }
     <button class="nav-btn" onclick="goTo('s-imprimible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mi ficha</button>
     <button class="nav-btn" onclick="signOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Salir</button>
   </nav>
+</div>
+
+<!-- MÓDULO · MI CONDICIÓN Y SISTEMA (chat IA) -->
+<div class="screen" id="s-m3-condicion">
+  <div style="background:linear-gradient(135deg,#2D1060,#4B168E);padding:14px 20px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding-top:calc(14px + env(safe-area-inset-top,0px))">
+    <button onclick="goTo('s-m3-plan')" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">🧩</div>
+      <div>
+        <div style="color:#fff;font-weight:600;font-size:14px">Mi Condición y Sistema</div>
+        <div style="color:rgba(255,255,255,.7);font-size:11px" id="mc-chat-estado">Conversación de exploración</div>
+      </div>
+    </div>
+    <button onclick="reiniciarMCChat()" title="Reiniciar" style="border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+    </button>
+  </div>
+  <div id="mc-chat-messages" style="flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:12px"></div>
+  <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
+    <div id="mc-quick-opts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+    <div style="display:flex;gap:8px;align-items:flex-end">
+      <textarea id="mc-chat-inp" class="inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;min-height:44px;max-height:100px;overflow-y:auto;padding:10px 12px;font-size:16px;-webkit-appearance:none" oninput="autoResizeMCInp(this)" onkeydown="mcChatEnter(event)"></textarea>
+      <button onclick="enviarMensajeMC()" style="background:linear-gradient(135deg,#2D1060,#4B168E);border:none;color:#fff;border-radius:var(--r2);padding:10px 14px;cursor:pointer;flex-shrink:0;height:40px;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- TOAST -->
@@ -1908,42 +1945,141 @@ var CG = (function () {
 
   // ── Vistas 3 y 4 · Registros ──
   function registros(tipo) { return (S.plan[tipo] || []).map(function (x) { return Object.assign({ base: true }, x); }).concat(S.av[tipo] || []); }
+  // ── Detector de patrones de postergación ──
+  function detectarPatrones() {
+    var dias = S.av.dias || {};
+    var estadosProblema = { pendiente: 0, reprogramado: 0, revisar: 0 };
+    var areasAfectadas = {};
+    var textosDificultad = []; // frases de "qué dificultó" y "necesito" del diario
+
+    Object.keys(dias).forEach(function(f) {
+      var d = dias[f];
+      var estado = d.estado;
+      if (estado === 'pendiente' || estado === 'reprogramado' || estado === 'revisar') {
+        estadosProblema[estado]++;
+        var actsF = actsDe(f);
+        actsF.forEach(function(a) {
+          if (!areasAfectadas[a.area]) areasAfectadas[a.area] = 0;
+          areasAfectadas[a.area]++;
+        });
+      }
+      // Recoger frases del diario — qué dificultó y qué necesito
+      if (d.descubri && d.descubri.trim()) textosDificultad.push(d.descubri.trim());
+      if (d.necesito && d.necesito.trim()) textosDificultad.push(d.necesito.trim());
+      if (d.avance && d.avance.trim()) {
+        var av = d.avance.toLowerCase();
+        // Detectar palabras que indican dificultad en el avance diario
+        if (/no pude|no logré|no alcancé|interrumpí|postergué|se me pasó|no tuve tiempo|bloqueada|difícil/.test(av))
+          textosDificultad.push(d.avance.trim());
+      }
+    });
+
+    var totalProblema = estadosProblema.pendiente + estadosProblema.reprogramado + estadosProblema.revisar;
+    var totalDias = Object.keys(dias).length;
+
+    if (totalDias < 4 || totalProblema < 3) return '';
+    var pct = Math.round(totalProblema / totalDias * 100);
+    if (pct < 35) return '';
+
+    var areaTop = null;
+    Object.keys(areasAfectadas).forEach(function(a) {
+      if (!areaTop || areasAfectadas[a] > areasAfectadas[areaTop]) areaTop = a;
+    });
+
+    var patron = estadosProblema.reprogramado > estadosProblema.revisar + estadosProblema.pendiente
+      ? '🔄 Reprogramas seguido'
+      : estadosProblema.revisar > estadosProblema.pendiente
+        ? '🟣 Muchas cosas quedan para revisar en sesión'
+        : '⬜ Días que quedan pendientes';
+
+    var tipo = estadosProblema.reprogramado >= estadosProblema.pendiente ? 'postergación' : 'días sin completar';
+
+    // Frases del diario como contexto
+    var frasesHTML = '';
+    if (textosDificultad.length) {
+      var muestra = textosDificultad.slice(-3); // las 3 más recientes
+      frasesHTML = '<div style="margin-top:8px;margin-bottom:10px;border-left:3px solid var(--or);padding-left:10px">' +
+        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--or2);margin-bottom:4px">Lo que escribiste en tu diario:</div>' +
+        muestra.map(function(t) { return '<div style="font-size:13px;color:var(--fg2);font-style:italic;margin-bottom:3px">"' + esc(t.substring(0, 120)) + (t.length > 120 ? '…' : '') + '"</div>'; }).join('') +
+      '</div>';
+    }
+
+    var accionSugerida = areaTop
+      ? 'Las actividades de "' + areaTop + '" no se están completando en los días programados'
+      : 'Hay días que quedan sin completar o se reprograman repetidamente';
+
+    // Guardar contexto para el chat IA
+    window._patronDetectado = {
+      patron: patron, pct: pct, totalProblema: totalProblema, totalDias: totalDias,
+      areaTop: areaTop, tipo: tipo, frases: textosDificultad.slice(-5), accion: accionSugerida
+    };
+
+    return '<div style="background:var(--or3);border:1.5px solid var(--or);border-radius:var(--r);padding:16px;margin-bottom:16px">' +
+      '<div style="font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--or2);margin-bottom:6px">🔍 Patrón detectado</div>' +
+      '<div style="font-weight:600;font-size:14px;margin-bottom:4px">' + patron + '</div>' +
+      '<div style="font-size:13px;color:var(--fg2)">En ' + totalProblema + ' de ' + totalDias + ' días registrados (' + pct + '%) hay ' + tipo + '.' + (areaTop ? ' Área más afectada: <b>' + esc(areaTop) + '</b>.' : '') + '</div>' +
+      frasesHTML +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button onclick="CG.crearCondDesdePatron(' + JSON.stringify(accionSugerida) + ')" style="padding:8px 14px;background:var(--or);color:#fff;border:none;border-radius:var(--r2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">＋ Crear condición</button>' +
+        '<button onclick="goTo(\'s-m3-condicion\')" style="padding:8px 14px;background:transparent;color:var(--or2);border:1.5px solid var(--or);border-radius:var(--r2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">💬 Explorar con IA →</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function formCond(prefill) {
+    var v = prefill || {};
+    return '<div class="cg-form">' +
+      '<label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + esc(v.fecha || hoy()) + '">' +
+      COND.map(function (c) { return '<label class="cg-lbl">' + c[1] + '</label><textarea id="cgf_' + c[0] + '">' + esc(v[c[0]] || '') + '</textarea>'; }).join('') +
+      '<label class="cg-lbl">Fecha de prueba</label><input type="date" id="cgf_fechaPrueba" value="' + esc(v.fechaPrueba || '') + '">' +
+      '<label class="cg-lbl">Resultado</label><input type="text" id="cgf_resultado" value="' + esc(v.resultado || 'Por medir') + '">' +
+      '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarCond(' + (v.id || '') + ')">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
+  }
+
   function vCond() {
     var h = '<p class="cg-intro">No basta con saber qué acciones necesita tu negocio: necesitas crear las condiciones y sistemas que te permitan sostenerlas. Cuando una acción no se sostiene, anótala aquí.</p>';
-    if (S.edit && S.form === 'cond') {
-      h += '<div class="cg-form"><label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + hoy() + '">' +
-        COND.map(function (c) { return '<label class="cg-lbl">' + c[1] + '</label><textarea id="cgf_' + c[0] + '"></textarea>'; }).join('') +
-        '<label class="cg-lbl">Fecha de prueba</label><input type="date" id="cgf_fechaPrueba"><label class="cg-lbl">Resultado</label><input type="text" id="cgf_resultado" value="Por medir">' +
-        '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarCond()">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
-    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form(\'cond\')">＋ Nuevo registro</button></div>';
+    h += detectarPatrones();
+    if (S.edit && S.form && S.form.t === 'cond') {
+      h += formCond(S.form.prefill);
+    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form({t:\'cond\'})">＋ Nuevo registro</button></div>';
     var l = registros('condiciones');
     if (!l.length) return h + '<div class="cg-vacio">Todavía no hay registros.</div>';
     l.slice().reverse().forEach(function (c) {
+      var editando = S.form && S.form.t === 'cond_edit' && S.form.id === c.id;
+      if (editando) { h += formCond(c); return; }
       h += '<div class="cg-reg"><div class="cg-reg-t">' + esc(c.accion || '—') + (c.fecha ? ' <span class="cg-mini">· ' + corta(c.fecha) + '</span>' : '') + '</div>' +
         COND.slice(1).map(function (k) { return c[k[0]] ? '<div class="cg-linea"><span class="cg-lbl">' + k[1] + '</span>' + esc(c[k[0]]) + '</div>' : ''; }).join('') +
         '<div class="cg-linea"><span class="cg-lbl">Fecha de prueba · Resultado</span>' + (c.fechaPrueba ? corta(c.fechaPrueba) : '—') + ' · ' + (esc(c.resultado) || '—') + '</div>' +
-        (S.edit && !c.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.borrar(\'condiciones\',' + c.id + ')">Eliminar</button></div>' : '') + '</div>';
+        (!c.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.editarCond(' + c.id + ')">Editar</button><button class="cg-link" style="color:var(--fg3)" onclick="CG.borrar(\'condiciones\',' + c.id + ')">Eliminar</button></div>' : '') + '</div>';
     });
     return h;
   }
+  function formDec(prefill) {
+    var v = prefill || {};
+    return '<div class="cg-form">' +
+      '<label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + esc(v.fecha || hoy()) + '">' +
+      '<label class="cg-lbl">Tipo</label><select id="cgf_tipo"><option value="decision"' + (v.tipo !== 'aprendizaje' ? ' selected' : '') + '>Decisión</option><option value="aprendizaje"' + (v.tipo === 'aprendizaje' ? ' selected' : '') + '>Aprendizaje</option></select>' +
+      '<label class="cg-lbl">Qué decidí o qué aprendí</label><textarea id="cgf_texto">' + esc(v.texto || '') + '</textarea>' +
+      '<label class="cg-lbl">En qué evidencia se basa</label><textarea id="cgf_evidencia">' + esc(v.evidencia || '') + '</textarea>' +
+      '<label class="cg-lbl">Se vuelve a revisar solo si…</label><textarea id="cgf_revisar">' + esc(v.revisar || '') + '</textarea>' +
+      '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarDec(' + (v.id || '') + ')">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
+  }
+
   function vDec() {
     var h = '<p class="cg-intro">Lo que ya decidimos queda escrito aquí. Una decisión se vuelve a abrir con evidencia nueva, no por duda ni por una idea distinta.</p>';
-    if (S.edit && S.form === 'dec') {
-      h += '<div class="cg-form"><label class="cg-lbl">Fecha</label><input type="date" id="cgf_fecha" value="' + hoy() + '">' +
-        '<label class="cg-lbl">Tipo</label><select id="cgf_tipo"><option value="decision">Decisión</option><option value="aprendizaje">Aprendizaje</option></select>' +
-        '<label class="cg-lbl">Qué decidí o qué aprendí</label><textarea id="cgf_texto"></textarea>' +
-        '<label class="cg-lbl">En qué evidencia se basa</label><textarea id="cgf_evidencia"></textarea>' +
-        '<label class="cg-lbl">Se vuelve a revisar solo si…</label><textarea id="cgf_revisar"></textarea>' +
-        '<div class="cg-acc"><button class="cg-btn" onclick="CG.guardarDec()">Guardar</button><button class="cg-btn2" onclick="CG.form(null)">Cancelar</button></div></div>';
-    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form(\'dec\')">＋ Nueva decisión o aprendizaje</button></div>';
+    if (S.edit && S.form && S.form.t === 'dec') {
+      h += formDec(S.form.prefill);
+    } else if (S.edit) h += '<div class="cg-acc"><button class="cg-btn" onclick="CG.form({t:\'dec\'})">＋ Nueva decisión o aprendizaje</button></div>';
     var l = registros('decisiones');
     if (!l.length) return h + '<div class="cg-vacio">Todavía no hay decisiones ni aprendizajes.</div>';
     l.slice().reverse().forEach(function (d) {
+      var editando = S.form && S.form.t === 'dec_edit' && S.form.id === d.id;
+      if (editando) { h += formDec(d); return; }
       h += '<div class="cg-reg"><div class="cg-chips">' + chip(d.tipo === 'aprendizaje' ? '💡 Aprendizaje' : '✔ Decisión') + (d.fecha ? ' <span class="cg-mini">' + corta(d.fecha) + '</span>' : '') + '</div>' +
         '<div class="cg-reg-t">' + esc(d.texto) + '</div>' +
         (d.evidencia ? '<div class="cg-linea"><span class="cg-lbl">Evidencia</span>' + esc(d.evidencia) + '</div>' : '') +
         (d.revisar ? '<div class="cg-linea"><span class="cg-lbl">Se revisa solo si…</span>' + esc(d.revisar) + '</div>' : '') +
-        (S.edit && !d.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.borrar(\'decisiones\',' + d.id + ')">Eliminar</button></div>' : '') + '</div>';
+        (!d.base ? '<div class="cg-acc"><button class="cg-link" onclick="CG.editarDec(' + d.id + ')">Editar</button><button class="cg-link" style="color:var(--fg3)" onclick="CG.borrar(\'decisiones\',' + d.id + ')">Eliminar</button></div>' : '') + '</div>';
     });
     return h;
   }
@@ -1973,6 +2109,22 @@ var CG = (function () {
     mover: function (n) { var d = fecha(S.fecha); d.setDate(d.getDate() + n); S.fecha = iso(d); pintar(); },
     semana: function (k, ab) { S.semanas[k] = ab; pintar(); },
     form: function (f) { S.form = f; pintar(); },
+    editarCond: function (id) {
+      var r = S.av.condiciones.find(function(x){ return x.id === id; });
+      if (!r) return;
+      S.form = { t: 'cond_edit', id: id, prefill: r };
+      S.tab = 'cond'; pintar();
+    },
+    editarDec: function (id) {
+      var r = S.av.decisiones.find(function(x){ return x.id === id; });
+      if (!r) return;
+      S.form = { t: 'dec_edit', id: id, prefill: r };
+      S.tab = 'dec'; pintar();
+    },
+    crearCondDesdePatron: function (accionSugerida) {
+      S.form = { t: 'cond', prefill: { accion: accionSugerida, resultado: 'Por medir' } };
+      S.tab = 'cond'; pintar();
+    },
     marcar: function (i) {
       if (!S.edit) return;
       var k = clave(acts()[i]);
@@ -1984,16 +2136,30 @@ var CG = (function () {
       (S.av.dias[S.fecha] = S.av.dias[S.fecha] || {})[k] = v;
       guardar(); if (k === 'estado') pintar();
     },
-    guardarCond: function () {
-      var r = { id: Date.now(), fecha: val('fecha'), fechaPrueba: val('fechaPrueba'), resultado: val('resultado') };
+    guardarCond: function (editId) {
+      var r = { fecha: val('fecha'), fechaPrueba: val('fechaPrueba'), resultado: val('resultado') };
       COND.forEach(function (c) { r[c[0]] = val(c[0]); });
       if (!r.accion && !r.ocurrio) { alert('Escribe al menos la acción o qué ocurrió.'); return; }
-      S.av.condiciones.push(r); S.form = null; guardar(); pintar();
+      if (editId) {
+        var idx = S.av.condiciones.findIndex(function(x){ return x.id === editId; });
+        if (idx !== -1) S.av.condiciones[idx] = Object.assign(S.av.condiciones[idx], r);
+      } else {
+        r.id = Date.now();
+        S.av.condiciones.push(r);
+      }
+      S.form = null; guardar(); pintar();
     },
-    guardarDec: function () {
-      var r = { id: Date.now(), fecha: val('fecha'), tipo: val('tipo'), texto: val('texto'), evidencia: val('evidencia'), revisar: val('revisar') };
+    guardarDec: function (editId) {
+      var r = { fecha: val('fecha'), tipo: val('tipo'), texto: val('texto'), evidencia: val('evidencia'), revisar: val('revisar') };
       if (!r.texto) { alert('Escribe la decisión o el aprendizaje.'); return; }
-      S.av.decisiones.push(r); S.form = null; guardar(); pintar();
+      if (editId) {
+        var idx = S.av.decisiones.findIndex(function(x){ return x.id === editId; });
+        if (idx !== -1) S.av.decisiones[idx] = Object.assign(S.av.decisiones[idx], r);
+      } else {
+        r.id = Date.now();
+        S.av.decisiones.push(r);
+      }
+      S.form = null; guardar(); pintar();
     },
     borrar: function (tipo, id) {
       if (!confirm('¿Eliminar este registro?')) return;
@@ -2149,9 +2315,10 @@ function goTo(id) {
   if (id === 's-m2-vision') initM2Vision();
   if (id === 's-m2-negocio') initM2Negocio();
   if (id === 's-m2-ia') initM2Ia();
-  if (id === 's-m3-intro')   initM3Intro();
-  if (id === 's-m3-chat')    initM3Chat();
-  if (id === 's-m3-resumen') renderResumenM3();
+  if (id === 's-m3-intro')     initM3Intro();
+  if (id === 's-m3-chat')      initM3Chat();
+  if (id === 's-m3-resumen')   renderResumenM3();
+  if (id === 's-m3-condicion') initMCChat();
   if (id === 's-imprimible') renderFicha();
 }
 
@@ -3920,6 +4087,213 @@ function reiniciarM3Chat() {
   var qopts = document.getElementById('m3-quick-opts');
   if (qopts) qopts.innerHTML = '';
   initM3Chat();
+}
+
+// ═══════════ MI CONDICIÓN Y SISTEMA · CHAT IA ═══════════
+var mcChatHistory = [];
+var mcChatBloqueado = false;
+
+function initMCChat() {
+  var msgs = document.getElementById('mc-chat-messages');
+  var qopts = document.getElementById('mc-quick-opts');
+  if (!msgs) return;
+
+  // Cargar historial guardado
+  if (D.mc_chat && Array.isArray(D.mc_chat.history) && D.mc_chat.history.length) {
+    mcChatHistory = D.mc_chat.history.slice();
+    mcChatHistory.forEach(function(m) { mcAddBubble(m.role, m.content, false); });
+    if (qopts) qopts.innerHTML = '';
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
+
+  // Primera vez — construir contexto del patrón si existe
+  var patron = window._patronDetectado;
+  var contextoPatron = '';
+  if (patron) {
+    contextoPatron = ' He notado que en tu avance diario hay un patrón: "' + patron.patron.replace(/[^\w\s,áéíóúÁÉÍÓÚñÑ·.¿?!¡]/g,'') + '" — en ' + patron.pct + '% de tus días registrados.';
+    if (patron.areaTop) contextoPatron += ' El área más afectada es "' + patron.areaTop + '".';
+    if (patron.frases && patron.frases.length) {
+      contextoPatron += ' En tu diario escribiste cosas como: "' + patron.frases[0].substring(0,100) + '"…';
+    }
+  }
+
+  var bienvenida = '¡Hola! Estoy aquí para ayudarte a encontrar qué condición o sistema necesitas para que tu plan funcione de verdad.' + contextoPatron + '\n\n¿Por dónde quieres comenzar?';
+  mcChatHistory = [];
+  mcAddBubble('assistant', bienvenida, true);
+  if (qopts) {
+    qopts.innerHTML = '';
+    mcShowQuickOpts(['Por el patrón que detectaste', 'Por algo que quiero explorar', 'No sé por dónde empezar']);
+  }
+}
+
+function mcAddBubble(role, content, animate) {
+  var msgs = document.getElementById('mc-chat-messages');
+  if (!msgs) return;
+  var isA = role === 'assistant';
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:8px;align-items:flex-end;' + (isA ? '' : 'flex-direction:row-reverse');
+  var avatar = document.createElement('div');
+  avatar.style.cssText = 'width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;' + (isA ? 'background:var(--mo3)' : 'background:var(--or3)');
+  avatar.textContent = isA ? '🧩' : '✦';
+  var bubble = document.createElement('div');
+  bubble.style.cssText = 'max-width:82%;padding:12px 14px;border-radius:16px;font-size:14px;line-height:1.6;' +
+    (isA ? 'background:var(--bg2);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--fg)'
+          : 'background:var(--mo);color:#fff;border-bottom-right-radius:4px');
+  if (animate) {
+    bubble.textContent = '';
+    wrap.appendChild(avatar); wrap.appendChild(bubble);
+    msgs.appendChild(wrap); msgs.scrollTop = msgs.scrollHeight;
+    var i = 0, txt = content;
+    (function tick() {
+      if (i < txt.length) { bubble.textContent += txt[i++]; msgs.scrollTop = msgs.scrollHeight; setTimeout(tick, 8); }
+      else bubble.textContent = txt;
+    })();
+  } else {
+    bubble.textContent = content;
+    wrap.appendChild(avatar); wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+  }
+}
+
+function mcShowQuickOpts(opts) {
+  var el = document.getElementById('mc-quick-opts');
+  if (!el) return;
+  el.innerHTML = opts.map(function(o) {
+    return '<button onclick="mcElegirOpt(' + JSON.stringify(o) + ')" style="padding:7px 13px;background:var(--mo3);color:var(--mo);border:1.5px solid var(--mo);border-radius:20px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap">' + esc(o) + '</button>';
+  }).join('');
+}
+
+function mcElegirOpt(texto) {
+  if (texto === 'Guardar esta condición') {
+    mcGuardarCondicionDesdeChat();
+    return;
+  }
+  var el = document.getElementById('mc-chat-inp');
+  if (el) el.value = texto;
+  enviarMensajeMC();
+}
+
+function mcGuardarCondicionDesdeChat() {
+  // Extrae la última propuesta del asistente y la lleva a condiciones
+  var ultima = mcChatHistory.slice().reverse().find(function(m){ return m.role === 'assistant'; });
+  if (!ultima) return;
+  var texto = ultima.content;
+  // Extraer la condición propuesta (después de "La condición que necesitas es")
+  var matchCond = texto.match(/La condición que necesitas(?: es)?[:\s]+([^.!?\n]+)/i);
+  var matchSis  = texto.match(/El sistema(?: o protocolo)?(?: que te propongo)?(?: es)?[:\s]+([^.!?\n]+)/i);
+  var accion    = matchCond ? matchCond[1].trim() : 'Condición identificada en conversación IA';
+  var ajuste    = matchSis  ? matchSis[1].trim()  : '';
+  // Ir a condiciones con pre-llenado
+  window._patronDetectado = window._patronDetectado || {};
+  goTo('s-m3-plan');
+  setTimeout(function() {
+    // Necesitamos que CG esté montado y vayamos a la pestaña condiciones con el formulario
+    var el = document.getElementById('m3-cg');
+    if (el) {
+      CG.form({ t: 'cond', prefill: { accion: accion, ajuste: ajuste, resultado: 'Por probar' } });
+      CG.tab('cond');
+    }
+    toast('Condición pre-llenada desde la conversación ✓');
+  }, 300);
+}
+
+function autoResizeMCInp(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function mcChatEnter(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensajeMC(); }
+}
+
+async function enviarMensajeMC() {
+  if (mcChatBloqueado) return;
+  var inp = document.getElementById('mc-chat-inp');
+  var qopts = document.getElementById('mc-quick-opts');
+  var texto = inp ? inp.value.trim() : '';
+  if (!texto) return;
+  inp.value = ''; if (inp.style) inp.style.height = '44px';
+  if (qopts) qopts.innerHTML = '';
+
+  mcChatHistory.push({ role: 'user', content: texto });
+  mcAddBubble('user', texto, false);
+  mcChatBloqueado = true;
+
+  var msgs = document.getElementById('mc-chat-messages');
+  var typing = document.createElement('div');
+  typing.style.cssText = 'display:flex;gap:8px;align-items:flex-end';
+  typing.innerHTML = '<div style="width:32px;height:32px;border-radius:50%;background:var(--mo3);display:flex;align-items:center;justify-content:center;font-size:16px">🧩</div><div style="background:var(--bg2);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:4px;padding:12px 14px"><span style="opacity:.5">···</span></div>';
+  if (msgs) { msgs.appendChild(typing); msgs.scrollTop = msgs.scrollHeight; }
+
+  // Contexto del patrón para el sistema
+  var patron = window._patronDetectado;
+  var contextoSistema = 'Eres una coach de mentoría emprendedora que ayuda a mujeres a encontrar las condiciones y sistemas que les faltan para sostener su plan de acción. ' +
+    'Tu estilo: curioso, cálido, profundo. Haces UNA pregunta a la vez. Escuchas antes de proponer. ' +
+    'Cuando encuentres claridad, propón concretamente: "La condición que necesitas es…" y "El sistema o protocolo que te propongo es…". ' +
+    'No des listas largas. Sé directa y emocional.';
+
+  if (patron) {
+    contextoSistema += ' Contexto de la alumna: tiene un patrón de "' + (patron.patron||'') + '" en ' + (patron.pct||0) + '% de sus días.';
+    if (patron.areaTop) contextoSistema += ' El área más afectada es "' + patron.areaTop + '".';
+    if (patron.frases && patron.frases.length) contextoSistema += ' En su diario escribió: "' + patron.frases.slice(0,2).join(' / ') + '".';
+  }
+
+  // Objetivo de mentoría como contexto adicional
+  if (D.objetivo && D.objetivo.meta) {
+    contextoSistema += ' Su objetivo de mentoría es: "' + D.objetivo.meta.substring(0,150) + '".';
+  }
+
+  var messages = mcChatHistory.slice(-12);
+
+  try {
+    var res = await fetch('https://proxy-cys.constanzaenrione.workers.dev/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 400,
+        system: contextoSistema,
+        messages: messages
+      })
+    });
+    var data = await res.json();
+    var respuesta = (data.content && data.content[0] && data.content[0].text) || 'No pude procesar tu respuesta, intenta de nuevo.';
+    if (msgs && typing.parentNode === msgs) msgs.removeChild(typing);
+    mcChatHistory.push({ role: 'assistant', content: respuesta });
+    mcAddBubble('assistant', respuesta, true);
+
+    // Guardar historial
+    if (!D.mc_chat) D.mc_chat = {};
+    D.mc_chat.history = mcChatHistory.slice(-20);
+    clearTimeout(window._mcSaveTimer);
+    window._mcSaveTimer = setTimeout(guardarDatos, 1200);
+
+    // Detectar si hay una condición/sistema propuesta para guardar
+    if (/La condición que necesitas|El sistema que te propongo|Te propongo como condición/.test(respuesta)) {
+      setTimeout(function() {
+        mcShowQuickOpts(['Guardar esta condición', 'Explorar más', 'Entendido, sigamos']);
+      }, 600);
+    }
+
+  } catch(e) {
+    if (msgs && typing.parentNode === msgs) msgs.removeChild(typing);
+    mcAddBubble('assistant', 'Hubo un problema de conexión. ¿Volvemos a intentarlo?', false);
+  }
+  mcChatBloqueado = false;
+}
+
+function reiniciarMCChat() {
+  if (!confirm('¿Reiniciar esta conversación?')) return;
+  mcChatHistory = [];
+  if (!D.mc_chat) D.mc_chat = {};
+  D.mc_chat.history = [];
+  guardarDatos();
+  var msgs = document.getElementById('mc-chat-messages');
+  if (msgs) msgs.innerHTML = '';
+  var qopts = document.getElementById('mc-quick-opts');
+  if (qopts) qopts.innerHTML = '';
+  initMCChat();
 }
 
 function completarModulo3() {
