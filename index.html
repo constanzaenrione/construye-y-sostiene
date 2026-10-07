@@ -2010,6 +2010,9 @@ var CG = (function () {
   };
 })();
 
+// ── HELPERS GLOBALES ──
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 // ── MÓDULO 3 · OBJETIVO + CARTA GANTT ──
 var _m3planTimer = null;
 
