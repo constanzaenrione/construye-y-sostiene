@@ -1110,6 +1110,11 @@ function renderFicha() {
   if (editandoObj) {
     // Formulario edición/carga
     html += '<div style="display:flex;flex-direction:column;gap:10px">';
+    // Campo meta completa (antes del desglose SMART)
+    html += '<div class="field"><label style="font-size:13px;font-weight:700;color:var(--fg)">Meta completa <span style="font-weight:400;color:var(--fg3)">(escríbela tal como la hablarías con tu alumna)</span></label>' +
+      '<textarea id="obj-m-meta" rows="3" placeholder="Ej: Lanzar mi primer servicio de coaching grupal con 5 clientas en 90 días, generando $X mensuales de ingresos recurrentes...">' + escM((obj||{}).meta||'') + '</textarea></div>';
+    // Divisor
+    html += '<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-top:4px">Desglose S·M·A·R·T <span style="font-weight:400">(opcional — ayuda a la alumna a entender cada dimensión)</span></div>';
     objClaves.forEach(function(k) {
       html += '<div class="field"><label><b style="color:var(--mo)">' + objLetras[k] + '</b> · ' + objLabels[k] + '</label>' +
         '<textarea id="obj-m-' + k + '" rows="2" placeholder="' + objLabels[k] + '">' + escM((obj||{})[k]||'') + '</textarea></div>';
@@ -1122,9 +1127,16 @@ function renderFicha() {
   } else if (obj) {
     // Vista del objetivo
     html += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">';
-    objClaves.forEach(function(k) {
-      if (obj[k]) html += '<div class="kv"><div class="kv-label">' + objLetras[k] + ' · ' + k + '</div><div class="kv-val">' + escM(obj[k]) + '</div></div>';
-    });
+    // Meta completa primero
+    if (obj.meta) html += '<div class="kv"><div class="kv-label">Meta</div><div class="kv-val" style="font-size:15px;font-weight:600;color:var(--fg)">' + escM(obj.meta) + '</div></div>';
+    // Desglose SMART si algún campo existe
+    var tieneSmartFields = objClaves.some(function(k){ return obj[k]; });
+    if (tieneSmartFields) {
+      html += '<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-top:6px">Desglose S·M·A·R·T</div>';
+      objClaves.forEach(function(k) {
+        if (obj[k]) html += '<div class="kv"><div class="kv-label">' + objLetras[k] + ' · ' + k + '</div><div class="kv-val">' + escM(obj[k]) + '</div></div>';
+      });
+    }
     html += '</div>' +
       '<button class="btn btn-ghost btn-sm" onclick="editarObjetivoMentora()">Editar objetivo</button>';
   } else {
@@ -1410,11 +1422,14 @@ async function guardarObjetivoMentora() {
   if (!alumnaActual) return;
   var claves = ['especifica','medible','alcanzable','relevante','tiempo'];
   var obj = {};
+  // Meta completa
+  var elMeta = document.getElementById('obj-m-meta');
+  if (elMeta) obj.meta = elMeta.value.trim();
   claves.forEach(function(k) {
     var el = document.getElementById('obj-m-' + k);
     if (el) obj[k] = el.value.trim();
   });
-  if (!obj.especifica) { toast('Escribe al menos el campo Específica (S)'); return; }
+  if (!obj.meta && !obj.especifica) { toast('Escribe la meta completa o al menos el campo S'); return; }
 
   // Si la alumna había editado y la mentora guarda, limpiar el flag
   var yaExistia = (alumnaActual.data||{}).objetivo || {};

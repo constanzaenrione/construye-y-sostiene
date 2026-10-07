@@ -2034,7 +2034,7 @@ function renderObjetivoM3() {
   if (!wrap) return;
   var obj = D.objetivo || null;
 
-  if (!obj || !obj.especifica) {
+  if (!obj || (!obj.meta && !obj.especifica)) {
     // No hay objetivo cargado por la mentora
     wrap.innerHTML =
       '<div style="background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:4px;text-align:center">' +
@@ -2054,19 +2054,24 @@ function renderObjetivoM3() {
     var editInfo = obj.alumna_editado_at
       ? '<div style="font-size:11px;color:var(--fg3);margin-top:8px">Editado por ti el ' + fmtFechaCorta(obj.alumna_editado_at) + '</div>'
       : '';
+    var tieneSmartFields = claves.some(function(k){ return obj[k]; });
     wrap.innerHTML =
       '<div style="background:var(--bg2);border:1.5px solid var(--mo);border-radius:var(--r);padding:20px;margin-bottom:4px">' +
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">' +
           '<div style="font-family:\'Playfair Display\',serif;font-size:17px;color:var(--mo)">🎯 Mi Objetivo de Mentoría</div>' +
           '<button onclick="editarObjetivoM3()" style="border:none;background:var(--mo3);color:var(--mo);border-radius:var(--r2);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Editar</button>' +
         '</div>' +
-        claves.map(function(k) {
-          if (!obj[k]) return '';
-          return '<div style="margin-bottom:12px">' +
-            '<div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--fg3);text-transform:uppercase;margin-bottom:3px">' + letras[k] + ' · ' + labels[k] + '</div>' +
-            '<div style="font-size:14px;color:var(--fg);line-height:1.6">' + esc(obj[k]) + '</div>' +
-          '</div>';
-        }).join('') +
+        (obj.meta ? '<div style="font-size:16px;font-weight:600;color:var(--fg);line-height:1.6;margin-bottom:' + (tieneSmartFields ? '16px' : '0') + '">' + esc(obj.meta) + '</div>' : '') +
+        (tieneSmartFields
+          ? '<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px">Desglose S·M·A·R·T</div>' +
+            claves.map(function(k) {
+              if (!obj[k]) return '';
+              return '<div style="margin-bottom:12px">' +
+                '<div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--fg3);text-transform:uppercase;margin-bottom:3px">' + letras[k] + ' · ' + labels[k] + '</div>' +
+                '<div style="font-size:14px;color:var(--fg);line-height:1.6">' + esc(obj[k]) + '</div>' +
+              '</div>';
+            }).join('')
+          : '') +
         editInfo +
       '</div>';
   }
@@ -2077,6 +2082,11 @@ function renderObjetivoM3() {
     wrap.innerHTML =
       '<div style="background:var(--bg2);border:1.5px solid var(--mo);border-radius:var(--r);padding:20px;margin-bottom:4px">' +
         '<div style="font-family:\'Playfair Display\',serif;font-size:17px;color:var(--mo);margin-bottom:16px">✏️ Editar mi objetivo</div>' +
+        '<div style="margin-bottom:14px">' +
+          '<label style="display:block;font-size:13px;font-weight:700;color:var(--fg);margin-bottom:5px">Mi meta <span style="font-weight:400;color:var(--fg3)">(con tus palabras)</span></label>' +
+          '<textarea id="obj-edit-meta" style="width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r2);padding:10px 12px;font-family:inherit;font-size:14px;color:var(--fg);resize:vertical;min-height:80px;outline:none" onfocus="this.style.borderColor=\'var(--mo)\'" onblur="this.style.borderColor=\'var(--line)\'">' + esc(obj.meta||'') + '</textarea>' +
+        '</div>' +
+        '<div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px">Desglose S·M·A·R·T</div>' +
         claves.map(function(k) {
           return '<div style="margin-bottom:14px">' +
             '<label style="display:block;font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--fg2);text-transform:uppercase;margin-bottom:5px">' + letras[k] + ' · ' + labels[k] + '</label>' +
@@ -2091,6 +2101,8 @@ function renderObjetivoM3() {
   };
 
   window.guardarObjetivoM3 = function() {
+    var elMeta = document.getElementById('obj-edit-meta');
+    if (elMeta) obj.meta = elMeta.value.trim();
     claves.forEach(function(k) {
       var el = document.getElementById('obj-edit-' + k);
       if (el) obj[k] = el.value.trim();
