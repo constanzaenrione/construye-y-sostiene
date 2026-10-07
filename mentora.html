@@ -948,6 +948,7 @@ function renderAlumnas(lista) {
     }).join('');
     var m1ok = d.m1 && d.m1.completado ? '<span class="badge badge-ok">M1 ✓</span>' : '';
     var m2ok = d.m2 && d.m2.completado ? '<span class="badge badge-ok">M2 ✓</span>' : '';
+    var objAlerta = d.objetivo && d.objetivo.alumna_editado_at ? '<span class="badge" style="background:#D4AC00;color:#fff">✏️ Editó objetivo</span>' : '';
     var nSes = sesionesGlobal.filter(function(s) { return s.email === a.email; }).length;
     var updated = a.updated_at ? new Date(a.updated_at).toLocaleDateString('es-CL') : '';
     return '<div class="alumna-card" onclick="abrirFicha(\'' + a.email + '\')">' +
@@ -956,7 +957,7 @@ function renderAlumnas(lista) {
         '<div class="alumna-info">' +
           '<div class="alumna-name">' + nombre + '</div>' +
           '<div class="alumna-email">' + a.email + '</div>' +
-          '<div class="alumna-meta">' + badgesMod + m1ok + m2ok +
+          '<div class="alumna-meta">' + badgesMod + m1ok + m2ok + objAlerta +
             '<span class="badge badge-gray">' + nSes + ' ses.</span>' +
           '</div>' +
           (updated ? '<div class="alumna-last">Última actividad: ' + updated + '</div>' : '') +
@@ -1043,9 +1044,9 @@ function renderFicha() {
   html += '<div class="section-card">' +
     '<div class="section-title">🔓 Módulos activos</div>' +
     '<div class="mod-grid">' +
-    [1,2,3,4].map(function(m) {
+    [1,2,3].map(function(m) {
       var on = mods.indexOf(m) !== -1;
-      var nombres = {1:'Quién eres',2:'La vida que eliges',3:'Bases del negocio',4:'Objetivos y plan'};
+      var nombres = {1:'Quién eres',2:'La vida que eliges',3:'Mi Plan'};
       return '<div class="mod-toggle ' + (on?'on':'') + '" onclick="toggleMod(' + m + ')">' +
         '<div class="mod-toggle-hdr">' +
           '<div class="mod-toggle-name">M' + m + ' — ' + nombres[m] + '</div>' +
@@ -1085,13 +1086,60 @@ function renderFicha() {
     html += '</div>';
   }
 
+  // ── Objetivo de mentoría ──
+  var obj = d.objetivo || null;
+  var objClaves = ['especifica','medible','alcanzable','relevante','tiempo'];
+  var objLabels = { especifica:'Específica (¿qué exactamente?)', medible:'Medible (¿cómo lo sabrás?)', alcanzable:'Alcanzable (¿en tus posibilidades?)', relevante:'Relevante (¿por qué importa?)', tiempo:'Tiempo (¿cuándo?)' };
+  var objLetras = { especifica:'S', medible:'M', alcanzable:'A', relevante:'R', tiempo:'T' };
+  var editandoObj = window._editandoObjetivo === a.email;
+  var alertaEdicion = obj && obj.alumna_editado_at;
+
+  html += '<div class="section-card" id="card-objetivo">' +
+    '<div class="section-title">' +
+      '🎯 Objetivo de mentoría' +
+      (alertaEdicion ? ' <span style="background:#D4AC00;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px">✏️ Alumna editó</span>' : '') +
+    '</div>';
+
+  if (alertaEdicion) {
+    html += '<div style="background:var(--or3);border:1px solid var(--or);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--fg2)">' +
+      '⚠️ <b>' + nombre + '</b> modificó su objetivo el ' + fmtFechaCorta(obj.alumna_editado_at) + '. Revisa los cambios y confirma si los apruebas.' +
+      '<button onclick="aprobarEdicionObj()" style="margin-left:10px;background:var(--ok);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">Visto ✓</button>' +
+    '</div>';
+  }
+
+  if (editandoObj) {
+    // Formulario edición/carga
+    html += '<div style="display:flex;flex-direction:column;gap:10px">';
+    objClaves.forEach(function(k) {
+      html += '<div class="field"><label><b style="color:var(--mo)">' + objLetras[k] + '</b> · ' + objLabels[k] + '</label>' +
+        '<textarea id="obj-m-' + k + '" rows="2" placeholder="' + objLabels[k] + '">' + escM((obj||{})[k]||'') + '</textarea></div>';
+    });
+    html += '<div style="display:flex;gap:8px;margin-top:4px">' +
+      '<button class="btn btn-primary btn-sm" onclick="guardarObjetivoMentora()">Guardar objetivo</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="cancelarEditObj()">Cancelar</button>' +
+      (obj ? '<button class="btn btn-danger btn-sm" onclick="quitarObjetivo()">Quitar</button>' : '') +
+    '</div></div>';
+  } else if (obj) {
+    // Vista del objetivo
+    html += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">';
+    objClaves.forEach(function(k) {
+      if (obj[k]) html += '<div class="kv"><div class="kv-label">' + objLetras[k] + ' · ' + k + '</div><div class="kv-val">' + escM(obj[k]) + '</div></div>';
+    });
+    html += '</div>' +
+      '<button class="btn btn-ghost btn-sm" onclick="editarObjetivoMentora()">Editar objetivo</button>';
+  } else {
+    html += '<div style="font-size:13px;color:var(--fg3);margin-bottom:12px">Aún no has cargado el objetivo para esta alumna.</div>' +
+      '<button class="btn btn-primary btn-sm" onclick="editarObjetivoMentora()">+ Cargar objetivo</button>';
+  }
+  html += '</div>';
+
   // Carta Gantt
   var gPlan = d.gantt, gRes = gPlan ? CG.resumen(gPlan, d.gantt_avance) : null;
   html += '<div class="section-card">' +
     '<div class="section-title">🗺️ Carta Gantt</div>' +
     (gPlan
       ? '<div class="kv"><div class="kv-label">' + escM((gPlan.proyecto || {}).nombre) + '</div><div class="kv-val">' + gRes.total + ' actividades · ' + gRes.ini.split('-').reverse().slice(0,2).join('/') + ' → ' + gRes.fin.split('-').reverse().slice(0,2).join('/') + ' · avance de la alumna: ' + gRes.hechas + ' de ' + gRes.total + '</div></div>' +
-        '<div style="font-size:12px;color:var(--fg3);margin-top:8px">' + (mods.indexOf(4) !== -1 ? '✓ La alumna ya la ve en su Módulo 4.' : '🔒 La alumna todavía no la ve: activa el Módulo 4 arriba cuando esté lista.') + '</div>'
+        '<div style="font-size:12px;color:var(--fg3);margin-top:8px">' + (mods.indexOf(3) !== -1 ? '✓ La alumna ya la ve en su Módulo 3.' : '🔒 La alumna todavía no la ve: activa el Módulo 3 arriba cuando esté lista.') + '</div>'
       : '<div style="font-size:13px;color:var(--fg3)">Aún no tiene carta Gantt. Sube el archivo .json para revisarla aquí.</div>') +
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
       '<label class="btn btn-primary btn-sm" style="cursor:pointer">' + (gPlan ? 'Reemplazar archivo' : 'Subir carta Gantt') + '<input type="file" accept=".json,application/json" hidden onchange="subirGantt(this)"></label>' +
@@ -1338,6 +1386,73 @@ async function eliminarAlumna() {
     toast('Alumna eliminada');
     goTo('s-panel');
   } catch(e) { toast('Error al eliminar'); }
+}
+
+// ─── OBJETIVO DE MENTORÍA ───
+function fmtFechaCorta(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  var M = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return d.getDate() + ' ' + M[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function editarObjetivoMentora() {
+  window._editandoObjetivo = alumnaActual.email;
+  renderFicha();
+}
+
+function cancelarEditObj() {
+  window._editandoObjetivo = null;
+  renderFicha();
+}
+
+async function guardarObjetivoMentora() {
+  if (!alumnaActual) return;
+  var claves = ['especifica','medible','alcanzable','relevante','tiempo'];
+  var obj = {};
+  claves.forEach(function(k) {
+    var el = document.getElementById('obj-m-' + k);
+    if (el) obj[k] = el.value.trim();
+  });
+  if (!obj.especifica) { toast('Escribe al menos el campo Específica (S)'); return; }
+
+  // Si la alumna había editado y la mentora guarda, limpiar el flag
+  var yaExistia = (alumnaActual.data||{}).objetivo || {};
+  if (yaExistia.alumna_editado_at) {
+    // Conservar si la mentora no quiere borrarlo. Aquí lo limpiamos porque la mentora acaba de revisar.
+    obj.alumna_editado_at = null;
+  }
+
+  var d = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+  d.objetivo = obj;
+  var res = await sb.from('mentoria_cys').upsert({ email: alumnaActual.email, data: d, updated_at: new Date().toISOString() });
+  if (!Array.isArray(res)) { toast('Error al guardar objetivo'); return; }
+  ponerDatosAlumna(d);
+  window._editandoObjetivo = null;
+  toast('✓ Objetivo guardado');
+  renderFicha();
+}
+
+async function quitarObjetivo() {
+  if (!alumnaActual) return;
+  if (!confirm('¿Quitar el objetivo de esta alumna?')) return;
+  var d = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+  delete d.objetivo;
+  await sb.from('mentoria_cys').upsert({ email: alumnaActual.email, data: d, updated_at: new Date().toISOString() });
+  ponerDatosAlumna(d);
+  window._editandoObjetivo = null;
+  toast('Objetivo quitado');
+  renderFicha();
+}
+
+async function aprobarEdicionObj() {
+  if (!alumnaActual) return;
+  var d = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+  if (d.objetivo) d.objetivo.alumna_editado_at = null;
+  await sb.from('mentoria_cys').upsert({ email: alumnaActual.email, data: d, updated_at: new Date().toISOString() });
+  ponerDatosAlumna(d);
+  toast('✓ Edición revisada');
+  renderFicha();
 }
 
 // ─── TABS ───
