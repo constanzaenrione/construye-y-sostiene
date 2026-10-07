@@ -62,20 +62,20 @@ body {
 }
 .nav-btn {
   flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: 3px; padding: 10px 4px; border: none; background: none;
+  gap: 3px; padding: 12px 4px; border: none; background: none;
   color: var(--fg3); cursor: pointer; font-family: inherit;
   font-size: 10px; font-weight: 500; letter-spacing: .3px;
   transition: color .2s;
 }
 .nav-btn.active { color: var(--mo); }
-.nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+.nav-btn svg { width: 24px; height: 24px; stroke-width: 1.8; }
 
 /* ── HEADER ── */
 .hdr {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; background: var(--bg2);
+  padding: 12px 16px; background: var(--bg2);
   border-bottom: 1px solid var(--line); flex-shrink: 0;
-  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
 }
 .hdr-brand { display: flex; align-items: center; gap: 10px; }
 .hdr-logo {
@@ -99,7 +99,7 @@ body {
 .btn-icon svg { width: 18px; height: 18px; stroke-width: 2; }
 
 /* ── SCROLL AREA ── */
-.scroll { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: calc(80px + env(safe-area-inset-bottom,0px)); }
+.scroll { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: calc(100px + env(safe-area-inset-bottom,0px)); }
 .scroll::-webkit-scrollbar { width: 4px; }
 .scroll::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
 
@@ -130,8 +130,8 @@ body {
 .field-inp {
   width: 100%; padding: 12px 14px; border-radius: var(--r2);
   border: 1.5px solid var(--line); background: var(--bg);
-  color: var(--fg); font-family: inherit; font-size: 15px;
-  outline: none; transition: border-color .2s;
+  color: var(--fg); font-family: inherit; font-size: 16px;
+  outline: none; transition: border-color .2s; -webkit-appearance: none;
 }
 .field-inp:focus { border-color: var(--mo); }
 .btn-primary {
@@ -139,7 +139,7 @@ body {
   background: var(--mo); color: #fff; border: none;
   font-family: inherit; font-size: 15px; font-weight: 600;
   cursor: pointer; margin-top: 16px; transition: background .2s, transform .1s;
-  letter-spacing: .2px;
+  letter-spacing: .2px; min-height: 44px;
 }
 .btn-primary:hover { background: var(--mo2); }
 .btn-primary:active { transform: scale(.98); }
@@ -147,7 +147,7 @@ body {
   width: 100%; padding: 12px; border-radius: var(--r2);
   background: transparent; color: var(--mo); border: 1.5px solid var(--mo);
   font-family: inherit; font-size: 14px; font-weight: 500;
-  cursor: pointer; margin-top: 10px; transition: background .2s;
+  cursor: pointer; margin-top: 10px; transition: background .2s; min-height: 44px;
 }
 .btn-secondary:hover { background: var(--mo3); }
 .auth-msg { font-size: 13px; color: var(--fg2); margin-top: 14px; }
@@ -212,7 +212,7 @@ body {
 /* ── SECCIONES DEL MÓDULO ── */
 .mod-hero {
   background: linear-gradient(135deg, var(--mo) 0%, #7B3DBE 100%);
-  padding: 32px 20px 28px; flex-shrink: 0;
+  padding: 32px 16px 28px; flex-shrink: 0;
   padding-top: calc(32px + env(safe-area-inset-top,0px));
 }
 .mod-eyebrow {
@@ -223,14 +223,15 @@ body {
   font-family: 'Playfair Display', serif; font-size: 24px;
   color: #fff; line-height: 1.25; text-wrap: balance; margin-bottom: 10px;
 }
-.mod-hero-sub { font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.5; }
+.mod-hero-sub { font-size: 14px; color: rgba(255,255,255,.75); line-height: 1.5; }
 .mod-steps {
   display: flex; gap: 6px; margin-top: 20px; overflow-x: auto; padding-bottom: 4px;
 }
 .mod-step {
-  flex-shrink: 0; padding: 6px 12px; border-radius: 20px;
+  flex-shrink: 0; padding: 10px 14px; border-radius: 20px;
   font-size: 11px; font-weight: 600; cursor: pointer; border: none;
-  transition: background .2s, color .2s;
+  transition: background .2s, color .2s; min-height: 44px;
+  display: flex; align-items: center;
 }
 .mod-step.done { background: rgba(255,255,255,.2); color: rgba(255,255,255,.8); }
 .mod-step.active { background: var(--or); color: #1A0A2E; }
@@ -238,20 +239,20 @@ body {
 
 /* ── EJERCICIO CARDS ── */
 .ej-card {
-  background: var(--bg2); border-radius: var(--r); padding: 20px;
-  box-shadow: var(--sh); margin-bottom: 14px;
+  background: var(--bg2); border-radius: var(--r); padding: 18px;
+  box-shadow: var(--sh); margin-bottom: 16px;
 }
 .ej-card-title {
-  font-family: 'Playfair Display', serif; font-size: 17px;
+  font-family: 'Playfair Display', serif; font-size: 18px;
   color: var(--mo); margin-bottom: 6px; font-weight: 600;
 }
-.ej-card-sub { font-size: 13px; color: var(--fg2); margin-bottom: 16px; line-height: 1.5; }
+.ej-card-sub { font-size: 14px; color: var(--fg2); margin-bottom: 16px; line-height: 1.5; }
 .ej-textarea {
-  width: 100%; min-height: 100px; padding: 12px 14px;
+  width: 100%; min-height: 120px; padding: 12px 14px;
   border-radius: var(--r2); border: 1.5px solid var(--line);
   background: var(--bg); color: var(--fg); font-family: inherit;
-  font-size: 14px; line-height: 1.6; resize: vertical; outline: none;
-  transition: border-color .2s;
+  font-size: 16px; line-height: 1.6; resize: vertical; outline: none;
+  transition: border-color .2s; -webkit-appearance: none;
 }
 .ej-textarea:focus { border-color: var(--mo); }
 .ej-hint { font-size: 12px; color: var(--fg3); margin-top: 6px; font-style: italic; }
@@ -259,20 +260,22 @@ body {
 /* ── CHIPS / TAGS ── */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .chip {
-  padding: 7px 14px; border-radius: 20px; font-size: 13px;
+  padding: 10px 16px; border-radius: 20px; font-size: 13px;
   border: 1.5px solid var(--line); background: var(--bg);
   color: var(--fg2); cursor: pointer; transition: all .2s; font-weight: 500;
+  min-height: 44px; display: inline-flex; align-items: center;
 }
 .chip.sel { background: var(--mo); color: #fff; border-color: var(--mo); }
 .chip-add {
-  padding: 6px 12px; border-radius: 20px; font-size: 13px;
+  padding: 10px 16px; border-radius: 20px; font-size: 13px;
   border: 1.5px dashed var(--mo); background: transparent;
   color: var(--mo); cursor: pointer; font-family: inherit; font-weight: 500;
+  min-height: 44px; display: inline-flex; align-items: center;
 }
 
 /* ── ABECEDARIO ── */
 .abc-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(68px,1fr));
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
   gap: 8px; margin-top: 8px;
 }
 .abc-cell {
@@ -280,13 +283,13 @@ body {
   background: var(--bg); padding: 8px 6px; text-align: center;
 }
 .abc-letra {
-  font-family: 'Playfair Display', serif; font-size: 18px;
+  font-family: 'Playfair Display', serif; font-size: 16px;
   color: var(--mo); font-weight: 600; display: block; line-height: 1;
 }
 .abc-input {
   width: 100%; border: none; background: transparent; text-align: center;
-  font-family: inherit; font-size: 11px; color: var(--fg); outline: none;
-  margin-top: 4px; padding: 0;
+  font-family: inherit; font-size: 13px; color: var(--fg); outline: none;
+  margin-top: 4px; padding: 0; -webkit-appearance: none;
 }
 
 /* ── IA SECTION ── */
@@ -299,7 +302,7 @@ body {
 .ia-card-title svg { width: 18px; height: 18px; }
 .ia-resp {
   background: var(--bg2); border-radius: var(--r2); padding: 14px;
-  font-size: 13px; color: var(--fg); line-height: 1.7; min-height: 60px;
+  font-size: 15px; color: var(--fg); line-height: 1.7; min-height: 60px;
   white-space: pre-wrap;
 }
 .ia-resp.empty { color: var(--fg3); font-style: italic; }
@@ -309,7 +312,7 @@ body {
   background: var(--mo); color: #fff; border: none; border-radius: var(--r2);
   padding: 13px 20px; font-family: inherit; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: background .2s, transform .1s; width: 100%;
-  margin-top: 12px; letter-spacing: .2px;
+  margin-top: 12px; letter-spacing: .2px; min-height: 44px;
 }
 .btn-mo:hover { background: var(--mo2); }
 .btn-mo:active { transform: scale(.98); }
@@ -317,7 +320,7 @@ body {
   background: var(--or); color: #1A0A2E; border: none; border-radius: var(--r2);
   padding: 13px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
   cursor: pointer; transition: background .2s, transform .1s; width: 100%;
-  margin-top: 12px;
+  margin-top: 12px; min-height: 44px;
 }
 .btn-or:hover { background: var(--or2); }
 .btn-or:active { transform: scale(.98); }
@@ -325,6 +328,7 @@ body {
   background: transparent; color: var(--mo); border: 1.5px solid var(--mo);
   border-radius: var(--r2); padding: 11px 20px; font-family: inherit;
   font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 8px;
+  min-height: 44px;
 }
 
 /* ── MF IMPORT ── */
@@ -387,8 +391,9 @@ body {
 /* ── EMPRESARIA SECTION ── */
 .emp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
 .emp-item {
-  background: var(--mo3); border-radius: var(--r2); padding: 12px;
+  background: var(--mo3); border-radius: var(--r2); padding: 14px;
   cursor: pointer; transition: background .2s; border: 1.5px solid transparent;
+  min-height: 70px;
 }
 .emp-item.sel { background: var(--mo); border-color: var(--mo); }
 .emp-item-icon { font-size: 20px; margin-bottom: 4px; display: block; }
@@ -565,7 +570,7 @@ body {
 .cg-intro{font-size:13px;color:var(--fg2);margin-bottom:12px}
 .cg-vacio{font-size:13px;color:var(--fg3);padding:14px 0;text-align:center}
 .cg-nav{display:flex;gap:6px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-.cg input[type=date],.cg input[type=text],.cg select,.cg textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit;background:var(--bg2);color:var(--fg)}
+.cg input[type=date],.cg input[type=text],.cg select,.cg textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:16px;font-family:inherit;background:var(--bg2);color:var(--fg);-webkit-appearance:none}
 .cg-nav input[type=date]{width:auto;flex:1;min-width:140px}
 .cg textarea{min-height:54px;resize:vertical}
 .cg-btn,.cg-btn2{border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
@@ -596,6 +601,11 @@ body {
   .cg-tabla td[data-l]::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-top:5px}
   .cg-tabla td.cg-td1{display:inline-block;margin-right:6px;font-size:14px}
 }
+
+/* ── MOBILE POLISH ── */
+input, textarea, select { font-size: 16px !important; -webkit-appearance: none; }
+button { -webkit-tap-highlight-color: rgba(75,22,142,.15); }
+.scroll { -webkit-overflow-scrolling: touch; }
 </style>
 
 <!-- ═══════════════════════════════════════════════════════ SCREENS -->
@@ -1318,7 +1328,7 @@ body {
   <div id="m2c7-footer" style="padding:10px 14px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))">
     <div id="m2c7-quick-opts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;align-items:flex-end">
-      <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;background:var(--bg);color:var(--fg);outline:none;max-height:110px;line-height:1.5;-webkit-appearance:none" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
+      <textarea id="m2c7-inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;overflow:hidden;border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:16px;background:var(--bg);color:var(--fg);outline:none;max-height:110px;line-height:1.5;-webkit-appearance:none" oninput="autoResizeM2C7(this)" onkeydown="m2c7Enter(event)"></textarea>
       <button onclick="enviarM2C7()" style="background:linear-gradient(135deg,#1A6B3A,#2D9E5F);color:#fff;border:none;border-radius:50%;width:44px;height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(26,107,58,.35)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -1377,7 +1387,7 @@ body {
     <div class="ej-card">
       <div class="ej-card-title">Escribe tu visión en detalle</div>
       <div class="ej-card-sub">Imagina que ya llegaste a ese futuro. ¿Qué ves? ¿Cómo vives, trabajas, con quién, dónde, qué impacto generas, cómo te sientes?</div>
-      <textarea class="ej-textarea" id="ta-vision" style="min-height:140px" placeholder="En [X] años, mi vida y mi proyecto son… Trabajo con… Me siento… He logrado…"></textarea>
+      <textarea class="ej-textarea" id="ta-vision" style="min-height:140px" placeholder="En [X] años, mi vida y mi proyecto son… Trabajo con… Me siento… He logrado…" oninput="D.m2.vision_texto=this.value.trim();autoguardar()"></textarea>
       <div class="ej-hint">Escribe en presente como si ya estuvieras ahí. Eso activa tu mente para construirlo.</div>
     </div>
     <button class="btn-or" onclick="guardarM2YSeguir('s-m2-negocio')">Guardar y continuar →</button>
@@ -1447,17 +1457,17 @@ body {
     <div class="ej-card">
       <div class="ej-card-title">¿Por qué este camino?</div>
       <div class="ej-card-sub">¿Qué te llevó aquí? ¿Qué necesitas resolver, qué quieres construir, qué te mueve?</div>
-      <textarea class="ej-textarea" id="ta-neg-porque" placeholder="Elegí este camino porque…"></textarea>
+      <textarea class="ej-textarea" id="ta-neg-porque" placeholder="Elegí este camino porque…" oninput="D.m2.negocio_porque=this.value.trim();autoguardar()"></textarea>
     </div>
     <div class="ej-card">
       <div class="ej-card-title">Tu propósito en una frase</div>
       <div class="ej-card-sub">¿Para qué existe lo que estás construyendo? Completa a tu manera:</div>
-      <textarea class="ej-textarea" id="ta-neg-mision" style="min-height:80px" placeholder="Lo que estoy construyendo existe para…"></textarea>
+      <textarea class="ej-textarea" id="ta-neg-mision" style="min-height:80px" placeholder="Lo que estoy construyendo existe para…" oninput="D.m2.negocio_mision=this.value.trim();autoguardar()"></textarea>
     </div>
     <div class="ej-card">
       <div class="ej-card-title">El impacto que quieres generar</div>
       <div class="ej-card-sub">Si en algunos años logras lo que te propones, ¿qué habrá cambiado — en tu vida, en tu trabajo, en las personas que tocas?</div>
-      <textarea class="ej-textarea" id="ta-neg-impacto" placeholder="Si lo logro, habrá cambiado…"></textarea>
+      <textarea class="ej-textarea" id="ta-neg-impacto" placeholder="Si lo logro, habrá cambiado…" oninput="D.m2.negocio_impacto=this.value.trim();autoguardar()"></textarea>
     </div>
     <button class="btn-or" onclick="guardarM2YSeguir('s-m2-ia')">Guardar y continuar → Declaración</button>
     <button class="btn-outline" onclick="goTo('s-m2-vision')" style="margin-top:8px">← Volver</button>
@@ -1602,7 +1612,7 @@ body {
   <div style="padding:12px 16px;background:var(--bg2);border-top:1px solid var(--line);flex-shrink:0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
     <div id="m3-quick-opts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
     <div style="display:flex;gap:8px;align-items:flex-end">
-      <textarea id="m3-chat-inp" class="inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;min-height:40px;max-height:100px;overflow-y:auto;padding:10px 12px;font-size:14px" oninput="autoResizeM3Inp(this)" onkeydown="m3ChatEnter(event)"></textarea>
+      <textarea id="m3-chat-inp" class="inp" rows="1" placeholder="Escribe tu respuesta…" style="flex:1;resize:none;min-height:44px;max-height:100px;overflow-y:auto;padding:10px 12px;font-size:16px;-webkit-appearance:none" oninput="autoResizeM3Inp(this)" onkeydown="m3ChatEnter(event)"></textarea>
       <button id="m3-send-btn" onclick="enviarMensajeM3()" style="background:linear-gradient(135deg,#0F4C7A,#1A7DBF);border:none;color:#fff;border-radius:var(--r2);padding:10px 14px;cursor:pointer;flex-shrink:0;height:40px;display:flex;align-items:center;justify-content:center">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -2170,6 +2180,8 @@ async function cambiarClave() {
 
 // ── DATOS SUPABASE ──
 async function guardarDatos() {
+  // Siempre guardar en localStorage aunque no haya conexión
+  try { localStorage.setItem('cys_m1', JSON.stringify(D)); } catch(e) {}
   if (!sb || !userEmail) return;
   if (inscrita !== true) return; // sin ficha creada por la mentora no se guarda nada en la nube
   // Lo que administra la mentora (carta Gantt y módulos activos) se toma siempre de la nube,
@@ -2188,7 +2200,6 @@ async function guardarDatos() {
       { onConflict: 'email' }
     );
   } catch(e) {}
-  try { localStorage.setItem('cys_m1', JSON.stringify(D)); } catch(e) {}
 }
 
 async function cargarDatos() {
@@ -2609,7 +2620,7 @@ function completarModulo1() {
 // ══════════════════════════════════════════
 
 function recolectarDatosM2() {
-  // frutos: textareas dinámicos (ya se guardan en oninput, pero por si acaso)
+  // frutos: textareas dinámicos
   document.querySelectorAll('#frutos-m2-form textarea[data-fruto]').forEach(function(ta) {
     if (!D.m2.frutos) D.m2.frutos = {};
     D.m2.frutos[ta.dataset.fruto] = ta.value.trim();
@@ -2618,7 +2629,12 @@ function recolectarDatosM2() {
   var npm = document.getElementById('ta-neg-porque'); if (npm) D.m2.negocio_porque = npm.value.trim();
   var nm = document.getElementById('ta-neg-mision'); if (nm) D.m2.negocio_mision = nm.value.trim();
   var ni = document.getElementById('ta-neg-impacto'); if (ni) D.m2.negocio_impacto = ni.value.trim();
-  var vd = document.getElementById('ta-vision-declaracion'); if (vd) D.m2.vision_ia = vd.value.trim();
+  // SOLO sobreescribe vision_ia si la tarjeta de edición está visible y tiene contenido
+  var vd = document.getElementById('ta-vision-declaracion');
+  var visionCard = document.getElementById('vision-edit-card');
+  if (vd && visionCard && visionCard.style.display !== 'none' && vd.value.trim()) {
+    D.m2.vision_ia = vd.value.trim();
+  }
   // tipo de negocio / camino
   var tipos = [];
   document.querySelectorAll('#negocio-tipo-grid .emp-item.sel').forEach(function(i){ tipos.push(i.dataset.key); });
@@ -2679,7 +2695,8 @@ function selectAnios(el, val) {
 
 function toggleNegTipo(el, key) {
   el.classList.toggle('sel');
-  autoguardar();
+  recolectarDatosM2();
+  guardarDatos();
 }
 
 function addNegTipoCustom() {
@@ -2688,11 +2705,13 @@ function addNegTipoCustom() {
   var item = document.createElement('div');
   item.className = 'emp-item sel';
   item.dataset.key = val;
+  item.dataset.custom = '1';
   item.innerHTML = '<span class="emp-item-icon">⭐</span><div class="emp-item-lbl">' + val + '</div>';
   item.onclick = function(){ toggleNegTipo(item, val); };
   document.getElementById('negocio-tipo-grid').appendChild(item);
   inp.value = '';
-  autoguardar();
+  recolectarDatosM2();
+  guardarDatos();
 }
 
 function initM2Intro() {
@@ -2791,7 +2810,7 @@ function renderFrutosM2() {
         '</div>' +
         '<div style="font-size:13px;font-weight:600;color:var(--fg);margin-bottom:6px">'+f.pregunta+'</div>' +
         '<textarea data-fruto="'+f.key+'" rows="3" placeholder="Escribe lo que quieres aquí…" '+
-          'style="width:100%;resize:vertical;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:\'DM Sans\',sans-serif;font-size:14px;background:var(--bg2);color:var(--fg);outline:none;line-height:1.5;min-height:80px" '+
+          'style="width:100%;resize:vertical;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:\'DM Sans\',sans-serif;font-size:16px;background:var(--bg2);color:var(--fg);outline:none;line-height:1.5;min-height:80px;-webkit-appearance:none" '+
           'oninput="D.m2.frutos[this.dataset.fruto]=this.value">'+saved+'</textarea>' +
       '</div>';
     cont.appendChild(card);
@@ -3096,11 +3115,31 @@ function initM2Vision() {
 }
 
 function initM2Negocio() {
-  // Restaurar tipo negocio
+  var grid = document.getElementById('negocio-tipo-grid');
+  // Desmarcar todos primero
+  grid.querySelectorAll('.emp-item').forEach(function(item){ item.classList.remove('sel'); });
+  // Eliminar custom previos (guardados con ⭐)
+  grid.querySelectorAll('.emp-item[data-custom]').forEach(function(item){ item.remove(); });
+
   if (D.m2.negocio_tipo) {
-    var tipos = D.m2.negocio_tipo.split(',').map(function(t){ return t.trim(); });
-    document.querySelectorAll('#negocio-tipo-grid .emp-item').forEach(function(item) {
-      if (tipos.indexOf(item.dataset.key) !== -1) item.classList.add('sel');
+    var tipos = D.m2.negocio_tipo.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+    var keysEnGrid = [];
+    grid.querySelectorAll('.emp-item').forEach(function(item){ keysEnGrid.push(item.dataset.key); });
+    tipos.forEach(function(t) {
+      var found = false;
+      grid.querySelectorAll('.emp-item').forEach(function(item){
+        if (item.dataset.key === t) { item.classList.add('sel'); found = true; }
+      });
+      // Si no existe en el grid (era custom), recrearlo
+      if (!found && t) {
+        var item = document.createElement('div');
+        item.className = 'emp-item sel';
+        item.dataset.key = t;
+        item.dataset.custom = '1';
+        item.innerHTML = '<span class="emp-item-icon">⭐</span><div class="emp-item-lbl">' + t + '</div>';
+        item.onclick = function(){ toggleNegTipo(item, t); };
+        grid.appendChild(item);
+      }
     });
   }
   var np = document.getElementById('ta-neg-porque'); if (np) np.value = D.m2.negocio_porque || '';
@@ -3130,43 +3169,71 @@ async function generarVisionIA() {
   resp.classList.remove('empty');
 
   recolectarDatosM2();
-  var ctx = '';
-  ctx += 'Nombre: ' + (D.nombre || 'ella') + '. ';
-  var frutosTexto = D.m2.frutos ? Object.keys(D.m2.frutos).filter(function(k){ return D.m2.frutos[k]; }).map(function(k){ return k+': '+D.m2.frutos[k]; }).join(' | ') : '';
-  ctx += 'Frutos explorados: ' + (frutosTexto || 'no completado') + '. ';
-  ctx += 'Área de enfoque en esta mentoría: ' + (D.m2.fruto_foco || '') + '. ';
-  ctx += 'Su motivo de poder (motivación profunda): ' + (D.m2.motivo_poder || '') + '. ';
-  ctx += 'Horizonte de visión: ' + (D.m2.vision_anios || '3') + ' años. ';
-  ctx += 'Palabras que describen su negocio ideal: ' + (D.m2.vision_palabras.join(', ') || '') + '. ';
-  ctx += 'Descripción de la visión: ' + (D.m2.vision_texto || '') + '. ';
-  ctx += 'Tipo de negocio: ' + (D.m2.negocio_tipo || '') + '. ';
-  ctx += 'Por qué eligió ese negocio: ' + (D.m2.negocio_porque || '') + '. ';
-  ctx += 'Misión del negocio: ' + (D.m2.negocio_mision || '') + '. ';
-  ctx += 'Impacto que quiere generar: ' + (D.m2.negocio_impacto || '') + '.';
 
-  var sys = 'Eres una mentora experta que acompaña a mujeres en distintas etapas de vida y trabajo — algunas tienen negocio propio, otras están en transición, otras construyen proyectos personales. Tu tarea es crear una declaración de visión poderosa y personal, en primera persona, que integre los frutos que busca, su visión a futuro y el camino que eligió recorrer.\n\nREGLAS ESTRICTAS:\n1. Escrita en PRIMERA PERSONA, en TIEMPO PRESENTE ("vivo", "tengo", "soy", "disfruto") — no en futuro ni condicional.\n2. Empieza directamente con una oración en presente del tipo: "Vivo una vida..." o "Tengo un negocio..." o "Soy una mujer que..."\n3. 3-4 párrafos cortos, emotivos y concretos.\n4. Integra sus frutos, visión y propósito de manera fluida.\n5. Que suene auténtica, ambiciosa y real — no corporativa ni motivacional genérica.\n6. ESPAÑOL NEUTRO LATINOAMERICANO: usa "tú" (no "vos"), sin modismos argentinos ni rioplatenses, tildes correctas.\n7. Empieza directamente, sin introducción ni título.\n8. NUNCA uses: "vos", "hacés", "tenés", "querés", "sos" (rioplatense), ni frases como "En X años..."\n9. Usa lenguaje cercano, cálido y femenino sin ser cursi.';
+  // Construir contexto — la visión escrita es la BASE principal
+  var visionBase = (D.m2.vision_texto || '').trim();
+  var foco = (D.m2.fruto_foco || '').trim();
+  var frutosObj = D.m2.frutos || {};
+  var frutosLineas = Object.keys(frutosObj).filter(function(k){ return frutosObj[k]; }).map(function(k){ return '- ' + k + ': ' + frutosObj[k]; }).join('\n');
+  var motivoRaw = (D.m2.motivo_poder || '').replace(/✨ Tu Motivo de Poder:\s*/i,'').split(/¿Quieres guardar|¿Querés guardar/i)[0].split('\n').filter(function(l){ return l.trim(); })[0] || '';
+
+  var ctx = '';
+  ctx += '=== VISIÓN QUE ELLA ESCRIBIÓ (esta es tu base — tómala y enriquécela, no la ignores) ===\n';
+  ctx += (visionBase || 'No completado aún') + '\n\n';
+  ctx += 'Horizonte: ' + (D.m2.vision_anios || '3') + ' años desde hoy.\n';
+  ctx += 'Nombre: ' + (D.nombre || 'ella') + '.\n';
+  if (motivoRaw) ctx += 'Su motivación profunda: ' + motivoRaw + '.\n';
+  if (foco) ctx += '\n=== FRUTO PRINCIPAL — dedica el párrafo más rico y específico a este ===\n' + foco + (frutosObj[foco] ? ': ' + frutosObj[foco] : '') + '\n';
+  if (frutosLineas) ctx += '\n=== TODOS SUS FRUTOS — incorpóralos como logros YA ALCANZADOS (realidad presente) ===\n' + frutosLineas + '\n';
+  if (D.m2.negocio_tipo) ctx += '\nTipo de proyecto/negocio: ' + D.m2.negocio_tipo + '.';
+  if (D.m2.negocio_mision) ctx += '\nPropósito: ' + D.m2.negocio_mision + '.';
+  if (D.m2.negocio_impacto) ctx += '\nImpacto que quiere generar: ' + D.m2.negocio_impacto + '.';
+
+  var sys = 'Eres una mentora cálida y experta que acompaña a mujeres latinoamericanas mayores de 40.\n\nTU TAREA: Reescribe la visión que ella escribió como una declaración poderosa, personal y emocionante — en primera persona y tiempo presente — como si esa vida ya fuera su realidad vivida. Toma sus palabras como punto de partida real, no las ignores.\n\nESTRUCTURA: 3-4 párrafos cortos. El párrafo sobre su fruto principal debe ser el más rico, detallado y emotivo. Los otros frutos aparecen integrados naturalmente como logros ya alcanzados.\n\nREGLAS ABSOLUTAS — sin excepción:\n• TIEMPO PRESENTE siempre: "vivo", "tengo", "soy", "disfruto", "cuento con", "me siento". NUNCA futuro ni condicional.\n• PRIMERA PERSONA siempre: la voz es la de ella.\n• ESPAÑOL NEUTRO LATINOAMERICANO. PROHIBIDO ABSOLUTAMENTE: "vos", "hacés", "tenés", "querés", "sos", "sabés", "podés", "vivís", "estás" (rioplatense) — cada una es un error grave. Usa SIEMPRE "tú/ti" si necesitas pronombre de segunda persona, pero la voz es en primera.\n• Sin título, sin introducción, sin "En X años". Empieza directo con la primera frase de la declaración.\n• Tono cercano, cálido, femenino — no corporativo ni genérico. Que suene a ella.';
 
   if (OPENAI_KEY === 'TU_OPENAI_KEY') {
-    var nombre = D.nombre || 'ella';
-    var frutosArr = D.m2.frutos ? Object.keys(D.m2.frutos).filter(function(k){ return D.m2.frutos[k]; }) : [];
-    var frutos = frutosArr.slice(0,3).join(', ') || 'ingresos sólidos, tiempo libre e impacto real';
-    var palabras = (D.m2.vision_palabras||[]).slice(0,3).join(', ') || 'con propósito, libertad y plenitud';
-    var anios = D.m2.vision_anios || '3';
-    var area = D.m2.fruto_foco || 'mi vida';
-    var motivo = D.m2.motivo_poder ? D.m2.motivo_poder.replace(/✨ Tu Motivo de Poder:\n\n/,'').split('¿Quieres guardar')[0].trim() : '';
-    var negTipo = D.m2.negocio_tipo || '';
-    var negMision = D.m2.negocio_mision || '';
-    var visionTexto = D.m2.vision_texto || '';
-    var palabrasStr = palabras;
-    var p1 = 'Vivo una vida ' + palabrasStr + ', enfocada en lo que más importa: ' + area + '. Cada día elijo con claridad y actúo desde ese centro.';
-    var p2 = negTipo
-      ? 'Tengo ' + negTipo + (negMision ? ' con una misión clara: ' + negMision.toLowerCase().replace(/\.$/, '') + '.' : '. Es el negocio que imaginé — funciona, genera y me da libertad.')
-      : 'Mi trabajo me genera ingresos, tiempo y propósito. No tengo que elegir entre ganar y vivir bien — las dos cosas coexisten en mi vida.';
-    var p3 = motivo
-      ? 'Lo que me sostiene no es la ambición — es algo más profundo: ' + motivo.split('\n')[0].toLowerCase().replace(/✨ tu motivo de poder:/i,'').replace(/\.$/, '').trim() + '. Eso le da sentido a todo.'
-      : 'Tengo ' + frutos + ' — y los tengo porque tomé la decisión de construirlos, una acción a la vez.';
-    var p4 = 'Esta es mi vida. No la que me tocó — la que elegí.';
-    var texto = p1 + '\n\n' + p2 + '\n\n' + p3 + '\n\n' + p4;
+    var focoFB = (D.m2.fruto_foco || '').trim();
+    var frutosObjFB = D.m2.frutos || {};
+    var negTipoFB = D.m2.negocio_tipo || '';
+    var negMisionFB = D.m2.negocio_mision || '';
+    var motivoFB = (D.m2.motivo_poder || '').replace(/✨ Tu Motivo de Poder:\s*/i,'').split(/¿Quieres guardar|¿Querés guardar/i)[0].split('\n').filter(function(l){ return l.trim(); })[0] || '';
+    var visionBaseTextFB = (D.m2.vision_texto || '').trim();
+
+    // Párrafo 1: partir de su visión real o arranque genérico
+    var p1FB;
+    if (visionBaseTextFB) {
+      // Tomar la primera frase significativa de su visión y convertirla a presente
+      var primeraFrase = visionBaseTextFB.replace(/^(en \d+ años[,.]?\s*)/i,'').split(/[.!?\n]/)[0].trim();
+      p1FB = (primeraFrase.length > 15 ? primeraFrase : visionBaseTextFB.substring(0,120).trim()) + '. Esa es mi realidad hoy — la construí con intención y cada paso importó.';
+    } else {
+      p1FB = 'Vivo una vida plena, con propósito y en equilibrio. Cada día actúo desde mis valores y desde claridad sobre lo que realmente importa.';
+    }
+
+    // Párrafo 2: fruto foco con detalle
+    var p2FB = '';
+    if (focoFB) {
+      var descFoco = frutosObjFB[focoFB] || '';
+      p2FB = descFoco
+        ? 'En el área de ' + focoFB + ' vivo el cambio más profundo: ' + descFoco + ' Esto es lo que elegí trabajar primero y es real, concreto y mío.'
+        : 'Mi mayor transformación está en ' + focoFB + '. Es el área que elegí trabajar con más profundidad y los resultados se sienten en cada rincón de mi vida.';
+    }
+
+    // Párrafo 3: otros frutos como realidad
+    var otrosFrutosFB = Object.keys(frutosObjFB).filter(function(k){ return frutosObjFB[k] && k !== focoFB; });
+    var p3FB = '';
+    if (otrosFrutosFB.length >= 2) {
+      p3FB = 'Cuento también con ' + otrosFrutosFB.slice(0,2).join(' y ') + ' — no como metas pendientes, sino como realidades que construí una decisión a la vez.';
+    } else if (negTipoFB) {
+      p3FB = 'Tengo ' + negTipoFB + (negMisionFB ? ', con un propósito claro: ' + negMisionFB.replace(/\.$/, '') + '.' : '. Es el proyecto que imaginé y hoy funciona, genera y me da libertad.');
+    }
+
+    // Párrafo 4: cierre
+    var p4FB = motivoFB && motivoFB.length > 8
+      ? 'Lo que me sostiene es más profundo que la ambición: ' + motivoFB.toLowerCase().replace(/\.$/, '') + '. Eso le da sentido a todo lo que hago.'
+      : 'Esta es mi vida. No la que me tocó — la que elegí.';
+
+    var parsFB = [p1FB, p2FB, p3FB, p4FB].filter(function(p){ return p; });
+    var texto = parsFB.join('\n\n');
     resp.textContent = texto;
     D.m2.vision_ia = texto;
     var card = document.getElementById('vision-edit-card');
@@ -3184,7 +3251,7 @@ async function generarVisionIA() {
       headers: { 'Content-Type':'application/json', 'Authorization':'Bearer ' + OPENAI_KEY },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
-        messages: [{ role:'system', content: sys }, { role:'user', content: 'Crea la declaración de visión en PRESENTE y PRIMERA PERSONA para esta mujer. IMPORTANTE: usa "vivo", "tengo", "soy" — nunca "en X años" ni futuro. Datos: ' + ctx }],
+        messages: [{ role:'system', content: sys }, { role:'user', content: 'Escribe la declaración de visión partiendo de lo que ella escribió. CRÍTICO: tiempo PRESENTE, primera persona, español NEUTRO. NUNCA: "vos", "hacés", "tenés", "sos", "vivís", "podés" — ningún rioplatense.\n\n' + ctx }],
         max_tokens: 500, temperature: 0.85
       })
     });
