@@ -521,13 +521,15 @@ var CG = (function () {
   function larga(f) { var t = fecha(f).toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' }); return t.charAt(0).toUpperCase() + t.slice(1); }
   function lista(v) { return Array.isArray(v) ? v.filter(Boolean) : (v ? String(v).split('\n').filter(Boolean) : []); }
   function clave(a) { return a.id || ((a.area || '') + '|' + a.nombre + '|' + a.fecha); }
-  function acts() { return S.plan.actividades || []; }
+  function todas() { return S.plan.actividades || []; }
+  function acts() { return todas().filter(function (a) { return !!a.fecha; }); }
+  function sinFecha() { return todas().filter(function (a) { return !a.fecha; }); }
   function hecha(a) { return !!(S.av.hechas && S.av.hechas[clave(a)]); }
   function dia(a) { return a.fecha.split('T')[0]; }
   function actsDe(f) { return acts().filter(function (a) { return dia(a) === f; }).sort(function (x, y) { return x.fecha < y.fecha ? -1 : 1; }); }
   function metas() {
     var m = (S.plan.etapas || []).slice();
-    acts().forEach(function (a) { if (!m.some(function (e) { return e.area === a.area; })) m.push({ area: a.area }); });
+    todas().forEach(function (a) { if (!m.some(function (e) { return e.area === a.area; })) m.push({ area: a.area }); });
     return m;
   }
   function color(area) { var i = metas().findIndex(function (e) { return e.area === area; }); return COLORES[(i < 0 ? 0 : i) % COLORES.length]; }
@@ -537,9 +539,9 @@ var CG = (function () {
   function stats() {
     var h = hoy();
     return metas().map(function (m) {
-      var l = acts().filter(function (a) { return a.area === m.area; });
+      var l = todas().filter(function (a) { return a.area === m.area; });
       var n = l.filter(hecha).length;
-      var fs = l.map(dia).sort();
+      var fs = l.filter(function (a) { return a.fecha; }).map(dia).sort();
       var ini = fs[0] || '', fin = fs[fs.length - 1] || '';
       var est = !l.length ? 'sin' : n === l.length ? 'completada' : h > fin ? 'ajustar' : (h < ini && n === 0) ? 'pendiente' : 'curso';
       return { m: m, area: m.area, total: l.length, hechas: n, pct: l.length ? Math.round(n / l.length * 100) : 0, ini: ini, fin: fin, est: est, color: color(m.area) };
@@ -588,10 +590,11 @@ var CG = (function () {
       var l = actsDe(f);
       if (l.length) { var u = l[l.length - 1], d = new Date(u.fecha); d.setMinutes(d.getMinutes() + (Number(u.duracion) || 30)); hora = p2(d.getHours()) + ':' + p2(d.getMinutes()); }
     }
-    var v = x || { nombre: '', fecha: f + 'T' + hora, duracion: 30, area: area };
-    return '<div class="cg-form"><div class="cg-form-t">' + (nuevo ? 'Nueva actividad' : 'Modificar actividad') + '</div>' +
+    var sf = S.fAct === 'nuevoSF' || (x && !x.fecha);
+    var v = x || { nombre: '', fecha: sf ? '' : f + 'T' + hora, duracion: 30, area: area };
+    return '<div class="cg-form"><div class="cg-form-t">' + (nuevo ? (sf ? 'Nueva actividad sin fecha' : 'Nueva actividad') : 'Modificar actividad') + '</div>' +
       '<label class="cg-lbl">Actividad</label><textarea id="cga_nombre">' + esc(v.nombre) + '</textarea>' +
-      '<label class="cg-lbl">Fecha</label><input type="date" id="cga_fecha" value="' + v.fecha.split('T')[0] + '">' +
+      '<label class="cg-lbl">Fecha' + (sf ? ' (déjala vacía si aún no tiene día)' : '') + '</label><input type="date" id="cga_fecha" value="' + v.fecha.split('T')[0] + '">' +
       '<label class="cg-lbl">Hora</label><input type="time" id="cga_hora" value="' + (v.fecha.split('T')[1] || '08:00') + '">' +
       '<label class="cg-lbl">Duración (minutos)</label><input type="number" id="cga_dur" min="1" value="' + (Number(v.duracion) || 30) + '">' +
       '<label class="cg-lbl">Etapa</label><select id="cga_area">' + metas().map(function (m) { return '<option' + (m.area === v.area ? ' selected' : '') + '>' + esc(m.area) + '</option>'; }).join('') + '</select>' +
@@ -662,7 +665,7 @@ var CG = (function () {
     h += '</div>';
     if (!l.length) h += '<div class="cg-vacio">Sin actividades este día.</div>';
     l.forEach(function (x) {
-      var i = acts().indexOf(x), ok = hecha(x), c = color(x.area);
+      var i = todas().indexOf(x), ok = hecha(x), c = color(x.area);
       if (ed() && S.fAct === i) { h += formAct(x); return; }
       h += '<div class="cg-act' + (ok ? ' ok' : '') + '"' + (ed() ? ' onclick="CG.actForm(' + i + ')"' : S.edit ? ' onclick="CG.marcar(' + i + ')"' : '') + '>' +
         (ed() ? '<span class="cg-lapiz">✏️</span>' : '') +
@@ -670,6 +673,7 @@ var CG = (function () {
         '<span><span class="cg-act-n">' + esc(x.nombre) + '</span><span class="cg-mini">' + x.fecha.split('T')[1] + ' · ' + x.duracion + ' min · ' + esc(x.area) + '</span></span></div>';
     });
     if (ed()) h += S.fAct === 'nuevo' ? formAct(null) : '<div class="cg-acc"><button class="cg-btn" onclick="CG.actForm(\'nuevo\')">＋ Agregar actividad a este día</button></div>';
+    h += bloqueSF();
     var campo = function (k, t) { return '<label class="cg-lbl">' + t + '</label><textarea' + ro + ' onchange="CG.campo(\'' + k + '\',this.value)">' + esc(a[k]) + '</textarea>'; };
     h += '<div class="cg-form"><div class="cg-form-t">🌙 Cierre del día · 5 minutos</div>' +
       '<label class="cg-lbl">Estado del día</label><select' + ro + ' onchange="CG.campo(\'estado\',this.value)"><option value="">Automático (según lo marcado)</option>' +
@@ -680,13 +684,31 @@ var CG = (function () {
 
   // ── Vista 2 · Plan diario completo ──
   function lunes(f) { var d = fecha(f); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return iso(d); }
+  function filaAct(x) {
+    var i = todas().indexOf(x), ok = hecha(x), c = color(x.area);
+    if (ed() && S.fAct === i) return formAct(x);
+    return '<div class="cg-act' + (ok ? ' ok' : '') + '"' + (ed() ? ' onclick="CG.actForm(' + i + ')"' : S.edit ? ' onclick="CG.marcar(' + i + ')"' : '') + '>' +
+      (ed() ? '<span class="cg-lapiz">✏️</span>' : '') +
+      '<span class="cg-check" style="border-color:' + c + ';' + (ok ? 'background:' + c : '') + '">' + (ok ? '✓' : '') + '</span>' +
+      '<span><span class="cg-act-n">' + esc(x.nombre) + '</span><span class="cg-mini">Sin fecha · ' + (Number(x.duracion) || 30) + ' min · ' + esc(x.area) + '</span></span></div>';
+  }
+  function bloqueSF() {
+    var l = sinFecha();
+    if (!l.length && !ed()) return '';
+    var pend = l.filter(function (x) { return !hecha(x); }).length;
+    var h = '<div class="cg-form"><div class="cg-form-t">📌 Sin fecha · cuando se dé</div><div class="cg-mini" style="margin-bottom:8px">' +
+      (l.length ? pend + ' de ' + l.length + ' pendientes. Se hacen el día que resulte (por ejemplo, cuando alguien acepta la entrevista).' : 'Aquí van las actividades que todavía no tienen día.') + '</div>';
+    l.forEach(function (x) { h += filaAct(x); });
+    if (ed()) h += S.fAct === 'nuevoSF' ? formAct(null) : '<div class="cg-acc"><button class="cg-btn2" onclick="CG.actForm(\'nuevoSF\')">＋ Agregar actividad sin fecha</button></div>';
+    return h + '</div>';
+  }
   function vPlan() {
     var porF = {}, sem = {};
     acts().forEach(function (a) { (porF[dia(a)] = porF[dia(a)] || []).push(a); });
     Object.keys(porF).sort().forEach(function (f) { (sem[lunes(f)] = sem[lunes(f)] || []).push(f); });
     var actual = lunes(hoy()), claves = Object.keys(sem).sort();
     if (claves.indexOf(actual) === -1) actual = claves[0];
-    var h = '<div class="cg-mini" style="margin-bottom:10px">Toca un día para abrirlo.</div>';
+    var h = bloqueSF() + '<div class="cg-mini" style="margin-bottom:10px">Toca un día para abrirlo.</div>';
     claves.forEach(function (k) {
       var ds = sem[k], todas = ds.reduce(function (l, f) { return l.concat(porF[f]); }, []);
       var ab = S.semanas[k] !== undefined ? S.semanas[k] : k === actual;
@@ -783,19 +805,20 @@ var CG = (function () {
     actForm: function (i) { S.fAct = i; pintar(); },
     actGuardar: function () {
       var nombre = v2('cga_nombre'), f = v2('cga_fecha'), hora = v2('cga_hora') || '08:00', dur = parseInt(v2('cga_dur'), 10) || 30, area = v2('cga_area');
-      if (!nombre || !f) { alert('Escribe la actividad y su fecha.'); return; }
-      if (S.fAct === 'nuevo') {
-        S.plan.actividades.push({ id: 'n' + Date.now(), area: area, nombre: nombre, fecha: f + 'T' + hora, duracion: dur, unidad: 'min' });
+      if (!nombre) { alert('Escribe la actividad.'); return; }
+      var fechaFinal = f ? f + 'T' + hora : '';
+      if (S.fAct === 'nuevo' || S.fAct === 'nuevoSF') {
+        S.plan.actividades.push({ id: 'n' + Date.now(), area: area, nombre: nombre, fecha: fechaFinal, duracion: dur, unidad: 'min' });
       } else {
-        var a = acts()[S.fAct];
+        var a = todas()[S.fAct];
         if (!a.id) a.id = clave(a); // conserva lo que la alumna ya marcó aunque cambie nombre o fecha
-        a.nombre = nombre; a.fecha = f + 'T' + hora; a.duracion = dur; a.area = area;
+        a.nombre = nombre; a.fecha = fechaFinal; a.duracion = dur; a.area = area;
       }
       S.fAct = null; guardarPlan(); pintar();
     },
     actBorrar: function () {
       if (!confirm('¿Eliminar esta actividad del plan?')) return;
-      var a = acts()[S.fAct];
+      var a = todas()[S.fAct];
       if (S.av.hechas) delete S.av.hechas[clave(a)];
       S.plan.actividades.splice(S.fAct, 1);
       S.fAct = null; guardarPlan(); pintar();
@@ -823,7 +846,7 @@ var CG = (function () {
     form: function (f) { S.form = f; pintar(); },
     marcar: function (i) {
       if (!S.edit) return;
-      var k = clave(acts()[i]);
+      var k = clave(todas()[i]);
       if (S.av.hechas[k]) delete S.av.hechas[k]; else S.av.hechas[k] = true;
       guardar(); pintar();
     },
@@ -869,11 +892,11 @@ var CG = (function () {
       av = av || {};
       var h = hoy(), hechas = av.hechas || {};
       var cd = function (a) { return (a.area || '') + '|' + a.nombre + '|' + dia(a); };
-      var kept = (viejo.actividades || []).filter(function (a) { return dia(a) < h || hechas[clave(a)]; });
+      var kept = (viejo.actividades || []).filter(function (a) { return a.fecha ? (dia(a) < h || hechas[clave(a)]) : hechas[clave(a)]; });
       var keys = kept.map(cd), ids = kept.map(function (a) { return a.id; }).filter(Boolean);
       var adel = {};
-      kept.forEach(function (a) { if (dia(a) >= h) { var k2 = (a.area || '') + '|' + a.nombre; adel[k2] = (adel[k2] || 0) + 1; } });
-      var nuevas = (nuevo.actividades || []).filter(function (a) { return a && a.fecha && dia(a) >= h && keys.indexOf(cd(a)) === -1 && (!a.id || ids.indexOf(a.id) === -1); })
+      kept.forEach(function (a) { if (a.fecha && dia(a) >= h) { var k2 = (a.area || '') + '|' + a.nombre; adel[k2] = (adel[k2] || 0) + 1; } });
+      var nuevas = (nuevo.actividades || []).filter(function (a) { return a && (a.fecha ? dia(a) >= h : true) && keys.indexOf(cd(a)) === -1 && (!a.id || ids.indexOf(a.id) === -1); })
         .filter(function (a) { var k2 = (a.area || '') + '|' + a.nombre; if (adel[k2] > 0) { adel[k2]--; return false; } return true; })
         .map(function (a) { var c = Object.assign({}, a); delete c.completada; return c; });
       var out = JSON.parse(JSON.stringify(nuevo));
@@ -888,7 +911,7 @@ var CG = (function () {
     resumen: function (plan, av) {
       var a = plan.actividades || [], h = (av && av.hechas) || {};
       var n = a.filter(function (x) { return h[clave(x)]; }).length;
-      var fs = a.map(dia).sort();
+      var fs = a.filter(function (x) { return x.fecha; }).map(dia).sort();
       return { total: a.length, hechas: n, ini: fs[0] || '', fin: fs[fs.length - 1] || '', etapas: (plan.etapas || []).length };
     }
   };
