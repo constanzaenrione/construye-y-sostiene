@@ -238,6 +238,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   .cg-tabla td[data-l]::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--fg3);margin-top:5px}
   .cg-tabla td.cg-td1{display:inline-block;margin-right:6px;font-size:14px}
 }
+.cg-lapiz{flex-shrink:0;font-size:14px;margin-top:1px}
+.cg input[type=time],.cg input[type=number]{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit;background:var(--bg2);color:var(--fg)}
 </style>
 
 <!-- AUTH -->
@@ -502,7 +504,7 @@ sb = {
 // plan   = el archivo .json que sube la mentora (proyecto, etapas, dias, actividades, decisiones, condiciones)
 // avance = lo que registra la alumna: { hechas:{clave:true}, dias:{fecha:{estado,avance,costo,descubri,necesito}}, condiciones:[], decisiones:[] }
 var CG = (function () {
-  var S = { el: null, plan: null, av: null, edit: false, cb: null, tab: 'mapa', fecha: null, form: null, semanas: {} };
+  var S = { el: null, plan: null, av: null, edit: false, cb: null, tab: 'mapa', fecha: null, form: null, semanas: {}, pe: false, cbp: null, modo: false, fAct: null, fEt: null, fDia: false };
   var COLORES = ['#4B168E', '#A0740F', '#7C4DBC', '#C9932E', '#1E88E5', '#00897B', '#AD1457', '#5E35B1', '#6D4C41', '#2E7D32', '#546E7A'];
   var NIVELES = { compromiso: 'Compromiso', meta: 'Meta', ritmo: 'Si el ritmo lo permite' };
   var EST_ETAPA = { sin: 'Sin actividades', pendiente: '⬜ Pendiente', curso: '🟡 En curso', ajustar: '🔵 Por ajustar', completada: '🟢 Completada' };
@@ -518,7 +520,7 @@ var CG = (function () {
   function corta(f) { if (!f) return ''; var p = f.split('-'); return p.length === 3 ? p[2] + '/' + p[1] : f; }
   function larga(f) { var t = fecha(f).toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' }); return t.charAt(0).toUpperCase() + t.slice(1); }
   function lista(v) { return Array.isArray(v) ? v.filter(Boolean) : (v ? String(v).split('\n').filter(Boolean) : []); }
-  function clave(a) { return (a.area || '') + '|' + a.nombre + '|' + a.fecha; }
+  function clave(a) { return a.id || ((a.area || '') + '|' + a.nombre + '|' + a.fecha); }
   function acts() { return S.plan.actividades || []; }
   function hecha(a) { return !!(S.av.hechas && S.av.hechas[clave(a)]); }
   function dia(a) { return a.fecha.split('T')[0]; }
@@ -578,6 +580,25 @@ var CG = (function () {
   function chipsDia(l) { return etapasDia(l).vis.map(function (ar) { return chip(ar, color(ar)); }).join(' '); }
   function barra(pct, c) { return '<div class="cg-barra"><span style="width:' + pct + '%;background:' + c + '"></span></div>'; }
   function guardar() { if (S.cb) S.cb(S.av); }
+  function guardarPlan() { if (S.cbp) S.cbp(S.plan); }
+  function ed() { return S.pe && S.modo; }
+  function formAct(x) {
+    var nuevo = !x, f = S.fecha, hora = '08:00', area = etapasDia(actsDe(f)).pri || (metas()[0] || {}).area || '';
+    if (nuevo) {
+      var l = actsDe(f);
+      if (l.length) { var u = l[l.length - 1], d = new Date(u.fecha); d.setMinutes(d.getMinutes() + (Number(u.duracion) || 30)); hora = p2(d.getHours()) + ':' + p2(d.getMinutes()); }
+    }
+    var v = x || { nombre: '', fecha: f + 'T' + hora, duracion: 30, area: area };
+    return '<div class="cg-form"><div class="cg-form-t">' + (nuevo ? 'Nueva actividad' : 'Modificar actividad') + '</div>' +
+      '<label class="cg-lbl">Actividad</label><textarea id="cga_nombre">' + esc(v.nombre) + '</textarea>' +
+      '<label class="cg-lbl">Fecha</label><input type="date" id="cga_fecha" value="' + v.fecha.split('T')[0] + '">' +
+      '<label class="cg-lbl">Hora</label><input type="time" id="cga_hora" value="' + (v.fecha.split('T')[1] || '08:00') + '">' +
+      '<label class="cg-lbl">Duración (minutos)</label><input type="number" id="cga_dur" min="1" value="' + (Number(v.duracion) || 30) + '">' +
+      '<label class="cg-lbl">Etapa</label><select id="cga_area">' + metas().map(function (m) { return '<option' + (m.area === v.area ? ' selected' : '') + '>' + esc(m.area) + '</option>'; }).join('') + '</select>' +
+      '<div class="cg-acc"><button class="cg-btn" onclick="CG.actGuardar()">Guardar</button><button class="cg-btn2" onclick="CG.actForm(null)">Cancelar</button>' +
+      (nuevo ? '' : '<button class="cg-link" onclick="CG.actBorrar()">Eliminar actividad</button>') + '</div></div>';
+  }
+
 
   // ── Vista 1 · Mapa ──
   function vMapa() {
@@ -603,6 +624,15 @@ var CG = (function () {
         '<div class="cg-chips">' + chip(EST_ETAPA[s.est]) + (NIVELES[m.nivel] ? chip(NIVELES[m.nivel]) : '') + (m.transversal ? chip('Acompaña todas las etapas') : '') + '</div>' +
         barra(s.pct, s.color) +
         '<div class="cg-mini">' + s.hechas + ' de ' + s.total + ' · ' + s.pct + '% de avance' + (s.ini ? ' · ' + corta(s.ini) + ' → ' + corta(s.fin) : '') + '</div>';
+      if (ed() && S.fEt === s.area) {
+        var ta = function (id, t, val) { return '<label class="cg-lbl">' + t + '</label><textarea id="cge_' + id + '">' + esc(val) + '</textarea>'; };
+        h += '<div class="cg-form">' + ta('resultado', 'Resultado que debe quedar construido', m.resultado) + ta('entregables', 'Entregables (uno por línea)', lista(m.entregables).join('\n')) +
+          '<label class="cg-lbl">Duración estimada</label><input type="text" id="cge_duracion" value="' + esc(m.duracion) + '">' + ta('hito', 'Hito de salida', m.hito) +
+          ta('noHacer', '🚫 No hacer todavía (uno por línea)', lista(m.noHacer).join('\n')) + '<label class="cg-lbl">Nota</label><input type="text" id="cge_nota" value="' + esc(m.nota) + '">' +
+          '<div class="cg-acc"><button class="cg-btn" onclick="CG.etGuardar()">Guardar</button><button class="cg-btn2" onclick="CG.etForm(null)">Cancelar</button></div></div></div>';
+        return;
+      }
+      if (ed()) h += '<div class="cg-acc"><button class="cg-btn2" data-area="' + esc(s.area) + '" onclick="CG.etForm(this.dataset.area)">✏️ Modificar etapa</button></div>';
       if (m.resultado) h += '<div class="cg-linea"><span class="cg-lbl">Resultado</span>' + esc(m.resultado) + '</div>';
       if (lista(m.entregables).length) h += '<div class="cg-linea"><span class="cg-lbl">Entregables</span>' + ul(lista(m.entregables)) + '</div>';
       if (m.duracion) h += '<div class="cg-linea"><span class="cg-lbl">Duración estimada</span>' + esc(m.duracion) + '</div>';
@@ -620,17 +650,26 @@ var CG = (function () {
     var h = '<div class="cg-nav"><button class="cg-btn2" onclick="CG.mover(-1)">‹</button><input type="date" value="' + f + '" onchange="CG.irA(this.value)"><button class="cg-btn2" onclick="CG.mover(1)">›</button><button class="cg-btn2" onclick="CG.irA(\'' + hoy() + '\')">Hoy</button></div>';
     h += '<div class="cg-resumen"><div class="cg-dia-t">' + esc(larga(f)) + '</div>';
     if (l.length) h += '<div class="cg-chips">' + chipsDia(l) + ' ' + chip(EST_DIA[estadoDia(f, l)]) + '</div>';
-    if (d.resultado) h += '<div class="cg-linea"><span class="cg-lbl">Resultado del día</span>' + esc(d.resultado) + '</div>';
-    if (d.nota) h += '<div class="cg-nota">' + esc(d.nota) + '</div>';
+    if (ed() && S.fDia) {
+      h += '<div class="cg-form"><label class="cg-lbl">Resultado del día</label><textarea id="cgd_resultado">' + esc(d.resultado) + '</textarea><label class="cg-lbl">Nota</label><input type="text" id="cgd_nota" value="' + esc(d.nota) + '">' +
+        '<div class="cg-acc"><button class="cg-btn" onclick="CG.diaGuardar()">Guardar</button><button class="cg-btn2" onclick="CG.diaForm(false)">Cancelar</button></div></div>';
+    } else {
+      if (d.resultado) h += '<div class="cg-linea"><span class="cg-lbl">Resultado del día</span>' + esc(d.resultado) + '</div>';
+      if (d.nota) h += '<div class="cg-nota">' + esc(d.nota) + '</div>';
+      if (ed()) h += '<div class="cg-acc"><button class="cg-btn2" onclick="CG.diaForm(true)">✏️ Modificar resultado del día</button></div>';
+    }
     if (nh.length) h += '<div class="cg-nohacer"><span class="cg-lbl">🚫 No hacer todavía</span>' + ul(nh) + '</div>';
     h += '</div>';
     if (!l.length) h += '<div class="cg-vacio">Sin actividades este día.</div>';
     l.forEach(function (x) {
       var i = acts().indexOf(x), ok = hecha(x), c = color(x.area);
-      h += '<div class="cg-act' + (ok ? ' ok' : '') + '"' + (S.edit ? ' onclick="CG.marcar(' + i + ')"' : '') + '>' +
+      if (ed() && S.fAct === i) { h += formAct(x); return; }
+      h += '<div class="cg-act' + (ok ? ' ok' : '') + '"' + (ed() ? ' onclick="CG.actForm(' + i + ')"' : S.edit ? ' onclick="CG.marcar(' + i + ')"' : '') + '>' +
+        (ed() ? '<span class="cg-lapiz">✏️</span>' : '') +
         '<span class="cg-check" style="border-color:' + c + ';' + (ok ? 'background:' + c : '') + '">' + (ok ? '✓' : '') + '</span>' +
         '<span><span class="cg-act-n">' + esc(x.nombre) + '</span><span class="cg-mini">' + x.fecha.split('T')[1] + ' · ' + x.duracion + ' min · ' + esc(x.area) + '</span></span></div>';
     });
+    if (ed()) h += S.fAct === 'nuevo' ? formAct(null) : '<div class="cg-acc"><button class="cg-btn" onclick="CG.actForm(\'nuevo\')">＋ Agregar actividad a este día</button></div>';
     var campo = function (k, t) { return '<label class="cg-lbl">' + t + '</label><textarea' + ro + ' onchange="CG.campo(\'' + k + '\',this.value)">' + esc(a[k]) + '</textarea>'; };
     h += '<div class="cg-form"><div class="cg-form-t">🌙 Cierre del día · 5 minutos</div>' +
       '<label class="cg-lbl">Estado del día</label><select' + ro + ' onchange="CG.campo(\'estado\',this.value)"><option value="">Automático (según lo marcado)</option>' +
@@ -715,16 +754,23 @@ var CG = (function () {
   function pintar() {
     if (!S.el) return;
     var tabs = [['mapa', '🗺️ Mapa'], ['dia', '☀️ Día'], ['plan', '📋 Plan diario'], ['cond', '🧩 Condiciones'], ['dec', '💡 Decisiones']];
-    var h = '<div class="cg"><div class="cg-titulo">' + esc((S.plan.proyecto || {}).nombre || 'Carta Gantt') + '</div><div class="cg-tabs">' +
+    var h = '<div class="cg"><div class="cg-titulo">' + esc((S.plan.proyecto || {}).nombre || 'Carta Gantt') + '</div>' +
+      (S.pe ? '<div class="cg-acc" style="margin-top:0"><button class="' + (S.modo ? 'cg-btn' : 'cg-btn2') + '" onclick="CG.modo()">' + (S.modo ? '✓ Terminar de modificar' : '✏️ Modificar el plan') + '</button>' +
+        (S.modo ? '<span class="cg-mini">Toca una actividad, un día o una etapa para cambiarla.</span>' : '') + '</div>' : '') +
+      '<div class="cg-tabs">' +
       tabs.map(function (t) { return '<button class="' + (S.tab === t[0] ? 'on' : '') + '" onclick="CG.tab(\'' + t[0] + '\')">' + t[1] + '</button>'; }).join('') + '</div>';
     h += S.tab === 'mapa' ? vMapa() : S.tab === 'dia' ? vDia() : S.tab === 'plan' ? vPlan() : S.tab === 'cond' ? vCond() : vDec();
     S.el.innerHTML = h + '</div>';
   }
   function val(id) { var e = document.getElementById('cgf_' + id); return e ? e.value.trim() : ''; }
+  function v2(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
 
   return {
     mount: function (el, o) {
       S.el = el; S.plan = o.plan || {}; S.av = o.avance || {}; S.edit = !!o.editable; S.cb = o.onChange || null;
+      S.pe = !!o.planEditable; S.cbp = o.onPlan || null;
+      if (o.reiniciar) { S.modo = false; S.fAct = null; S.fEt = null; S.fDia = false; }
+      if (!Array.isArray(S.plan.actividades)) S.plan.actividades = [];
       ['hechas', 'dias'].forEach(function (k) { if (!S.av[k] || typeof S.av[k] !== 'object') S.av[k] = {}; });
       ['condiciones', 'decisiones'].forEach(function (k) { if (!Array.isArray(S.av[k])) S.av[k] = []; });
       if (!S.fecha || o.reiniciar) { S.fecha = hoy(); S.tab = o.tab || 'mapa'; S.form = null; S.semanas = {}; }
@@ -732,7 +778,45 @@ var CG = (function () {
       if (fs.length && (S.fecha < fs[0] || S.fecha > fs[fs.length - 1])) S.fecha = S.fecha < fs[0] ? fs[0] : fs[fs.length - 1];
       pintar();
     },
-    tab: function (t) { S.tab = t; S.form = null; pintar(); },
+    tab: function (t) { S.tab = t; S.form = null; S.fAct = null; S.fEt = null; S.fDia = false; pintar(); },
+    modo: function () { S.modo = !S.modo; S.fAct = null; S.fEt = null; S.fDia = false; pintar(); },
+    actForm: function (i) { S.fAct = i; pintar(); },
+    actGuardar: function () {
+      var nombre = v2('cga_nombre'), f = v2('cga_fecha'), hora = v2('cga_hora') || '08:00', dur = parseInt(v2('cga_dur'), 10) || 30, area = v2('cga_area');
+      if (!nombre || !f) { alert('Escribe la actividad y su fecha.'); return; }
+      if (S.fAct === 'nuevo') {
+        S.plan.actividades.push({ id: 'n' + Date.now(), area: area, nombre: nombre, fecha: f + 'T' + hora, duracion: dur, unidad: 'min' });
+      } else {
+        var a = acts()[S.fAct];
+        if (!a.id) a.id = clave(a); // conserva lo que la alumna ya marcó aunque cambie nombre o fecha
+        a.nombre = nombre; a.fecha = f + 'T' + hora; a.duracion = dur; a.area = area;
+      }
+      S.fAct = null; guardarPlan(); pintar();
+    },
+    actBorrar: function () {
+      if (!confirm('¿Eliminar esta actividad del plan?')) return;
+      var a = acts()[S.fAct];
+      if (S.av.hechas) delete S.av.hechas[clave(a)];
+      S.plan.actividades.splice(S.fAct, 1);
+      S.fAct = null; guardarPlan(); pintar();
+    },
+    diaForm: function (b) { S.fDia = b; pintar(); },
+    diaGuardar: function () {
+      if (!Array.isArray(S.plan.dias)) S.plan.dias = [];
+      var d = S.plan.dias.find(function (x) { return x.fecha === S.fecha; });
+      if (!d) { d = { fecha: S.fecha }; S.plan.dias.push(d); }
+      d.resultado = v2('cgd_resultado'); d.nota = v2('cgd_nota');
+      S.fDia = false; guardarPlan(); pintar();
+    },
+    etForm: function (area) { S.fEt = area; pintar(); },
+    etGuardar: function () {
+      if (!Array.isArray(S.plan.etapas)) S.plan.etapas = [];
+      var m = S.plan.etapas.find(function (e) { return e.area === S.fEt; });
+      if (!m) { m = { area: S.fEt }; S.plan.etapas.push(m); }
+      m.resultado = v2('cge_resultado'); m.entregables = lista(v2('cge_entregables')); m.duracion = v2('cge_duracion');
+      m.hito = v2('cge_hito'); m.noHacer = lista(v2('cge_noHacer')); m.nota = v2('cge_nota');
+      S.fEt = null; guardarPlan(); pintar();
+    },
     irA: function (f) { if (!f) return; S.fecha = f; S.tab = 'dia'; pintar(); if (S.el.scrollIntoView) S.el.scrollIntoView(); },
     mover: function (n) { var d = fecha(S.fecha); d.setDate(d.getDate() + n); S.fecha = iso(d); pintar(); },
     semana: function (k, ab) { S.semanas[k] = ab; pintar(); },
@@ -764,6 +848,42 @@ var CG = (function () {
       S.av[tipo] = S.av[tipo].filter(function (x) { return x.id !== id; });
       guardar(); pintar();
     },
+    // Arma un archivo con la última versión del plan + lo que la alumna registró (lo lee la Agenda SER)
+    exportar: function (plan, av) {
+      av = av || {};
+      var out = JSON.parse(JSON.stringify(plan)), h = av.hechas || {}, dv = av.dias || {};
+      out.actividades = (out.actividades || []).map(function (a) { var c = Object.assign({}, a); if (h[clave(a)]) c.completada = true; return c; });
+      out.dias = (out.dias || []).slice();
+      Object.keys(dv).forEach(function (f) {
+        var d = out.dias.find(function (x) { return x.fecha === f; });
+        if (!d) { d = { fecha: f }; out.dias.push(d); }
+        ['estado', 'avance', 'costo', 'descubri', 'necesito'].forEach(function (k) { if (dv[f][k]) d[k] = dv[f][k]; });
+      });
+      ['condiciones', 'decisiones'].forEach(function (t) {
+        out[t] = (out[t] || []).concat((av[t] || []).map(function (x) { var c = Object.assign({}, x); delete c.id; return c; }));
+      });
+      return out;
+    },
+    // Junta la carta actual con una nueva: lo anterior a hoy y lo ya hecho se conserva; lo nuevo entra desde hoy
+    fusionar: function (viejo, nuevo, av) {
+      av = av || {};
+      var h = hoy(), hechas = av.hechas || {};
+      var cd = function (a) { return (a.area || '') + '|' + a.nombre + '|' + dia(a); };
+      var kept = (viejo.actividades || []).filter(function (a) { return dia(a) < h || hechas[clave(a)]; });
+      var keys = kept.map(cd), ids = kept.map(function (a) { return a.id; }).filter(Boolean);
+      var adel = {};
+      kept.forEach(function (a) { if (dia(a) >= h) { var k2 = (a.area || '') + '|' + a.nombre; adel[k2] = (adel[k2] || 0) + 1; } });
+      var nuevas = (nuevo.actividades || []).filter(function (a) { return a && a.fecha && dia(a) >= h && keys.indexOf(cd(a)) === -1 && (!a.id || ids.indexOf(a.id) === -1); })
+        .filter(function (a) { var k2 = (a.area || '') + '|' + a.nombre; if (adel[k2] > 0) { adel[k2]--; return false; } return true; })
+        .map(function (a) { var c = Object.assign({}, a); delete c.completada; return c; });
+      var out = JSON.parse(JSON.stringify(nuevo));
+      out.actividades = kept.concat(nuevas);
+      out.dias = (viejo.dias || []).filter(function (d) { return d.fecha < h; }).concat((nuevo.dias || []).filter(function (d) { return d.fecha >= h; }));
+      // Lo que la alumna anotó ya está guardado aparte: no se repite
+      out.decisiones = (out.decisiones || []).filter(function (d) { return !(av.decisiones || []).some(function (x) { return x.texto === d.texto; }); });
+      out.condiciones = (out.condiciones || []).filter(function (c) { return !(av.condiciones || []).some(function (x) { return x.accion === c.accion && x.ocurrio === c.ocurrio; }); });
+      return out;
+    },
     validar: function (p) { return !!(p && p.proyecto && p.proyecto.nombre && Array.isArray(p.actividades) && p.actividades.length); },
     resumen: function (plan, av) {
       var a = plan.actividades || [], h = (av && av.hechas) || {};
@@ -776,6 +896,7 @@ var CG = (function () {
 
 // ─── CARTA GANTT DE LA ALUMNA ───
 var ganttVisible = false;
+var _ganttTimer = null;
 function escM(t) { return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 async function datosFrescos(email) {
   try {
@@ -806,7 +927,11 @@ function subirGantt(input) {
     var plan;
     try { plan = JSON.parse(e.target.result); } catch(err) { toast('El archivo no es un JSON válido'); return; }
     if (!CG.validar(plan)) { toast('El archivo no tiene proyecto y actividades'); return; }
-    if (await guardarGantt(plan)) { ganttVisible = true; toast('Carta Gantt cargada'); renderFicha(); }
+    // Si ya tenía carta, solo cambia de hoy en adelante: lo anterior a hoy y lo ya hecho se conserva
+    var actual = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+    var habia = !!actual.gantt;
+    if (habia) plan = CG.fusionar(actual.gantt, plan, actual.gantt_avance);
+    if (await guardarGantt(plan)) { ganttVisible = true; toast(habia ? 'Carta actualizada desde hoy · lo anterior se conservó' : 'Carta Gantt cargada'); renderFicha(); }
   };
   reader.readAsText(file, 'UTF-8');
 }
@@ -814,6 +939,21 @@ async function verGantt() {
   ganttVisible = !ganttVisible;
   if (ganttVisible) { var d = await datosFrescos(alumnaActual.email); if (d) ponerDatosAlumna(d); }
   renderFicha();
+}
+async function descargarGantt() {
+  if (!alumnaActual) return;
+  var d = (await datosFrescos(alumnaActual.email)) || alumnaActual.data || {};
+  if (!d.gantt) { toast('Esta alumna no tiene carta Gantt'); return; }
+  ponerDatosAlumna(d);
+  var datos = CG.exportar(d.gantt, d.gantt_avance);
+  var nombre = (d.nombre || alumnaActual.email.split('@')[0]).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  var hoy = new Date(), f = hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2);
+  var blob = new Blob([JSON.stringify(datos, null, 1)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'carta-gantt-' + (nombre || 'alumna') + '-' + f + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  toast('Carta descargada');
 }
 async function quitarGantt() {
   if (!confirm('¿Quitar la carta Gantt de esta alumna? Lo que ella ya registró no se borra.')) return;
@@ -1154,8 +1294,8 @@ function renderFicha() {
         '<div style="font-size:12px;color:var(--fg3);margin-top:8px">' + (mods.indexOf(3) !== -1 ? '✓ La alumna ya la ve en su Módulo 3.' : '🔒 La alumna todavía no la ve: activa el Módulo 3 arriba cuando esté lista.') + '</div>'
       : '<div style="font-size:13px;color:var(--fg3)">Aún no tiene carta Gantt. Sube el archivo .json para revisarla aquí.</div>') +
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' +
-      '<label class="btn btn-primary btn-sm" style="cursor:pointer">' + (gPlan ? 'Reemplazar archivo' : 'Subir carta Gantt') + '<input type="file" accept=".json,application/json" hidden onchange="subirGantt(this)"></label>' +
-      (gPlan ? '<button class="btn btn-ghost btn-sm" onclick="verGantt()">' + (ganttVisible ? 'Ocultar carta' : 'Ver carta completa') + '</button><button class="btn btn-danger btn-sm" onclick="quitarGantt()">Quitar</button>' : '') +
+      '<label class="btn btn-primary btn-sm" style="cursor:pointer">' + (gPlan ? 'Actualizar desde hoy (subir archivo)' : 'Subir carta Gantt') + '<input type="file" accept=".json,application/json" hidden onchange="subirGantt(this)"></label>' +
+      (gPlan ? '<button class="btn btn-ghost btn-sm" onclick="verGantt()">' + (ganttVisible ? 'Ocultar carta' : 'Ver carta completa') + '</button><button class="btn btn-ghost btn-sm" onclick="descargarGantt()">⬇️ Descargar última versión</button><button class="btn btn-danger btn-sm" onclick="quitarGantt()">Quitar</button>' : '') +
     '</div>' +
     '<div id="ficha-gantt" style="margin-top:16px"></div>' +
   '</div>';
@@ -1171,7 +1311,8 @@ function renderFicha() {
   '</div>';
 
   document.getElementById('ficha-content').innerHTML = html;
-  if (gPlan && ganttVisible) CG.mount(document.getElementById('ficha-gantt'), { plan: gPlan, avance: JSON.parse(JSON.stringify(d.gantt_avance || {})), editable: false });
+  if (gPlan && ganttVisible) CG.mount(document.getElementById('ficha-gantt'), { plan: gPlan, avance: JSON.parse(JSON.stringify(d.gantt_avance || {})), editable: false, planEditable: true,
+    onPlan: function(plan) { clearTimeout(_ganttTimer); _ganttTimer = setTimeout(async function() { if (await guardarGantt(plan)) toast('Cambio guardado'); }, 600); } });
 }
 
 // ─── TOGGLE MÓDULO ───
